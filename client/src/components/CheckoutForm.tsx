@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { api, ApiError } from "@/lib/api";
+import { api, ApiError, DEMO_MODE } from "@/lib/api";
 import { formatPrice } from "@/lib/format";
 import { site } from "@/data/site";
 import type { Order, PaymentConfig } from "@/lib/types";
@@ -34,6 +34,10 @@ export function CheckoutForm() {
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
+      if (DEMO_MODE) {
+        setPayments({ enabled: false, publishableKey: null, currency: "AED" });
+        return;
+      }
       try {
         const config = await api<PaymentConfig>("/api/payments/config", { auth: false });
         if (!cancelled) setPayments(config);

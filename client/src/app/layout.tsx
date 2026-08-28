@@ -4,6 +4,7 @@ import "./globals.css";
 import { site } from "@/data/site";
 import { fetchCategories } from "@/lib/server-api";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
+import { DemoBanner } from "@/components/DemoBanner";
 import { AuthProvider } from "@/components/AuthProvider";
 import { CartProvider } from "@/components/CartProvider";
 import { Footer } from "@/components/Footer";
@@ -41,6 +42,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <AuthProvider>
           <CartProvider>
             <AnnouncementBar />
+            <DemoBanner />
             <Header categories={categories} />
             <main className="flex-1">{children}</main>
             <Footer categories={categories} />

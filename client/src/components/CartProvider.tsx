@@ -9,7 +9,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { api } from "@/lib/api";
+import { api, DEMO_MODE } from "@/lib/api";
+import { demoProducts } from "@/data/demo-catalog";
 import type { CartSummary, Product } from "@/lib/types";
 import { useAuth } from "./AuthProvider";
 
@@ -123,6 +124,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const missing = lines.filter((l) => !guestCatalog.current.has(l.slug));
       await Promise.all(
         missing.map(async (l) => {
+          if (DEMO_MODE) {
+            const demo = demoProducts.find((p) => p.slug === l.slug);
+            if (demo) guestCatalog.current.set(l.slug, demo);
+            return;
+          }
           try {
             const { product } = await api<{ product: Product }>(
               `/api/products/${encodeURIComponent(l.slug)}`,

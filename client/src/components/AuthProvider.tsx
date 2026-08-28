@@ -8,7 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { api, getToken, setToken } from "@/lib/api";
+import { api, DEMO_MODE, getToken, setToken } from "@/lib/api";
 import type { User } from "@/lib/types";
 
 type AuthValue = {
@@ -32,8 +32,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false);
 
   const refresh = useCallback(async () => {
-    // بلا توكن محفوظ لا داعي لسؤال الخادم — يوفّر نداء 401 على كل زيارة زائر
-    if (!getToken()) {
+    // في وضع العرض لا يوجد خادم مصادقة، وبلا توكن محفوظ لا داعي لسؤاله
+    if (DEMO_MODE || !getToken()) {
       setUser(null);
       return;
     }

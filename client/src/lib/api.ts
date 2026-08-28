@@ -1,5 +1,11 @@
 /** عميل الواجهة البرمجية — كل نداءات الخادم تمر من هنا. */
 
+/**
+ * حين لا يُضبط NEXT_PUBLIC_API_URL يعمل المتجر في «وضع العرض»:
+ * كتالوج مضمّن، بلا خادم ولا قاعدة بيانات. ضبط الرابط يُطفئه فورًا.
+ */
+export const DEMO_MODE = !process.env.NEXT_PUBLIC_API_URL;
+
 export const API_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
