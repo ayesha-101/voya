@@ -1,7 +1,11 @@
 /**
- * نقطة الدخول على Vercel: نُصدّر تطبيق Express كدالة بلا خادم
- * بدل تشغيل listen. التشغيل المحلي يبقى عبر src/index.js.
+ * نقطة الدخول على Vercel — نُصدّر handler بدل التطبيق المباشر
  */
 import { createApp } from "../src/app.js";
 
-export default createApp();
+const app = createApp();
+
+// Vercel يحتاج دالة تستقبل (req, res)
+export default function handler(req, res) {
+  return app(req, res);
+}
