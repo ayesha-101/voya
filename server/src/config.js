@@ -28,8 +28,11 @@ if (!parsed.success) {
   const issues = parsed.error.issues
     .map((i) => `  - ${i.path.join(".")}: ${i.message}`)
     .join("\n");
-  console.error(`\n✗ إعدادات البيئة غير صالحة:\n${issues}\n`);
-  process.exit(1);
+  const message = `إعدادات البيئة غير صالحة:\n${issues}`;
+  console.error(`\n✗ ${message}\n`);
+  // في بيئة بلا خادم لا يوجد ما يُنهى، والرمي يُظهر السبب في السجلات
+  // بدل انهيار غامض؛ محليًا يوقف الإقلاع بنفس الوضوح.
+  throw new Error(message);
 }
 
 export const config = {
