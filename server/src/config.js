@@ -19,9 +19,19 @@ const schema = z.object({
     .default("false")
     .transform((v) => v === "true"),
   BCRYPT_ROUNDS: z.coerce.number().int().min(4).max(15).default(12),
-  STRIPE_SECRET_KEY: z.string().startsWith("sk_").optional(),
-  STRIPE_PUBLISHABLE_KEY: z.string().startsWith("pk_").optional(),
-  STRIPE_WEBHOOK_SECRET: z.string().startsWith("whsec_").optional(),
+  // Stripe اختياري — يقبل فاضي أو يبدأ بالبادئة الصحيحة
+  STRIPE_SECRET_KEY: z.union([
+    z.string().startsWith("sk_"),
+    z.literal(""),
+  ]).optional(),
+  STRIPE_PUBLISHABLE_KEY: z.union([
+    z.string().startsWith("pk_"),
+    z.literal(""),
+  ]).optional(),
+  STRIPE_WEBHOOK_SECRET: z.union([
+    z.string().startsWith("whsec_"),
+    z.literal(""),
+  ]).optional(),
 });
 
 const parsed = schema.safeParse(process.env);
@@ -37,7 +47,7 @@ if (!parsed.success) {
 
 export const config = {
   ...parsed.data,
-  paymentsEnabled: Boolean(parsed.data.STRIPE_SECRET_KEY),
+  paymentsEnabled: Boolean(parsed.data.STRIPE_SECRET_KEY && parsed.data.STRIPE_SECRET_KEY.length > 0),
   corsOrigins: parsed.data.CORS_ORIGINS.split(",")
     .map((s) => s.trim())
     .filter(Boolean),
