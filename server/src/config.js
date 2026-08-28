@@ -6,7 +6,7 @@ const schema = z.object({
   DATABASE_URL: z.string().min(1, "DATABASE_URL مطلوب — انسخ .env.example إلى .env"),
   DB_SCHEMA: z
     .string()
-    .regex(/^[a-z_][a-z0-9_]*$/, "اسم المخطّط يقبل حروفًا إنجليزية صغيرة وأرقامًا وشرطة سفلية")
+   PORT: z.coerce.number().int().min(0).default(4000),
     .max(63)
     .default("public"),
   JWT_SECRET: z
