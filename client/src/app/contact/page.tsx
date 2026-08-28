@@ -28,12 +28,12 @@ const faqs = [
 
 export default function ContactPage() {
   const field =
-    "w-full rounded-xl border border-sand-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-sea-400";
+    "w-full rounded-xl border border-blush-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-plum-400";
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
       <h1 className="text-3xl font-extrabold text-ink sm:text-4xl">تواصل معنا</h1>
-      <span className="mt-3 mb-8 block h-1 w-14 rounded-full bg-gold-500" />
+      <span className="mt-3 mb-8 block h-1 w-14 rounded-full bg-rose-500" />
 
       <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
         <div className="space-y-4">
@@ -50,19 +50,19 @@ export default function ContactPage() {
             </span>
           </a>
 
-          <div className="space-y-4 rounded-card border border-sand-200 bg-sand-50 p-6 text-sm">
+          <div className="space-y-4 rounded-card border border-blush-200 bg-blush-50 p-6 text-sm">
             <div>
               <p className="font-bold text-ink">الهاتف</p>
               <a
                 href={`tel:${site.phone.replace(/\s/g, "")}`}
-                className="nums text-muted hover:text-sea-700"
+                className="nums text-muted hover:text-plum-700"
               >
                 {site.phone}
               </a>
             </div>
             <div>
               <p className="font-bold text-ink">البريد الإلكتروني</p>
-              <a href={`mailto:${site.email}`} className="text-muted hover:text-sea-700">
+              <a href={`mailto:${site.email}`} className="text-muted hover:text-plum-700">
                 {site.email}
               </a>
             </div>
@@ -77,7 +77,7 @@ export default function ContactPage() {
           </div>
         </div>
 
-        <form className="space-y-4 rounded-card border border-sand-200 p-6">
+        <form className="space-y-4 rounded-card border border-blush-200 p-6">
           <h2 className="text-lg font-extrabold text-ink">أرسل لنا رسالة</h2>
           <label className="block space-y-1.5">
             <span className="text-[13px] font-bold text-ink">الاسم</span>
@@ -93,7 +93,7 @@ export default function ContactPage() {
           </label>
           <button
             type="submit"
-            className="w-full rounded-full bg-sea-700 px-6 py-3.5 font-bold text-white transition hover:bg-sea-800"
+            className="w-full rounded-full bg-plum-700 px-6 py-3.5 font-bold text-white transition hover:bg-plum-800"
           >
             إرسال
           </button>
@@ -104,7 +104,7 @@ export default function ContactPage() {
         <h2 className="text-2xl font-extrabold text-ink">الأسئلة الشائعة</h2>
         <div className="mt-6 space-y-3">
           {faqs.map((f) => (
-            <details key={f.q} className="rounded-card border border-sand-200 bg-white p-5">
+            <details key={f.q} className="rounded-card border border-blush-200 bg-white p-5">
               <summary className="cursor-pointer font-bold text-ink">{f.q}</summary>
               <p className="mt-3 text-sm leading-7 text-muted">{f.a}</p>
             </details>

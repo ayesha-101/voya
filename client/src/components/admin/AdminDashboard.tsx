@@ -25,7 +25,7 @@ export function AdminDashboard() {
     return <p className="rounded-card bg-red-50 p-4 font-bold text-red-700">{error}</p>;
   }
   if (!stats) {
-    return <div className="h-96 animate-pulse rounded-card bg-sand-100" />;
+    return <div className="h-96 animate-pulse rounded-card bg-blush-100" />;
   }
 
   const cards = [
@@ -43,13 +43,13 @@ export function AdminDashboard() {
           <div
             key={c.label}
             className={`rounded-card border p-6 ${
-              c.accent ? "border-sea-700 bg-sea-800 text-white" : "border-sand-200 bg-white"
+              c.accent ? "border-plum-700 bg-plum-800 text-white" : "border-blush-200 bg-white"
             }`}
           >
-            <p className={`text-xs ${c.accent ? "text-sand-200" : "text-muted"}`}>{c.label}</p>
+            <p className={`text-xs ${c.accent ? "text-blush-200" : "text-muted"}`}>{c.label}</p>
             <p
               className={`nums mt-2 text-2xl font-extrabold ${
-                c.accent ? "text-gold-400" : "text-sea-700"
+                c.accent ? "text-rose-400" : "text-plum-700"
               }`}
             >
               {c.value}
@@ -59,7 +59,7 @@ export function AdminDashboard() {
       </div>
 
       <section className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-card border border-sand-200 p-6">
+        <div className="rounded-card border border-blush-200 p-6">
           <h2 className="mb-4 font-extrabold text-ink">الطلبات حسب الحالة</h2>
           <ul className="space-y-2.5 text-sm">
             {Object.entries(STATUS_LABELS).map(([status, label]) => (
@@ -73,7 +73,7 @@ export function AdminDashboard() {
           </ul>
         </div>
 
-        <div className="rounded-card border border-sand-200 p-6">
+        <div className="rounded-card border border-blush-200 p-6">
           <h2 className="mb-4 font-extrabold text-ink">مخزون منخفض</h2>
           {stats.lowStock.length === 0 ? (
             <p className="text-sm text-muted">لا توجد منتجات قاربت على النفاد.</p>
@@ -84,7 +84,7 @@ export function AdminDashboard() {
                   <span className="text-ink">{p.name}</span>
                   <span
                     className={`nums rounded-full px-2.5 py-1 text-xs font-bold ${
-                      p.stock === 0 ? "bg-red-100 text-red-700" : "bg-gold-400/25 text-gold-600"
+                      p.stock === 0 ? "bg-red-100 text-red-700" : "bg-rose-400/25 text-rose-600"
                     }`}
                   >
                     {p.stock}
@@ -96,14 +96,14 @@ export function AdminDashboard() {
         </div>
       </section>
 
-      <section className="rounded-card border border-sand-200 p-6">
+      <section className="rounded-card border border-blush-200 p-6">
         <h2 className="mb-4 font-extrabold text-ink">أحدث الطلبات</h2>
         {stats.recentOrders.length === 0 ? (
           <p className="text-sm text-muted">لا توجد طلبات بعد.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[560px] text-sm">
-              <thead className="border-b border-sand-200 text-xs text-muted">
+              <thead className="border-b border-blush-200 text-xs text-muted">
                 <tr>
                   <th className="p-2 text-start font-bold">المرجع</th>
                   <th className="p-2 text-start font-bold">العميل</th>
@@ -114,7 +114,7 @@ export function AdminDashboard() {
               </thead>
               <tbody>
                 {stats.recentOrders.map((o) => (
-                  <tr key={o.reference} className="border-b border-sand-100 last:border-0">
+                  <tr key={o.reference} className="border-b border-blush-100 last:border-0">
                     <td className="nums p-2 font-bold">{o.reference}</td>
                     <td className="p-2">{o.customer.name}</td>
                     <td className="nums p-2 text-muted">{formatDate(o.createdAt)}</td>

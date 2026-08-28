@@ -10,12 +10,12 @@ type SeedCategory = { slug: string; name: string; blurb: string; tone: string };
 type SeedProduct = Omit<Product, "id" | "categoryName" | "isActive">;
 
 const seedCategories: SeedCategory[] = [
-  { slug: "face", name: "العناية بالوجه", blurb: "سيروم وكريمات وماسكات", tone: "#2f7a6c" },
-  { slug: "body", name: "العناية بالجسم", blurb: "مرطبات وزيوت ومقشرات", tone: "#4c9587" },
-  { slug: "bath", name: "حمامات الأعشاب", blurb: "طقوس الاسترخاء البحرية", tone: "#164a42" },
-  { slug: "hair", name: "العناية بالشعر", blurb: "شامبو وبلسم وزيوت", tone: "#1f6156" },
-  { slug: "gifts", name: "أطقم الهدايا", blurb: "علب فاخرة جاهزة للإهداء", tone: "#a98a35" },
-  { slug: "accessories", name: "إكسسوارات", blurb: "فرش وليف وأدوات العناية", tone: "#7fb9ac" },
+  { slug: "face", name: "العناية بالوجه", blurb: "سيروم وكريمات وماسكات", tone: "#c25b8a" },
+  { slug: "body", name: "العناية بالجسم", blurb: "مرطبات وزيوت ومقشرات", tone: "#d67ea6" },
+  { slug: "bath", name: "حمامات الأعشاب", blurb: "طقوس الاسترخاء البحرية", tone: "#87355b" },
+  { slug: "hair", name: "العناية بالشعر", blurb: "شامبو وبلسم وزيوت", tone: "#a54470" },
+  { slug: "gifts", name: "أطقم الهدايا", blurb: "علب فاخرة جاهزة للإهداء", tone: "#c27860" },
+  { slug: "accessories", name: "إكسسوارات", blurb: "فرش وليف وأدوات العناية", tone: "#e8abc6" },
 ];
 
 const seedProducts: SeedProduct[] = [
@@ -36,7 +36,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["يوحّد لون البشرة", "يقلل البقع الداكنة", "يمنح إشراقة فورية", "خفيف وغير دهني"],
     ingredients: ["خلاصة الأعشاب البحرية العضوية", "فيتامين C المستقر", "حمض الهيالورونيك", "زيت بذور العنب"],
     shape: "bottle",
-    tone: ["#2f7a6c", "#0f3a34"],
+    tone: ["#c25b8a", "#6b2a48"],
     stock: 24,
   },
   {
@@ -54,7 +54,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["ترطيب 24 ساعة", "يحمي من الجفاف", "قوام غير ثقيل", "مناسب تحت المكياج"],
     ingredients: ["عشب البحر الأحمر", "زبدة الشيا", "سكوالان نباتي", "جلسرين نباتي"],
     shape: "jar",
-    tone: ["#4c9587", "#164a42"],
+    tone: ["#d67ea6", "#87355b"],
     stock: 31,
   },
   {
@@ -74,7 +74,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["ينقّي المسام", "يمتص الزيوت الزائدة", "يشدّ البشرة", "يقلل اللمعان"],
     ingredients: ["طين الكاولين البحري", "أعشاب بحرية مجففة", "الفحم النشط", "زيت شجرة الشاي"],
     shape: "jar",
-    tone: ["#164a42", "#0a2b26"],
+    tone: ["#87355b", "#4c1c33"],
     stock: 18,
   },
   {
@@ -93,7 +93,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["يقلل الانتفاخ", "يفتّح الهالات", "ملمس بارد منعش", "خالٍ من العطور"],
     ingredients: ["خلاصة الطحالب الخضراء", "الكافيين", "خيار عضوي", "بانثينول"],
     shape: "tube",
-    tone: ["#7fb9ac", "#2f7a6c"],
+    tone: ["#e8abc6", "#c25b8a"],
     stock: 40,
   },
   {
@@ -112,7 +112,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["تغذية عميقة", "تنعيم فوري", "رائحة بحرية هادئة", "تدوم طويلًا"],
     ingredients: ["زبدة الشيا العضوية", "زبدة الكاكاو", "خلاصة الأعشاب البحرية", "زيت جوز الهند"],
     shape: "jar",
-    tone: ["#cdb387", "#a98a35"],
+    tone: ["#edb9a4", "#c27860"],
     stock: 52,
   },
   {
@@ -131,7 +131,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["امتصاص سريع", "لمعان طبيعي", "يحسّن مرونة الجلد", "مناسب للتدليك"],
     ingredients: ["زيت الأرغان", "زيت الجوجوبا", "زيت بذور المشمش", "خلاصة اللاميناريا"],
     shape: "bottle",
-    tone: ["#d9bd6b", "#a98a35"],
+    tone: ["#e0997f", "#a54470"],
     stock: 27,
   },
   {
@@ -149,7 +149,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["تقشير لطيف", "ينشّط الدورة الدموية", "يحضّر البشرة للترطيب", "رائحة منعشة"],
     ingredients: ["ملح البحر الأطلسي", "أعشاب بحرية مطحونة", "زيت دوار الشمس", "زيت الليمون"],
     shape: "jar",
-    tone: ["#b3d7ce", "#4c9587"],
+    tone: ["#f3d0e0", "#d67ea6"],
     stock: 35,
   },
   {
@@ -167,7 +167,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["امتصاص سريع", "يقوّي الأظافر", "بحجم الحقيبة", "غير لزج"],
     ingredients: ["خلاصة الأعشاب البحرية", "الشمع النباتي", "فيتامين E", "الأليو فيرا"],
     shape: "tube",
-    tone: ["#e2d0b3", "#cdb387"],
+    tone: ["#f6e0dd", "#d8a29d"],
     stock: 88,
   },
   {
@@ -186,7 +186,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["يرخي العضلات", "يخفف التوتر", "ينقّي البشرة", "تجربة سبا منزلية"],
     ingredients: ["أملاح إبسوم", "أعشاب بحرية عضوية", "زيت اللافندر", "أملاح البحر الميت"],
     shape: "pouch",
-    tone: ["#1f6156", "#0a2b26"],
+    tone: ["#a54470", "#4c1c33"],
     stock: 46,
   },
   {
@@ -205,7 +205,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["يهدّئ الحواس", "يرطّب أثناء الاستحمام", "رائحة تدوم", "اقتصادي في الاستخدام"],
     ingredients: ["زيت اللوز الحلو", "خلاصة الفوقس", "زيت النيرولي", "فيتامين E"],
     shape: "bottle",
-    tone: ["#2f7a6c", "#164a42"],
+    tone: ["#c25b8a", "#6b2a48"],
     stock: 12,
   },
   {
@@ -223,7 +223,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["خالٍ من السلفات", "رغوة كريمية", "لا يسبب الجفاف", "مناسب للاستخدام اليومي"],
     ingredients: ["قاعدة جوز الهند", "خلاصة الأعشاب البحرية", "الجلسرين", "زيت النعناع"],
     shape: "bottle",
-    tone: ["#7fb9ac", "#1f6156"],
+    tone: ["#e8abc6", "#a54470"],
     stock: 64,
   },
   {
@@ -243,7 +243,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["يرمّم التلف", "يزيد اللمعان", "خالٍ من السلفات", "آمن للشعر المصبوغ"],
     ingredients: ["بروتين الأعشاب البحرية", "الكيراتين النباتي", "بانثينول", "زيت الأرغان"],
     shape: "bottle",
-    tone: ["#4c9587", "#0f3a34"],
+    tone: ["#d67ea6", "#6b2a48"],
     stock: 58,
   },
   {
@@ -261,7 +261,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["يفكّ التشابك", "يقلل التقصف", "نعومة فورية", "بدون سيليكون"],
     ingredients: ["زبدة المانجو", "خلاصة اللاميناريا", "زيت الأفوكادو", "الأحماض الأمينية"],
     shape: "tube",
-    tone: ["#b3d7ce", "#2f7a6c"],
+    tone: ["#f3d0e0", "#c25b8a"],
     stock: 43,
   },
   {
@@ -280,7 +280,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["يغذّي البصيلات", "يقلل التساقط", "يهدّئ الحكة", "سهل الغسل"],
     ingredients: ["زيت الخروع", "زيت إكليل الجبل", "خلاصة الأعشاب البحرية", "زيت بذور اليقطين"],
     shape: "bottle",
-    tone: ["#a98a35", "#164a42"],
+    tone: ["#c27860", "#87355b"],
     stock: 21,
   },
   {
@@ -300,7 +300,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["توفير 140 د.إ", "علبة هدايا فاخرة", "بطاقة إهداء مجانية", "تجربة سبا متكاملة"],
     ingredients: ["أملاح الاستحمام", "زبدة الجسم", "مقشّر الملح البحري", "ليفة طبيعية"],
     shape: "box",
-    tone: ["#c8a94e", "#164a42"],
+    tone: ["#e0997f", "#87355b"],
     stock: 9,
   },
   {
@@ -319,7 +319,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["روتين متكامل", "توفير 65 د.إ", "تغليف أنيق", "الأنسب للمبتدئين"],
     ingredients: ["سيروم الإشراق 30 مل", "كريم النهار 50 مل"],
     shape: "box",
-    tone: ["#d9bd6b", "#2f7a6c"],
+    tone: ["#edb9a4", "#c25b8a"],
     stock: 15,
   },
   {
@@ -337,7 +337,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["تنشّط الدورة الليمفاوية", "تقشير يومي لطيف", "خامات طبيعية", "تدوم لسنوات"],
     ingredients: ["خشب الزان", "شعيرات السيزال الطبيعية"],
     shape: "box",
-    tone: ["#e2d0b3", "#a98a35"],
+    tone: ["#f6e0dd", "#c27860"],
     stock: 72,
   },
   {
@@ -355,7 +355,7 @@ const seedProducts: SeedProduct[] = [
     benefits: ["لطيفة جدًا", "قابلة للتحلل", "مناسبة للبشرة الحساسة", "استخدام يومي"],
     ingredients: ["جذور الكونجاك", "مسحوق الفحم البحري"],
     shape: "pouch",
-    tone: ["#d9ebe6", "#7fb9ac"],
+    tone: ["#fae9f1", "#e8abc6"],
     stock: 110,
   },
 ];

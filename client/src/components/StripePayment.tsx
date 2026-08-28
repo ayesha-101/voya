@@ -18,17 +18,17 @@ import { formatPrice } from "@/lib/format";
 const appearance: Appearance = {
   theme: "flat",
   variables: {
-    colorPrimary: "#1f6156",
+    colorPrimary: "#87355b",
     colorBackground: "#ffffff",
-    colorText: "#12201d",
+    colorText: "#2c1720",
     colorDanger: "#dc2626",
     fontFamily: "var(--font-tajawal), system-ui, sans-serif",
     borderRadius: "12px",
     spacingUnit: "4px",
   },
   rules: {
-    ".Input": { border: "1px solid #efe4d0", boxShadow: "none", padding: "12px" },
-    ".Input:focus": { border: "1px solid #4c9587", boxShadow: "none" },
+    ".Input": { border: "1px solid #f6e0dd", boxShadow: "none", padding: "12px" },
+    ".Input:focus": { border: "1px solid #d67ea6", boxShadow: "none" },
     ".Label": { fontWeight: "700", fontSize: "13px", marginBottom: "6px" },
   },
 };
@@ -198,9 +198,9 @@ function PaymentInner({
           onConfirm={pay}
         />
         <div className="flex items-center gap-3 text-xs text-muted">
-          <span className="h-px flex-1 bg-sand-200" />
+          <span className="h-px flex-1 bg-blush-200" />
           أو ادفع بالبطاقة
-          <span className="h-px flex-1 bg-sand-200" />
+          <span className="h-px flex-1 bg-blush-200" />
         </div>
       </div>
 
@@ -223,7 +223,7 @@ function PaymentInner({
         type="button"
         onClick={pay}
         disabled={busy || !stripe}
-        className="w-full rounded-full bg-sea-700 px-6 py-4 font-bold text-white transition hover:bg-sea-800 active:scale-[0.99] disabled:opacity-60"
+        className="w-full rounded-full bg-plum-700 px-6 py-4 font-bold text-white transition hover:bg-plum-800 active:scale-[0.99] disabled:opacity-60"
       >
         {busy ? "جارٍ معالجة الدفع…" : `ادفع ${formatPrice(amount)}`}
       </button>

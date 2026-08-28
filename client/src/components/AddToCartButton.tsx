@@ -44,9 +44,9 @@ export function AddToCartButton({
     : "أضف إلى السلة";
 
   const tone =
-    state === "done" ? "bg-gold-500 text-sea-900"
+    state === "done" ? "bg-rose-500 text-plum-900"
     : state === "error" ? "bg-red-600 text-white"
-    : "bg-sea-700 text-white hover:bg-sea-800 active:scale-[0.98]";
+    : "bg-plum-700 text-white hover:bg-plum-800 active:scale-[0.98]";
 
   return (
     <button

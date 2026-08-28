@@ -40,7 +40,7 @@ export default async function ProductsPage({
         <p className="mt-2 text-sm text-muted">
           {cat?.blurb ?? "مجموعة ڤويا الكاملة — منتجات أصلية مختارة بعناية"}
         </p>
-        <span className="mt-3 block h-1 w-14 rounded-full bg-gold-500" />
+        <span className="mt-3 block h-1 w-14 rounded-full bg-rose-500" />
       </header>
 
       <Suspense fallback={<div className="mb-8 h-24" />}>
@@ -48,7 +48,7 @@ export default async function ProductsPage({
       </Suspense>
 
       {result.products.length === 0 ? (
-        <div className="rounded-card border border-dashed border-sand-300 bg-sand-50 py-20 text-center">
+        <div className="rounded-card border border-dashed border-blush-300 bg-blush-50 py-20 text-center">
           <p className="text-lg font-bold text-ink">لا توجد نتائج مطابقة</p>
           <p className="mt-2 text-sm text-muted">
             جرّب كلمة بحث أخرى أو تصفّح كل المنتجات.

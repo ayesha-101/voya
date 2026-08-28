@@ -37,7 +37,7 @@ export function ProductArt({
       </defs>
 
       {/* ظل أرضي */}
-      <ellipse cx="120" cy="272" rx="62" ry="9" fill="#0a2b26" opacity="0.12" />
+      <ellipse cx="120" cy="272" rx="62" ry="9" fill="#4c1c33" opacity="0.12" />
 
       {shape === "bottle" && (
         <g>
@@ -51,7 +51,7 @@ export function ProductArt({
             d="M84 80c0-7 6-12 13-12h46c7 0 13 5 13 12v150c0 12-9 22-21 22H105c-12 0-21-10-21-22z"
             fill={`url(#s-${id})`}
           />
-          <rect x="98" y="140" width="44" height="46" rx="4" fill="#fdfbf7" opacity="0.9" />
+          <rect x="98" y="140" width="44" height="46" rx="4" fill="#fffaf9" opacity="0.9" />
         </g>
       )}
 
@@ -66,7 +66,7 @@ export function ProductArt({
             d="M74 92h92v100c0 20-16 36-36 36h-20c-20 0-36-16-36-36z"
             fill={`url(#s-${id})`}
           />
-          <rect x="90" y="140" width="60" height="42" rx="4" fill="#fdfbf7" opacity="0.9" />
+          <rect x="90" y="140" width="60" height="42" rx="4" fill="#fffaf9" opacity="0.9" />
         </g>
       )}
 
@@ -82,7 +82,7 @@ export function ProductArt({
             fill={`url(#s-${id})`}
           />
           <rect x="92" y="232" width="56" height="10" fill={tone[1]} opacity="0.85" />
-          <rect x="102" y="120" width="36" height="52" rx="4" fill="#fdfbf7" opacity="0.9" />
+          <rect x="102" y="120" width="36" height="52" rx="4" fill="#fffaf9" opacity="0.9" />
         </g>
       )}
 
@@ -92,7 +92,7 @@ export function ProductArt({
           <path d="M60 92v112l60 30V122z" fill={`url(#g-${id})`} />
           <path d="M180 92v112l-60 30V122z" fill={tone[1]} />
           <path d="M60 92l60-30 60 30-60 30z" fill={`url(#s-${id})`} />
-          <rect x="76" y="140" width="34" height="44" rx="3" fill="#fdfbf7" opacity="0.88" />
+          <rect x="76" y="140" width="34" height="44" rx="3" fill="#fffaf9" opacity="0.88" />
         </g>
       )}
 
@@ -107,7 +107,7 @@ export function ProductArt({
             fill={`url(#s-${id})`}
           />
           <rect x="66" y="56" width="108" height="14" rx="7" fill={tone[1]} />
-          <rect x="92" y="132" width="56" height="46" rx="4" fill="#fdfbf7" opacity="0.9" />
+          <rect x="92" y="132" width="56" height="46" rx="4" fill="#fffaf9" opacity="0.9" />
         </g>
       )}
 

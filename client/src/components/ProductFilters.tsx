@@ -53,8 +53,8 @@ export function ProductFilters({
             scroll={false}
             className={`shrink-0 rounded-full border px-4 py-2 text-[13px] font-bold transition ${
               active === c.slug
-                ? "border-sea-700 bg-sea-700 text-white"
-                : "border-sand-300 bg-white text-ink hover:border-sea-400"
+                ? "border-plum-700 bg-plum-700 text-white"
+                : "border-blush-300 bg-white text-ink hover:border-plum-400"
             }`}
           >
             {c.name}
@@ -69,7 +69,7 @@ export function ProductFilters({
           <select
             value={sort}
             onChange={(e) => changeSort(e.target.value)}
-            className="rounded-full border border-sand-300 bg-white px-4 py-2 text-[13px] font-bold text-ink outline-none focus:border-sea-400"
+            className="rounded-full border border-blush-300 bg-white px-4 py-2 text-[13px] font-bold text-ink outline-none focus:border-plum-400"
           >
             {sorts.map((s) => (
               <option key={s.value} value={s.value}>

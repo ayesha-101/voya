@@ -5,7 +5,7 @@ export function Logo({ inverted = false }: { inverted?: boolean }) {
     <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label="ڤويا ستور — الصفحة الرئيسية">
       <span
         className={`grid h-10 w-10 place-items-center rounded-xl ${
-          inverted ? "bg-white text-sea-800" : "bg-sea-700 text-white"
+          inverted ? "bg-white text-plum-800" : "bg-plum-700 text-white"
         }`}
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
@@ -16,14 +16,14 @@ export function Logo({ inverted = false }: { inverted?: boolean }) {
       <span className="leading-tight">
         <span
           className={`block text-lg font-extrabold tracking-[0.18em] ${
-            inverted ? "text-white" : "text-sea-800"
+            inverted ? "text-white" : "text-plum-800"
           }`}
         >
           VOYA
         </span>
         <span
           className={`block text-[10px] tracking-wide ${
-            inverted ? "text-sand-200" : "text-muted"
+            inverted ? "text-blush-200" : "text-muted"
           }`}
         >
           منتجات مختارة بعناية

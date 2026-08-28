@@ -7,7 +7,7 @@ import { ApiError } from "@/lib/api";
 import { useAuth } from "./AuthProvider";
 
 const field =
-  "w-full rounded-xl border border-sand-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-sea-400";
+  "w-full rounded-xl border border-blush-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-plum-400";
 
 export function AuthForm({ mode }: { mode: "login" | "register" }) {
   const { login, register } = useAuth();
@@ -62,7 +62,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
     ) : null;
 
   return (
-    <form onSubmit={submit} className="space-y-4 rounded-card border border-sand-200 p-6">
+    <form onSubmit={submit} className="space-y-4 rounded-card border border-blush-200 p-6">
       {error && (
         <p className="rounded-xl bg-red-50 p-3 text-sm font-bold text-red-700">{error}</p>
       )}
@@ -123,7 +123,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
       <button
         type="submit"
         disabled={busy}
-        className="w-full rounded-full bg-sea-700 px-6 py-3.5 font-bold text-white transition hover:bg-sea-800 disabled:opacity-60"
+        className="w-full rounded-full bg-plum-700 px-6 py-3.5 font-bold text-white transition hover:bg-plum-800 disabled:opacity-60"
       >
         {busy ? "جارٍ…" : mode === "login" ? "تسجيل الدخول" : "إنشاء الحساب"}
       </button>
@@ -132,14 +132,14 @@ export function AuthForm({ mode }: { mode: "login" | "register" }) {
         {mode === "login" ? (
           <>
             ليس لديك حساب؟{" "}
-            <Link href="/register" className="font-bold text-sea-700 hover:underline">
+            <Link href="/register" className="font-bold text-plum-700 hover:underline">
               أنشئ حسابًا
             </Link>
           </>
         ) : (
           <>
             لديك حساب بالفعل؟{" "}
-            <Link href="/login" className="font-bold text-sea-700 hover:underline">
+            <Link href="/login" className="font-bold text-plum-700 hover:underline">
               سجّل الدخول
             </Link>
           </>

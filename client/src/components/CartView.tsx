@@ -12,17 +12,17 @@ export function CartView() {
     useCart();
 
   if (!ready) {
-    return <div className="h-64 animate-pulse rounded-card bg-sand-100" />;
+    return <div className="h-64 animate-pulse rounded-card bg-blush-100" />;
   }
 
   if (items.length === 0) {
     return (
-      <div className="rounded-card border border-dashed border-sand-300 bg-sand-50 py-20 text-center">
+      <div className="rounded-card border border-dashed border-blush-300 bg-blush-50 py-20 text-center">
         <p className="text-lg font-bold text-ink">سلتك فارغة</p>
         <p className="mt-2 text-sm text-muted">ابدأ التسوّق واختر ما يناسبك.</p>
         <Link
           href="/products"
-          className="mt-6 inline-block rounded-full bg-sea-700 px-8 py-3.5 font-bold text-white transition hover:bg-sea-800"
+          className="mt-6 inline-block rounded-full bg-plum-700 px-8 py-3.5 font-bold text-white transition hover:bg-plum-800"
         >
           تصفّح المنتجات
         </Link>
@@ -43,9 +43,9 @@ export function CartView() {
           {items.map((item) => (
             <li
               key={item.slug}
-              className="flex gap-4 rounded-card border border-sand-200 bg-white p-4"
+              className="flex gap-4 rounded-card border border-blush-200 bg-white p-4"
             >
-              <Link href={`/products/${item.slug}`} className="shrink-0 rounded-xl bg-sand-50 p-2">
+              <Link href={`/products/${item.slug}`} className="shrink-0 rounded-xl bg-blush-50 p-2">
                 <ProductArt
                   shape={item.shape}
                   tone={item.tone}
@@ -58,7 +58,7 @@ export function CartView() {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <h2 className="text-[15px] font-bold text-ink">
-                      <Link href={`/products/${item.slug}`} className="hover:text-sea-600">
+                      <Link href={`/products/${item.slug}`} className="hover:text-plum-600">
                         {item.name}
                       </Link>
                     </h2>
@@ -80,7 +80,7 @@ export function CartView() {
                     onChange={(n) => void setQty(item.slug, n)}
                     max={item.stock}
                   />
-                  <span className="nums text-lg font-extrabold text-sea-700">
+                  <span className="nums text-lg font-extrabold text-plum-700">
                     {formatPrice(item.lineTotal)}
                   </span>
                 </div>
@@ -99,16 +99,16 @@ export function CartView() {
         </button>
       </div>
 
-      <aside className="sticky top-40 space-y-4 rounded-card border border-sand-200 bg-sand-50 p-6">
+      <aside className="sticky top-40 space-y-4 rounded-card border border-blush-200 bg-blush-50 p-6">
         <h2 className="text-lg font-extrabold text-ink">ملخّص الطلب</h2>
 
         {remaining > 0 && (
-          <p className="nums rounded-xl bg-white p-3 text-center text-[13px] text-sea-700">
+          <p className="nums rounded-xl bg-white p-3 text-center text-[13px] text-plum-700">
             أضف بقيمة {formatPrice(remaining)} للحصول على شحن مجاني
           </p>
         )}
 
-        <dl className="space-y-3 border-y border-sand-200 py-4 text-sm">
+        <dl className="space-y-3 border-y border-blush-200 py-4 text-sm">
           <div className="flex justify-between">
             <dt className="text-muted">المجموع الفرعي</dt>
             <dd className="nums font-bold">{formatPrice(subtotal)}</dd>
@@ -123,20 +123,20 @@ export function CartView() {
 
         <div className="flex items-baseline justify-between">
           <span className="font-bold text-ink">الإجمالي</span>
-          <span className="nums text-2xl font-extrabold text-sea-700">
+          <span className="nums text-2xl font-extrabold text-plum-700">
             {formatPrice(total)}
           </span>
         </div>
 
         <Link
           href="/checkout"
-          className="block rounded-full bg-sea-700 px-6 py-4 text-center font-bold text-white transition hover:bg-sea-800"
+          className="block rounded-full bg-plum-700 px-6 py-4 text-center font-bold text-white transition hover:bg-plum-800"
         >
           إتمام الطلب
         </Link>
         <Link
           href="/products"
-          className="block text-center text-sm font-bold text-sea-700 hover:underline"
+          className="block text-center text-sm font-bold text-plum-700 hover:underline"
         >
           متابعة التسوّق
         </Link>

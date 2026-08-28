@@ -11,8 +11,8 @@ export default function RegisterPage() {
       <p className="mt-2 text-sm text-muted">
         احفظ عناوينك وتابع طلباتك في أي وقت.
       </p>
-      <span className="mt-3 mb-8 block h-1 w-14 rounded-full bg-gold-500" />
-      <Suspense fallback={<div className="h-96 animate-pulse rounded-card bg-sand-100" />}>
+      <span className="mt-3 mb-8 block h-1 w-14 rounded-full bg-rose-500" />
+      <Suspense fallback={<div className="h-96 animate-pulse rounded-card bg-blush-100" />}>
         <AuthForm mode="register" />
       </Suspense>
     </div>

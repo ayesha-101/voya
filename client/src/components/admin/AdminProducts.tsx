@@ -89,7 +89,7 @@ export function AdminProducts() {
         <button
           type="button"
           onClick={() => setEditing("new")}
-          className="rounded-full bg-sea-700 px-6 py-3 text-sm font-bold text-white transition hover:bg-sea-800"
+          className="rounded-full bg-plum-700 px-6 py-3 text-sm font-bold text-white transition hover:bg-plum-800"
         >
           + منتج جديد
         </button>
@@ -100,11 +100,11 @@ export function AdminProducts() {
       )}
 
       {products === null ? (
-        <div className="h-96 animate-pulse rounded-card bg-sand-100" />
+        <div className="h-96 animate-pulse rounded-card bg-blush-100" />
       ) : (
-        <div className="overflow-x-auto rounded-card border border-sand-200">
+        <div className="overflow-x-auto rounded-card border border-blush-200">
           <table className="w-full min-w-[720px] text-sm">
-            <thead className="border-b border-sand-200 bg-sand-50 text-xs text-muted">
+            <thead className="border-b border-blush-200 bg-blush-50 text-xs text-muted">
               <tr>
                 <th className="p-3 text-start font-bold">المنتج</th>
                 <th className="p-3 text-start font-bold">التصنيف</th>
@@ -116,7 +116,7 @@ export function AdminProducts() {
             </thead>
             <tbody>
               {products.map((p) => (
-                <tr key={p.slug} className="border-b border-sand-100 last:border-0">
+                <tr key={p.slug} className="border-b border-blush-100 last:border-0">
                   <td className="p-3">
                     <span className="block font-bold text-ink">{p.name}</span>
                     <span className="block text-xs text-muted" dir="ltr">{p.slug}</span>
@@ -129,8 +129,8 @@ export function AdminProducts() {
                         p.stock === 0
                           ? "bg-red-100 text-red-700"
                           : p.stock <= 10
-                            ? "bg-gold-400/25 text-gold-600"
-                            : "bg-sea-100 text-sea-800"
+                            ? "bg-rose-400/25 text-rose-600"
+                            : "bg-plum-100 text-plum-800"
                       }`}
                     >
                       {p.stock}
@@ -139,7 +139,7 @@ export function AdminProducts() {
                   <td className="p-3">
                     <span
                       className={`rounded-full px-2.5 py-1 text-xs font-bold ${
-                        p.isActive ? "bg-sea-100 text-sea-800" : "bg-sand-200 text-muted"
+                        p.isActive ? "bg-plum-100 text-plum-800" : "bg-blush-200 text-muted"
                       }`}
                     >
                       {p.isActive ? "نشط" : "مؤرشف"}
@@ -150,7 +150,7 @@ export function AdminProducts() {
                       <button
                         type="button"
                         onClick={() => setEditing(p)}
-                        className="rounded-full border border-sand-300 px-3 py-1.5 text-xs font-bold text-sea-700 transition hover:border-sea-400"
+                        className="rounded-full border border-blush-300 px-3 py-1.5 text-xs font-bold text-plum-700 transition hover:border-plum-400"
                       >
                         تعديل
                       </button>
@@ -159,7 +159,7 @@ export function AdminProducts() {
                           type="button"
                           onClick={() => void archive(p)}
                           disabled={busySlug === p.slug}
-                          className="rounded-full border border-sand-300 px-3 py-1.5 text-xs font-bold text-muted transition hover:border-red-300 hover:text-red-600 disabled:opacity-50"
+                          className="rounded-full border border-blush-300 px-3 py-1.5 text-xs font-bold text-muted transition hover:border-red-300 hover:text-red-600 disabled:opacity-50"
                         >
                           أرشفة
                         </button>

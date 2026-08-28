@@ -15,7 +15,7 @@ const SELECT = `
     FROM products p JOIN categories c ON c.id = p.category_id
 `;
 
-const hex = z.string().regex(/^#[0-9a-fA-F]{6}$/, "لون غير صالح (مثال: #2f7a6c)");
+const hex = z.string().regex(/^#[0-9a-fA-F]{6}$/, "لون غير صالح (مثال: #c25b8a)");
 
 const productBody = z.object({
   slug: z
@@ -38,7 +38,7 @@ const productBody = z.object({
   benefits: z.array(z.string().trim().max(120)).max(12).default([]),
   ingredients: z.array(z.string().trim().max(120)).max(20).default([]),
   shape: z.enum(["bottle", "jar", "tube", "box", "pouch"]).default("bottle"),
-  tone: z.tuple([hex, hex]).default(["#2f7a6c", "#0f3a34"]),
+  tone: z.tuple([hex, hex]).default(["#c25b8a", "#6b2a48"]),
   stock: z.number().int().min(0).max(100_000).default(0),
   isActive: z.boolean().default(true),
 });

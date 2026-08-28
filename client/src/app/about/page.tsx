@@ -30,7 +30,7 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
       <h1 className="text-3xl font-extrabold text-ink sm:text-4xl">من نحن</h1>
-      <span className="mt-3 mb-8 block h-1 w-14 rounded-full bg-gold-500" />
+      <span className="mt-3 mb-8 block h-1 w-14 rounded-full bg-rose-500" />
 
       <div className="space-y-5 text-base leading-8 text-ink">
         <p>
@@ -46,8 +46,8 @@ export default function AboutPage() {
 
       <div className="mt-12 grid gap-5 sm:grid-cols-3">
         {values.map(({ Icon, title, body }) => (
-          <div key={title} className="rounded-card border border-sand-200 bg-sand-50 p-6">
-            <span className="grid h-12 w-12 place-items-center rounded-full bg-sea-700 text-white">
+          <div key={title} className="rounded-card border border-blush-200 bg-blush-50 p-6">
+            <span className="grid h-12 w-12 place-items-center rounded-full bg-plum-700 text-white">
               <Icon className="h-6 w-6" />
             </span>
             <h2 className="mt-4 text-base font-extrabold text-ink">{title}</h2>
@@ -56,12 +56,12 @@ export default function AboutPage() {
         ))}
       </div>
 
-      <div className="mt-12 rounded-card bg-sea-800 p-8 text-center text-white">
+      <div className="mt-12 rounded-card bg-plum-800 p-8 text-center text-white">
         <h2 className="text-2xl font-extrabold">جاهز لتجربة الفرق؟</h2>
-        <p className="mt-2 text-sand-100/85">ابدأ بروتينك الجديد اليوم</p>
+        <p className="mt-2 text-blush-100/85">ابدأ بروتينك الجديد اليوم</p>
         <Link
           href="/products"
-          className="mt-6 inline-block rounded-full bg-gold-500 px-8 py-3.5 font-bold text-sea-900 transition hover:bg-gold-400"
+          className="mt-6 inline-block rounded-full bg-rose-500 px-8 py-3.5 font-bold text-plum-900 transition hover:bg-rose-400"
         >
           تصفّح المنتجات
         </Link>

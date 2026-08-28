@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS categories (
   slug        TEXT        NOT NULL UNIQUE,
   name        TEXT        NOT NULL,
   blurb       TEXT        NOT NULL DEFAULT '',
-  tone        TEXT        NOT NULL DEFAULT '#2f7a6c',
+  tone        TEXT        NOT NULL DEFAULT '#c25b8a',
   position    INTEGER     NOT NULL DEFAULT 0,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -55,8 +55,8 @@ CREATE TABLE IF NOT EXISTS products (
   ingredients  TEXT[]      NOT NULL DEFAULT '{}',
   shape        TEXT        NOT NULL DEFAULT 'bottle'
                            CHECK (shape IN ('bottle','jar','tube','box','pouch')),
-  tone_from    TEXT        NOT NULL DEFAULT '#2f7a6c',
-  tone_to      TEXT        NOT NULL DEFAULT '#0f3a34',
+  tone_from    TEXT        NOT NULL DEFAULT '#c25b8a',
+  tone_to      TEXT        NOT NULL DEFAULT '#6b2a48',
   stock        INTEGER     NOT NULL DEFAULT 0 CHECK (stock >= 0),
   is_active    BOOLEAN     NOT NULL DEFAULT TRUE,
   created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),

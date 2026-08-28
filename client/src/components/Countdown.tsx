@@ -35,10 +35,10 @@ export function Countdown({ hours = 36 }: { hours?: number }) {
     <div className="flex gap-3" aria-label="الوقت المتبقي على العرض">
       {parts.map((p) => (
         <div key={p.label} className="min-w-16 rounded-xl bg-white/10 px-3 py-2.5 text-center">
-          <span className="nums block text-2xl font-extrabold text-gold-400">
+          <span className="nums block text-2xl font-extrabold text-rose-400">
             {p.value === null ? "--" : String(p.value).padStart(2, "0")}
           </span>
-          <span className="block text-[11px] text-sand-100/70">{p.label}</span>
+          <span className="block text-[11px] text-blush-100/70">{p.label}</span>
         </div>
       ))}
     </div>

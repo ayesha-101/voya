@@ -45,12 +45,12 @@ export function AccountView() {
   }, [ready, user, router, leaving]);
 
   if (!ready || !user) {
-    return <div className="h-64 animate-pulse rounded-card bg-sand-100" />;
+    return <div className="h-64 animate-pulse rounded-card bg-blush-100" />;
   }
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-card border border-sand-200 bg-sand-50 p-6">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-card border border-blush-200 bg-blush-50 p-6">
         <div>
           <p className="text-lg font-extrabold text-ink">{user.name}</p>
           <p className="text-sm text-muted" dir="ltr">{user.email}</p>
@@ -60,7 +60,7 @@ export function AccountView() {
           {user.role === "admin" && (
             <Link
               href="/admin"
-              className="rounded-full bg-sea-700 px-6 py-3 text-sm font-bold text-white transition hover:bg-sea-800"
+              className="rounded-full bg-plum-700 px-6 py-3 text-sm font-bold text-white transition hover:bg-plum-800"
             >
               لوحة التحكّم
             </Link>
@@ -73,7 +73,7 @@ export function AccountView() {
               router.replace("/");
               router.refresh();
             }}
-            className="flex items-center gap-2 rounded-full border border-sand-300 px-6 py-3 text-sm font-bold text-ink transition hover:border-red-300 hover:text-red-600"
+            className="flex items-center gap-2 rounded-full border border-blush-300 px-6 py-3 text-sm font-bold text-ink transition hover:border-red-300 hover:text-red-600"
           >
             <LogoutIcon className="h-4 w-4" />
             تسجيل الخروج
@@ -89,16 +89,16 @@ export function AccountView() {
         )}
 
         {orders === null && !error && (
-          <div className="h-40 animate-pulse rounded-card bg-sand-100" />
+          <div className="h-40 animate-pulse rounded-card bg-blush-100" />
         )}
 
         {orders?.length === 0 && (
-          <div className="rounded-card border border-dashed border-sand-300 bg-sand-50 py-16 text-center">
-            <PackageIcon className="mx-auto h-10 w-10 text-sand-400" />
+          <div className="rounded-card border border-dashed border-blush-300 bg-blush-50 py-16 text-center">
+            <PackageIcon className="mx-auto h-10 w-10 text-blush-400" />
             <p className="mt-3 font-bold text-ink">لا توجد طلبات بعد</p>
             <Link
               href="/products"
-              className="mt-5 inline-block rounded-full bg-sea-700 px-8 py-3.5 font-bold text-white transition hover:bg-sea-800"
+              className="mt-5 inline-block rounded-full bg-plum-700 px-8 py-3.5 font-bold text-white transition hover:bg-plum-800"
             >
               ابدأ التسوّق
             </Link>
@@ -107,15 +107,15 @@ export function AccountView() {
 
         <ul className="space-y-4">
           {orders?.map((o) => (
-            <li key={o.reference} className="rounded-card border border-sand-200 bg-white p-5">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-sand-100 pb-3">
+            <li key={o.reference} className="rounded-card border border-blush-200 bg-white p-5">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-blush-100 pb-3">
                 <div>
                   <p className="nums font-extrabold text-ink">{o.reference}</p>
                   <p className="nums text-xs text-muted">{formatDateTime(o.createdAt)}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <OrderStatusBadge status={o.status} />
-                  <span className="nums text-lg font-extrabold text-sea-700">
+                  <span className="nums text-lg font-extrabold text-plum-700">
                     {formatPrice(o.total)}
                   </span>
                 </div>

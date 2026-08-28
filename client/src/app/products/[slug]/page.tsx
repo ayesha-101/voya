@@ -51,9 +51,9 @@ export default async function ProductPage({
   return (
     <div className="mx-auto max-w-7xl px-6 py-8">
       <nav aria-label="مسار التنقل" className="mb-6 text-[13px] text-muted">
-        <Link href="/" className="hover:text-sea-700">الرئيسية</Link>
+        <Link href="/" className="hover:text-plum-700">الرئيسية</Link>
         <span className="mx-2">/</span>
-        <Link href={`/products?category=${product.category}`} className="hover:text-sea-700">
+        <Link href={`/products?category=${product.category}`} className="hover:text-plum-700">
           {product.categoryName}
         </Link>
         <span className="mx-2">/</span>
@@ -61,9 +61,9 @@ export default async function ProductPage({
       </nav>
 
       <div className="grid gap-10 lg:grid-cols-2">
-        <div className="relative overflow-hidden rounded-card border border-sand-200 bg-sand-50 p-8">
+        <div className="relative overflow-hidden rounded-card border border-blush-200 bg-blush-50 p-8">
           {off > 0 && (
-            <span className="absolute end-5 top-5 rounded-full bg-gold-500 px-3 py-1.5 text-sm font-extrabold text-sea-900">
+            <span className="absolute end-5 top-5 rounded-full bg-rose-500 px-3 py-1.5 text-sm font-extrabold text-plum-900">
               خصم <span className="nums">{off}%</span>
             </span>
           )}
@@ -78,7 +78,7 @@ export default async function ProductPage({
         <div className="space-y-6">
           <div className="space-y-3">
             {product.badge && (
-              <span className="inline-block rounded-full bg-sea-800 px-3 py-1 text-xs font-bold text-white">
+              <span className="inline-block rounded-full bg-plum-800 px-3 py-1 text-xs font-bold text-white">
                 {product.badge}
               </span>
             )}
@@ -91,8 +91,8 @@ export default async function ProductPage({
 
           <p className="text-base leading-8 text-ink">{product.description}</p>
 
-          <div className="flex flex-wrap items-baseline gap-3 border-y border-sand-200 py-5">
-            <span className="nums text-4xl font-extrabold text-sea-700">
+          <div className="flex flex-wrap items-baseline gap-3 border-y border-blush-200 py-5">
+            <span className="nums text-4xl font-extrabold text-plum-700">
               {formatPrice(product.price)}
             </span>
             {product.compareAt && (
@@ -108,7 +108,7 @@ export default async function ProductPage({
           <ul className="grid gap-3 sm:grid-cols-2">
             {product.benefits.map((b) => (
               <li key={b} className="flex items-center gap-2.5 text-sm text-ink">
-                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-sea-100 text-sea-700">
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-plum-100 text-plum-700">
                   ✓
                 </span>
                 {b}
@@ -116,7 +116,7 @@ export default async function ProductPage({
             ))}
           </ul>
 
-          <div className="grid gap-3 rounded-card bg-sand-50 p-5 sm:grid-cols-2">
+          <div className="grid gap-3 rounded-card bg-blush-50 p-5 sm:grid-cols-2">
             {[
               { Icon: TruckIcon, t: "شحن مجاني", d: `فوق ${site.freeShippingThreshold} د.إ` },
               { Icon: CashIcon, t: "الدفع عند الاستلام", d: "متاح لجميع الإمارات" },
@@ -124,7 +124,7 @@ export default async function ProductPage({
               { Icon: LeafIcon, t: "عضوي معتمد", d: "بدون بارابين أو سلفات" },
             ].map(({ Icon, t, d }) => (
               <div key={t} className="flex items-center gap-3">
-                <Icon className="h-5 w-5 shrink-0 text-sea-700" />
+                <Icon className="h-5 w-5 shrink-0 text-plum-700" />
                 <div className="text-[13px]">
                   <p className="font-bold text-ink">{t}</p>
                   <p className="text-muted">{d}</p>
@@ -134,13 +134,13 @@ export default async function ProductPage({
           </div>
 
           {product.ingredients.length > 0 && (
-            <details className="rounded-card border border-sand-200 p-5" open>
+            <details className="rounded-card border border-blush-200 p-5" open>
               <summary className="cursor-pointer text-sm font-bold text-ink">
                 المكوّنات الأساسية
               </summary>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {product.ingredients.map((i) => (
-                  <li key={i} className="rounded-full bg-sand-100 px-3.5 py-1.5 text-[13px] text-ink">
+                  <li key={i} className="rounded-full bg-blush-100 px-3.5 py-1.5 text-[13px] text-ink">
                     {i}
                   </li>
                 ))}

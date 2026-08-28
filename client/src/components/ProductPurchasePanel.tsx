@@ -10,7 +10,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
 
   if (product.stock === 0) {
     return (
-      <p className="rounded-full bg-sand-100 px-6 py-4 text-center font-bold text-muted">
+      <p className="rounded-full bg-blush-100 px-6 py-4 text-center font-bold text-muted">
         نفدت الكمية — سيتوفّر قريبًا
       </p>
     );
@@ -21,7 +21,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
       <div className="flex flex-wrap items-center gap-4">
         <QuantityStepper value={qty} onChange={setQty} max={product.stock} />
         {product.stock <= 15 && (
-          <span className="nums text-sm font-bold text-gold-600">
+          <span className="nums text-sm font-bold text-rose-600">
             متبقٍ {product.stock} قطع فقط
           </span>
         )}

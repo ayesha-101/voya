@@ -9,11 +9,11 @@ const LABELS: Record<PaymentStatus, string> = {
 };
 
 const STYLES: Record<PaymentStatus, string> = {
-  unpaid: "bg-sand-200 text-ink",
-  processing: "bg-gold-400/30 text-gold-600",
-  paid: "bg-sea-700 text-white",
+  unpaid: "bg-blush-200 text-ink",
+  processing: "bg-rose-400/30 text-rose-600",
+  paid: "bg-plum-700 text-white",
   failed: "bg-red-100 text-red-700",
-  refunded: "bg-sand-300 text-ink",
+  refunded: "bg-blush-300 text-ink",
 };
 
 const WALLETS: Record<string, string> = {
@@ -38,7 +38,7 @@ export function PaymentBadge({ order }: { order: Order }) {
   // الدفع عند الاستلام لا يحمل حالة دفع إلكتروني تُعرض
   if (order.paymentMethod === "cod") {
     return (
-      <span className="rounded-full bg-sand-200 px-3 py-1 text-xs font-bold text-ink">
+      <span className="rounded-full bg-blush-200 px-3 py-1 text-xs font-bold text-ink">
         الدفع عند الاستلام
       </span>
     );

@@ -14,11 +14,11 @@ const features = [
 
 export function FeatureStrip() {
   return (
-    <section className="border-y border-sand-200 bg-sand-50">
+    <section className="border-y border-blush-200 bg-blush-50">
       <div className="mx-auto grid max-w-7xl gap-4 px-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
         {features.map(({ Icon, title, body }) => (
           <div key={title} className="flex items-center gap-3.5">
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white text-sea-700 shadow-sm">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white text-plum-700 shadow-sm">
               <Icon className="h-6 w-6" />
             </span>
             <div>

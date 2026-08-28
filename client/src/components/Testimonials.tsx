@@ -27,14 +27,14 @@ export function Testimonials() {
       {reviews.map((r) => (
         <figure
           key={r.name}
-          className="flex flex-col gap-4 rounded-card border border-sand-200 bg-sand-50 p-6"
+          className="flex flex-col gap-4 rounded-card border border-blush-200 bg-blush-50 p-6"
         >
           <Rating value={r.rating} />
           <blockquote className="flex-1 text-[15px] leading-7 text-ink">
             «{r.text}»
           </blockquote>
-          <figcaption className="flex items-center gap-3 border-t border-sand-200 pt-4">
-            <span className="grid h-10 w-10 place-items-center rounded-full bg-sea-700 text-sm font-bold text-white">
+          <figcaption className="flex items-center gap-3 border-t border-blush-200 pt-4">
+            <span className="grid h-10 w-10 place-items-center rounded-full bg-plum-700 text-sm font-bold text-white">
               {r.name.charAt(0)}
             </span>
             <span>

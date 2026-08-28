@@ -35,7 +35,7 @@ const SHAPES: { value: Shape; label: string }[] = [
 ];
 
 const field =
-  "w-full rounded-xl border border-sand-300 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-sea-400";
+  "w-full rounded-xl border border-blush-300 bg-white px-4 py-2.5 text-sm outline-none transition focus:border-plum-400";
 
 const lines = (v: string) =>
   v.split("\n").map((s) => s.trim()).filter(Boolean);
@@ -53,7 +53,7 @@ export function ProductForm({
 }) {
   const [shape, setShape] = useState<Shape>(product?.shape ?? "bottle");
   const [tone, setTone] = useState<[string, string]>(
-    product?.tone ?? ["#2f7a6c", "#0f3a34"],
+    product?.tone ?? ["#c25b8a", "#6b2a48"],
   );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -115,7 +115,7 @@ export function ProductForm({
 
   return (
     <form onSubmit={submit} className="grid gap-6 lg:grid-cols-[1.7fr_1fr] lg:items-start">
-      <div className="space-y-5 rounded-card border border-sand-200 p-6">
+      <div className="space-y-5 rounded-card border border-blush-200 p-6">
         <h2 className="text-lg font-extrabold text-ink">
           {product ? `تعديل: ${product.name}` : "منتج جديد"}
         </h2>
@@ -226,30 +226,30 @@ export function ProductForm({
             type="checkbox"
             name="isActive"
             defaultChecked={product?.isActive ?? true}
-            className="h-4 w-4 accent-[var(--color-sea-700)]"
+            className="h-4 w-4 accent-[var(--color-plum-700)]"
           />
           <span className="text-[13px] font-bold text-ink">نشط ومعروض في المتجر</span>
         </label>
 
-        <div className="flex gap-3 border-t border-sand-200 pt-5">
+        <div className="flex gap-3 border-t border-blush-200 pt-5">
           <button
             type="submit"
             disabled={busy}
-            className="rounded-full bg-sea-700 px-8 py-3 font-bold text-white transition hover:bg-sea-800 disabled:opacity-60"
+            className="rounded-full bg-plum-700 px-8 py-3 font-bold text-white transition hover:bg-plum-800 disabled:opacity-60"
           >
             {busy ? "جارٍ الحفظ…" : "حفظ"}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-full border border-sand-300 px-8 py-3 font-bold text-ink transition hover:bg-sand-50"
+            className="rounded-full border border-blush-300 px-8 py-3 font-bold text-ink transition hover:bg-blush-50"
           >
             إلغاء
           </button>
         </div>
       </div>
 
-      <aside className="sticky top-40 space-y-4 rounded-card border border-sand-200 bg-sand-50 p-6">
+      <aside className="sticky top-40 space-y-4 rounded-card border border-blush-200 bg-blush-50 p-6">
         <h3 className="font-extrabold text-ink">معاينة الشكل</h3>
         <ProductArt shape={shape} tone={tone} label="معاينة" className="mx-auto h-56 w-full" />
 
@@ -282,7 +282,7 @@ export function ProductForm({
                     return next;
                   })
                 }
-                className="h-10 w-full cursor-pointer rounded-xl border border-sand-300 bg-white"
+                className="h-10 w-full cursor-pointer rounded-xl border border-blush-300 bg-white"
               />
             </label>
           ))}

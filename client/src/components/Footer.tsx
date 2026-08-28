@@ -14,11 +14,11 @@ const help = [
 
 export function Footer({ categories }: { categories: Category[] }) {
   return (
-    <footer className="mt-20 bg-sea-900 text-sand-100">
+    <footer className="mt-20 bg-plum-900 text-blush-100">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-4">
           <Logo inverted />
-          <p className="text-sm leading-6 text-sand-200/80">{site.description}</p>
+          <p className="text-sm leading-6 text-blush-200/80">{site.description}</p>
           <div className="flex gap-2">
             {site.social.map((s) => {
               const Icon = icons[s.icon];
@@ -29,7 +29,7 @@ export function Footer({ categories }: { categories: Category[] }) {
                   aria-label={s.label}
                   target="_blank"
                   rel="noreferrer"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/10 transition hover:bg-gold-500 hover:text-sea-900"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/10 transition hover:bg-rose-500 hover:text-plum-900"
                 >
                   <Icon className="h-5 w-5" />
                 </a>
@@ -40,10 +40,10 @@ export function Footer({ categories }: { categories: Category[] }) {
 
         <div>
           <h3 className="mb-4 text-sm font-bold text-white">التصنيفات</h3>
-          <ul className="space-y-2.5 text-sm text-sand-200/80">
+          <ul className="space-y-2.5 text-sm text-blush-200/80">
             {categories.map((c) => (
               <li key={c.slug}>
-                <Link href={`/products?category=${c.slug}`} className="hover:text-gold-400">
+                <Link href={`/products?category=${c.slug}`} className="hover:text-rose-400">
                   {c.name}
                 </Link>
               </li>
@@ -53,10 +53,10 @@ export function Footer({ categories }: { categories: Category[] }) {
 
         <div>
           <h3 className="mb-4 text-sm font-bold text-white">خدمة العملاء</h3>
-          <ul className="space-y-2.5 text-sm text-sand-200/80">
+          <ul className="space-y-2.5 text-sm text-blush-200/80">
             {help.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="hover:text-gold-400">
+                <Link href={l.href} className="hover:text-rose-400">
                   {l.label}
                 </Link>
               </li>
@@ -66,19 +66,19 @@ export function Footer({ categories }: { categories: Category[] }) {
 
         <div>
           <h3 className="mb-4 text-sm font-bold text-white">تواصل معنا</h3>
-          <ul className="space-y-2.5 text-sm text-sand-200/80">
+          <ul className="space-y-2.5 text-sm text-blush-200/80">
             <li>
-              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="nums hover:text-gold-400">
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="nums hover:text-rose-400">
                 {site.phone}
               </a>
             </li>
             <li>
-              <a href={`mailto:${site.email}`} className="hover:text-gold-400">
+              <a href={`mailto:${site.email}`} className="hover:text-rose-400">
                 {site.email}
               </a>
             </li>
             <li>{site.country}</li>
-            <li className="pt-2 text-xs text-sand-200/60">
+            <li className="pt-2 text-xs text-blush-200/60">
               السبت – الخميس، 9 صباحًا – 9 مساءً
             </li>
           </ul>
@@ -86,7 +86,7 @@ export function Footer({ categories }: { categories: Category[] }) {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-5 text-xs text-sand-200/70 sm:flex-row">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-5 text-xs text-blush-200/70 sm:flex-row">
           <p className="nums">© {new Date().getFullYear()} {site.nameEn} — جميع الحقوق محفوظة</p>
           <div className="flex items-center gap-2">
             {["VISA", "MASTERCARD", "MADA", "APPLE PAY", "الدفع عند الاستلام"].map((m) => (

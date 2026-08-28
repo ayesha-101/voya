@@ -54,18 +54,18 @@ export function CheckoutForm() {
   }, []);
 
   if (!ready) {
-    return <div className="h-72 animate-pulse rounded-card bg-sand-100" />;
+    return <div className="h-72 animate-pulse rounded-card bg-blush-100" />;
   }
 
   if (order) {
     return (
-      <div className="rounded-card border border-sea-200 bg-sea-50 p-10 text-center">
-        <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-sea-700 text-3xl text-white">
+      <div className="rounded-card border border-plum-200 bg-plum-50 p-10 text-center">
+        <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-plum-700 text-3xl text-white">
           ✓
         </span>
         <h2 className="mt-5 text-2xl font-extrabold text-ink">تم استلام طلبك بنجاح</h2>
         <p className="nums mt-2 text-sm text-muted">رقم الطلب: {order.reference}</p>
-        <p className="nums mt-1 text-lg font-extrabold text-sea-700">
+        <p className="nums mt-1 text-lg font-extrabold text-plum-700">
           {formatPrice(order.total)}
         </p>
         <p className="mt-1 text-xs text-muted">{paymentLabel(order)}</p>
@@ -77,14 +77,14 @@ export function CheckoutForm() {
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Link
             href="/products"
-            className="rounded-full bg-sea-700 px-8 py-3.5 font-bold text-white transition hover:bg-sea-800"
+            className="rounded-full bg-plum-700 px-8 py-3.5 font-bold text-white transition hover:bg-plum-800"
           >
             متابعة التسوّق
           </Link>
           {user && (
             <Link
               href="/account"
-              className="rounded-full border border-sand-300 px-8 py-3.5 font-bold text-sea-700 transition hover:bg-sand-50"
+              className="rounded-full border border-blush-300 px-8 py-3.5 font-bold text-plum-700 transition hover:bg-blush-50"
             >
               عرض طلباتي
             </Link>
@@ -96,11 +96,11 @@ export function CheckoutForm() {
 
   if (items.length === 0) {
     return (
-      <div className="rounded-card border border-dashed border-sand-300 bg-sand-50 py-20 text-center">
+      <div className="rounded-card border border-dashed border-blush-300 bg-blush-50 py-20 text-center">
         <p className="text-lg font-bold text-ink">لا توجد منتجات في السلة</p>
         <Link
           href="/products"
-          className="mt-6 inline-block rounded-full bg-sea-700 px-8 py-3.5 font-bold text-white transition hover:bg-sea-800"
+          className="mt-6 inline-block rounded-full bg-plum-700 px-8 py-3.5 font-bold text-white transition hover:bg-plum-800"
         >
           تصفّح المنتجات
         </Link>
@@ -197,7 +197,7 @@ export function CheckoutForm() {
   const cardsEnabled = Boolean(payments?.enabled && payments.publishableKey);
 
   const field =
-    "w-full rounded-xl border border-sand-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-sea-400";
+    "w-full rounded-xl border border-blush-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-plum-400";
   const err = (name: string) =>
     fieldErrors[name] ? (
       <span className="block text-xs font-bold text-red-600">{fieldErrors[name]}</span>
@@ -211,9 +211,9 @@ export function CheckoutForm() {
     >
       <div className="space-y-8">
         {!user && (
-          <p className="rounded-card border border-sand-200 bg-sand-50 p-4 text-sm text-ink">
+          <p className="rounded-card border border-blush-200 bg-blush-50 p-4 text-sm text-ink">
             تطلب كزائر.{" "}
-            <Link href="/login?next=/checkout" className="font-bold text-sea-700 hover:underline">
+            <Link href="/login?next=/checkout" className="font-bold text-plum-700 hover:underline">
               سجّل الدخول
             </Link>{" "}
             لحفظ الطلب في حسابك ومتابعته لاحقًا.
@@ -224,7 +224,7 @@ export function CheckoutForm() {
           <p className="rounded-card bg-red-50 p-4 text-sm font-bold text-red-700">{error}</p>
         )}
 
-        <fieldset className="space-y-4 rounded-card border border-sand-200 p-6">
+        <fieldset className="space-y-4 rounded-card border border-blush-200 p-6">
           <legend className="px-2 text-sm font-extrabold text-ink">بيانات التوصيل</legend>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -300,7 +300,7 @@ export function CheckoutForm() {
           </label>
         </fieldset>
 
-        <fieldset className="space-y-3 rounded-card border border-sand-200 p-6">
+        <fieldset className="space-y-3 rounded-card border border-blush-200 p-6">
           <legend className="px-2 text-sm font-extrabold text-ink">طريقة الدفع</legend>
 
           {([
@@ -323,10 +323,10 @@ export function CheckoutForm() {
               key={opt.value}
               className={`flex items-start gap-3 rounded-xl border p-4 transition ${
                 opt.disabled
-                  ? "cursor-not-allowed border-sand-200 opacity-55"
+                  ? "cursor-not-allowed border-blush-200 opacity-55"
                   : payment === opt.value
-                    ? "cursor-pointer border-sea-600 bg-sea-50"
-                    : "cursor-pointer border-sand-200 hover:border-sand-300"
+                    ? "cursor-pointer border-plum-600 bg-plum-50"
+                    : "cursor-pointer border-blush-200 hover:border-blush-300"
               }`}
             >
               <input
@@ -336,7 +336,7 @@ export function CheckoutForm() {
                 checked={payment === opt.value}
                 disabled={opt.disabled}
                 onChange={() => setPayment(opt.value)}
-                className="mt-1 h-4 w-4 accent-[var(--color-sea-700)]"
+                className="mt-1 h-4 w-4 accent-[var(--color-plum-700)]"
               />
               <span className="flex-1">
                 <span className="block text-sm font-bold text-ink">{opt.title}</span>
@@ -347,7 +347,7 @@ export function CheckoutForm() {
           ))}
 
           {payment === "card" && payments?.publishableKey && (
-            <div className="border-t border-sand-200 pt-5">
+            <div className="border-t border-blush-200 pt-5">
               <StripePayment
                 publishableKey={payments.publishableKey}
                 amount={total}
@@ -369,7 +369,7 @@ export function CheckoutForm() {
           )}
 
           {payment === "card" && payments && !payments.publishableKey && (
-            <p className="rounded-xl bg-sand-100 p-3 text-[13px] leading-6 text-muted">
+            <p className="rounded-xl bg-blush-100 p-3 text-[13px] leading-6 text-muted">
               الدفع الإلكتروني غير مهيّأ على هذا الخادم. أضف مفاتيح Stripe في
               <code className="mx-1 rounded bg-white px-1.5 py-0.5" dir="ltr">server/.env</code>
               أو اختر الدفع عند الاستلام.
@@ -378,12 +378,12 @@ export function CheckoutForm() {
         </fieldset>
       </div>
 
-      <aside className="sticky top-40 space-y-4 rounded-card border border-sand-200 bg-sand-50 p-6">
+      <aside className="sticky top-40 space-y-4 rounded-card border border-blush-200 bg-blush-50 p-6">
         <h2 className="text-lg font-extrabold text-ink">
           ملخّص الطلب <span className="nums text-sm font-normal text-muted">({count})</span>
         </h2>
 
-        <ul className="max-h-64 space-y-3 overflow-y-auto border-b border-sand-200 pb-4 text-sm">
+        <ul className="max-h-64 space-y-3 overflow-y-auto border-b border-blush-200 pb-4 text-sm">
           {items.map((item) => (
             <li key={item.slug} className="flex items-start justify-between gap-3">
               <span className="text-ink">{item.name}</span>
@@ -393,7 +393,7 @@ export function CheckoutForm() {
           ))}
         </ul>
 
-        <dl className="space-y-3 border-b border-sand-200 pb-4 text-sm">
+        <dl className="space-y-3 border-b border-blush-200 pb-4 text-sm">
           <div className="flex justify-between">
             <dt className="text-muted">المجموع الفرعي</dt>
             <dd className="nums font-bold">{formatPrice(subtotal)}</dd>
@@ -408,7 +408,7 @@ export function CheckoutForm() {
 
         <div className="flex items-baseline justify-between">
           <span className="font-bold text-ink">الإجمالي</span>
-          <span className="nums text-2xl font-extrabold text-sea-700">{formatPrice(total)}</span>
+          <span className="nums text-2xl font-extrabold text-plum-700">{formatPrice(total)}</span>
         </div>
 
         {payment === "cod" ? (
@@ -416,7 +416,7 @@ export function CheckoutForm() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full rounded-full bg-sea-700 px-6 py-4 font-bold text-white transition hover:bg-sea-800 active:scale-[0.99] disabled:opacity-60"
+              className="w-full rounded-full bg-plum-700 px-6 py-4 font-bold text-white transition hover:bg-plum-800 active:scale-[0.99] disabled:opacity-60"
             >
               {submitting ? "جارٍ إرسال الطلب…" : "تأكيد الطلب"}
             </button>

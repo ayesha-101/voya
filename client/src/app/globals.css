@@ -2,34 +2,37 @@
 
 /* ============================================================
    VOYA STORE — نظام التصميم
-   لوحة ألوان مستوحاة من الأعشاب البحرية العضوية:
-   أخضر بحري عميق + رملي دافئ + لمسة ذهبية
+   لوحة أنثوية دافئة:
+   بنفسجي وردي عميق + وردي فاتح + لمسة ذهبية وردية
    ============================================================ */
 
 @theme {
-  --color-sea-50: #f0f7f5;
-  --color-sea-100: #d9ebe6;
-  --color-sea-200: #b3d7ce;
-  --color-sea-300: #7fb9ac;
-  --color-sea-400: #4c9587;
-  --color-sea-500: #2f7a6c;
-  --color-sea-600: #1f6156;
-  --color-sea-700: #164a42;
-  --color-sea-800: #0f3a34;
-  --color-sea-900: #0a2b26;
+  /* البنفسجي الوردي — اللون الأساسي: الأزرار والهيدر والفوتر */
+  --color-plum-50: #fdf5f9;
+  --color-plum-100: #fae9f1;
+  --color-plum-200: #f3d0e0;
+  --color-plum-300: #e8abc6;
+  --color-plum-400: #d67ea6;
+  --color-plum-500: #c25b8a;
+  --color-plum-600: #a54470;
+  --color-plum-700: #87355b;
+  --color-plum-800: #6b2a48;
+  --color-plum-900: #4c1c33;
 
-  --color-sand-50: #fdfbf7;
-  --color-sand-100: #f8f2e7;
-  --color-sand-200: #efe4d0;
-  --color-sand-300: #e2d0b3;
-  --color-sand-400: #cdb387;
+  /* الوردي الفاتح — الخلفيات والحدود المحايدة */
+  --color-blush-50: #fefaf9;
+  --color-blush-100: #fcf1ef;
+  --color-blush-200: #f6e0dd;
+  --color-blush-300: #ebc7c3;
+  --color-blush-400: #d8a29d;
 
-  --color-gold-400: #d9bd6b;
-  --color-gold-500: #c8a94e;
-  --color-gold-600: #a98a35;
+  /* الذهبي الوردي — لمسة التمييز والعروض */
+  --color-rose-400: #edb9a4;
+  --color-rose-500: #e0997f;
+  --color-rose-600: #c27860;
 
-  --color-ink: #12201d;
-  --color-muted: #5d6b68;
+  --color-ink: #2c1720;
+  --color-muted: #7b6069;
 
   --font-sans: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
 

@@ -73,7 +73,7 @@ export function PaymentConfirmation() {
         <p>{error}</p>
         <p className="mt-2 text-sm">
           إن خُصم المبلغ من بطاقتك تواصل معنا على{" "}
-          <a href={`mailto:${site.email}`} className="font-bold text-sea-700 hover:underline">
+          <a href={`mailto:${site.email}`} className="font-bold text-plum-700 hover:underline">
             {site.email}
           </a>{" "}
           مع رقم الطلب.
@@ -94,7 +94,7 @@ export function PaymentConfirmation() {
     return (
       <Panel tone="ok" icon="✓" title="تم الدفع بنجاح">
         <p className="nums text-sm text-muted">رقم الطلب: {order.reference}</p>
-        <p className="nums mt-1 text-xl font-extrabold text-sea-700">
+        <p className="nums mt-1 text-xl font-extrabold text-plum-700">
           {formatPrice(order.total)}
         </p>
         <p className="mt-1 text-xs text-muted">{paymentLabel(order)}</p>
@@ -131,13 +131,13 @@ function Actions({ retry = false }: { retry?: boolean }) {
     <div className="mt-7 flex flex-wrap justify-center gap-3">
       <Link
         href={retry ? "/checkout" : "/products"}
-        className="rounded-full bg-sea-700 px-8 py-3.5 font-bold text-white transition hover:bg-sea-800"
+        className="rounded-full bg-plum-700 px-8 py-3.5 font-bold text-white transition hover:bg-plum-800"
       >
         {retry ? "المحاولة مجددًا" : "متابعة التسوّق"}
       </Link>
       <Link
         href="/account"
-        className="rounded-full border border-sand-300 px-8 py-3.5 font-bold text-sea-700 transition hover:bg-sand-50"
+        className="rounded-full border border-blush-300 px-8 py-3.5 font-bold text-plum-700 transition hover:bg-blush-50"
       >
         طلباتي
       </Link>
@@ -146,14 +146,14 @@ function Actions({ retry = false }: { retry?: boolean }) {
 }
 
 const TONES = {
-  ok: "border-sea-200 bg-sea-50 text-ink",
-  info: "border-sand-200 bg-sand-50 text-ink",
+  ok: "border-plum-200 bg-plum-50 text-ink",
+  info: "border-blush-200 bg-blush-50 text-ink",
   warn: "border-red-200 bg-red-50 text-red-800",
 } as const;
 
 const ICONS = {
-  ok: "bg-sea-700 text-white",
-  info: "bg-sand-300 text-ink",
+  ok: "bg-plum-700 text-white",
+  info: "bg-blush-300 text-ink",
   warn: "bg-red-600 text-white",
 } as const;
 

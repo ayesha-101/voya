@@ -11,7 +11,7 @@ export function CategoryStrip({ categories }: { categories: Category[] }) {
           <Link
             key={c.slug}
             href={`/products?category=${c.slug}`}
-            className="group flex flex-col items-center gap-3 rounded-card border border-sand-200 bg-white p-5 text-center transition hover:-translate-y-1 hover:shadow-lg hover:shadow-sea-900/5"
+            className="group flex flex-col items-center gap-3 rounded-card border border-blush-200 bg-white p-5 text-center transition hover:-translate-y-1 hover:shadow-lg hover:shadow-plum-900/5"
           >
             <span
               className="grid h-16 w-16 place-items-center rounded-full text-white transition group-hover:scale-110"
@@ -22,7 +22,7 @@ export function CategoryStrip({ categories }: { categories: Category[] }) {
             </span>
             <span className="text-sm font-bold text-ink">{c.name}</span>
             <span className="text-[11px] leading-4 text-muted">{c.blurb}</span>
-            <span className="nums text-[11px] text-sea-600">{c.productCount} منتج</span>
+            <span className="nums text-[11px] text-plum-600">{c.productCount} منتج</span>
           </Link>
         );
       })}

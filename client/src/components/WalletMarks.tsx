@@ -36,7 +36,7 @@ function Mark({ title, children }: { title: string; children: React.ReactNode })
   return (
     <span
       title={title}
-      className="grid h-6 w-9 place-items-center rounded border border-sand-200 bg-white"
+      className="grid h-6 w-9 place-items-center rounded border border-blush-200 bg-white"
     >
       {children}
     </span>
