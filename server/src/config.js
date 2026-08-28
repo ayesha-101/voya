@@ -14,6 +14,12 @@ const schema = z.object({
     .default("false")
     .transform((v) => v === "true"),
   BCRYPT_ROUNDS: z.coerce.number().int().min(4).max(15).default(12),
+
+  // الدفع الإلكتروني — اختياري. بدون مفتاح سري يبقى المتجر يعمل
+  // بالدفع عند الاستلام فقط ويُرفض خيار البطاقة صراحةً.
+  STRIPE_SECRET_KEY: z.string().startsWith("sk_").optional(),
+  STRIPE_PUBLISHABLE_KEY: z.string().startsWith("pk_").optional(),
+  STRIPE_WEBHOOK_SECRET: z.string().startsWith("whsec_").optional(),
 });
 
 const parsed = schema.safeParse(process.env);
@@ -28,6 +34,7 @@ if (!parsed.success) {
 
 export const config = {
   ...parsed.data,
+  paymentsEnabled: Boolean(parsed.data.STRIPE_SECRET_KEY),
   corsOrigins: parsed.data.CORS_ORIGINS.split(",")
     .map((s) => s.trim())
     .filter(Boolean),

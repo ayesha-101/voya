@@ -13,9 +13,15 @@ import { categoriesRouter } from "./routes/categories.js";
 import { cartRouter } from "./routes/cart.js";
 import { ordersRouter } from "./routes/orders.js";
 import { adminRouter } from "./routes/admin.js";
+import { paymentsRouter, webhookHandler } from "./routes/payments.js";
+import { createStripeClient } from "./lib/payments.js";
 
-export function createApp() {
+export function createApp({ stripe = createStripeClient() } = {}) {
   const app = express();
+
+  // عميل Stripe واحد للتطبيق كله. تمريره كوسيطة يسمح بحقن بديل في
+  // الاختبارات دون نداء شبكة، وتمرير null صراحةً يُعطّل الدفع الإلكتروني.
+  app.locals.stripe = stripe;
 
   // نثق بالوكيل الأول فقط حتى يعمل تحديد المعدّل على IP الحقيقي
   // دون أن يتمكّن العميل من تزوير X-Forwarded-For.
@@ -40,6 +46,14 @@ export function createApp() {
       credentials: true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     }),
+  );
+
+  // مستقبِل Stripe يحتاج النص الخام للتحقّق من التوقيع، فيُركّب
+  // قبل محلّل JSON العام.
+  app.post(
+    "/api/payments/webhook",
+    express.raw({ type: "application/json", limit: "1mb" }),
+    webhookHandler,
   );
 
   app.use(express.json({ limit: "100kb" }));
@@ -71,6 +85,7 @@ export function createApp() {
   app.use("/api/categories", categoriesRouter);
   app.use("/api/cart", cartRouter);
   app.use("/api/orders", ordersRouter);
+  app.use("/api/payments", paymentsRouter);
   app.use("/api/admin", adminRouter);
 
   app.use(notFoundHandler);

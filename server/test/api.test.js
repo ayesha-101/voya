@@ -7,7 +7,8 @@ let base;
 let server;
 
 before(async () => {
-  server = createApp().listen(0);
+  // هذه المجموعة تصف متجرًا بلا دفع إلكتروني (الدفع عند الاستلام فقط)
+  server = createApp({ stripe: null }).listen(0);
   await new Promise((r) => server.once("listening", r));
   base = `http://127.0.0.1:${server.address().port}`;
 });
@@ -222,12 +223,13 @@ describe("الطلبات", () => {
     assert.equal(body.order.items[0].unitPrice, 79);
   });
 
-  it("ترفض الدفع بالبطاقة (غير مفعّل)", async () => {
-    const { status } = await api("/api/orders", {
+  it("ترفض الدفع بالبطاقة حين لا تكون البوابة مهيّأة", async () => {
+    const { status, body } = await api("/api/orders", {
       method: "POST",
       json: { customer, shipping, paymentMethod: "card", items: [{ slug: "hand-cream", qty: 1 }] },
     });
     assert.equal(status, 400);
+    assert.match(body.error, /الدفع عند الاستلام/);
   });
 
   it("طلب المستخدم المسجّل يفرّغ سلته ويظهر في سجلّه", async () => {

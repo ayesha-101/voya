@@ -4,6 +4,7 @@ import { z } from "zod";
 import { query, withTransaction } from "../db/pool.js";
 import { ApiError, asyncHandler } from "../lib/errors.js";
 import { priceCart } from "../lib/pricing.js";
+import { toMinorUnits } from "../lib/payments.js";
 import { toOrder } from "../lib/serialize.js";
 import { requireAuth } from "../middleware/auth.js";
 import { validate } from "../middleware/validate.js";
@@ -39,6 +40,32 @@ const createSchema = z.object({
     .optional(),
 });
 
+/**
+ * ينشئ نيّة الدفع ويحوّل أخطاء Stripe إلى رسائل عربية.
+ * الاستدعاء داخل معاملة، فأي خطأ هنا يتراجع بالطلب ويُعيد المخزون تلقائيًا.
+ */
+async function createPaymentIntent(stripe, params, idempotencyKey) {
+  try {
+    return await stripe.paymentIntents.create(params, { idempotencyKey });
+  } catch (err) {
+    console.error("[stripe] فشل إنشاء نيّة الدفع:", err.type ?? err.name, err.message);
+
+    if (err.type === "StripeCardError") {
+      throw ApiError.badRequest("رُفضت البطاقة. جرّب بطاقة أخرى.");
+    }
+    if (err.type === "StripeConnectionError" || err.type === "StripeAPIError") {
+      throw new ApiError(
+        502,
+        "تعذّر الاتصال ببوابة الدفع حاليًا. جرّب بعد قليل أو اختر الدفع عند الاستلام.",
+      );
+    }
+    throw new ApiError(
+      502,
+      "تعذّر تجهيز عملية الدفع. جرّب مجددًا أو اختر الدفع عند الاستلام.",
+    );
+  }
+}
+
 const reference = () => `VY-${randomBytes(4).toString("hex").toUpperCase()}`;
 
 ordersRouter.post(
@@ -46,14 +73,15 @@ ordersRouter.post(
   validate({ body: createSchema }),
   asyncHandler(async (req, res) => {
     const { customer, shipping, paymentMethod } = req.body;
+    const stripe = req.app.locals.stripe;
 
-    if (paymentMethod === "card") {
+    if (paymentMethod === "card" && !stripe) {
       throw ApiError.badRequest(
-        "الدفع بالبطاقة غير مفعّل بعد — اختر الدفع عند الاستلام",
+        "الدفع الإلكتروني غير مفعّل على هذا الخادم — اختر الدفع عند الاستلام",
       );
     }
 
-    const order = await withTransaction(async (client) => {
+    const result = await withTransaction(async (client) => {
       // مصدر السطور: سلة الحساب للمستخدم المسجّل، أو ما أرسله الزائر
       let requested;
       if (req.user) {
@@ -108,13 +136,15 @@ ordersRouter.post(
       const { rows: created } = await client.query(
         `INSERT INTO orders
            (reference, user_id, customer_name, customer_email, customer_phone,
-            emirate, area, address, notes, payment_method, subtotal, shipping_fee, total)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
+            emirate, area, address, notes, payment_method, payment_status,
+            subtotal, shipping_fee, total)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)
          RETURNING *`,
         [
           reference(), req.user?.id ?? null, customer.name, customer.email, customer.phone,
           shipping.emirate, shipping.area, shipping.address, shipping.notes,
-          paymentMethod, subtotal, shippingFee, total,
+          paymentMethod, paymentMethod === "card" ? "processing" : "unpaid",
+          subtotal, shippingFee, total,
         ],
       );
       const row = created[0];
@@ -132,11 +162,47 @@ ordersRouter.post(
         ]);
       }
 
+      // سلة المستخدم تُفرَّغ بعد إنشاء الطلب. طلب البطاقة يحجز المخزون
+      // فورًا، ويُعاد تلقائيًا إن فشل الدفع (انظر routes/payments.js).
       if (req.user) {
         await client.query("DELETE FROM cart_items WHERE user_id = $1", [req.user.id]);
       }
 
-      return toOrder(
+      let clientSecret = null;
+
+      if (paymentMethod === "card") {
+        const intent = await createPaymentIntent(stripe, {
+            amount: toMinorUnits(total),
+            currency: "aed",
+            // يفعّل البطاقة و Apple Pay و Google Pay معًا حسب جهاز العميل
+            automatic_payment_methods: { enabled: true },
+            metadata: { orderId: String(row.id), reference: row.reference },
+            description: `طلب ${row.reference} — متجر ڤويا`,
+            receipt_email: customer.email,
+            shipping: {
+              name: customer.name,
+              phone: customer.phone,
+              address: {
+                country: "AE",
+                state: shipping.emirate,
+                city: shipping.area,
+                line1: shipping.address,
+              },
+            },
+          },
+          // مفتاح التكرار يمنع إنشاء نيّتَي دفع لو أُعيد إرسال الطلب
+          `order-${row.reference}`,
+        );
+
+        await client.query(
+          "UPDATE orders SET payment_intent_id = $2 WHERE id = $1",
+          [row.id, intent.id],
+        );
+        row.payment_intent_id = intent.id;
+        clientSecret = intent.client_secret;
+      }
+
+      const order = toOrder(
         row,
         lines.map((l) => ({
           product_id: l.productId,
@@ -147,9 +213,11 @@ ordersRouter.post(
           line_total: l.lineTotal,
         })),
       );
+
+      return { order, clientSecret };
     });
 
-    res.status(201).json({ order });
+    res.status(201).json(result);
   }),
 );
 

@@ -9,6 +9,7 @@ import type { Order } from "@/lib/types";
 import { useAuth } from "./AuthProvider";
 import { LogoutIcon, PackageIcon } from "./Icons";
 import { OrderStatusBadge } from "./OrderStatusBadge";
+import { PaymentBadge } from "./PaymentBadge";
 
 export function AccountView() {
   const { user, ready, logout } = useAuth();
@@ -130,9 +131,12 @@ export function AccountView() {
                 ))}
               </ul>
 
-              <p className="mt-3 text-xs text-muted">
-                التوصيل إلى: {o.shipping.emirate} — {o.shipping.area}
-              </p>
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+                <p className="text-xs text-muted">
+                  التوصيل إلى: {o.shipping.emirate} — {o.shipping.area}
+                </p>
+                <PaymentBadge order={o} />
+              </div>
             </li>
           ))}
         </ul>

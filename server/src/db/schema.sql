@@ -105,6 +105,25 @@ CREATE TABLE IF NOT EXISTS orders (
   updated_at        TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- ------------------------------------------------------------
+--  أعمدة الدفع الإلكتروني (تُضاف بأمان على قواعد بيانات قائمة)
+-- ------------------------------------------------------------
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'unpaid';
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_intent_id TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_brand TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_wallet TEXT;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ;
+ALTER TABLE orders ADD COLUMN IF NOT EXISTS stock_released BOOLEAN NOT NULL DEFAULT FALSE;
+
+DO $$ BEGIN
+  ALTER TABLE orders ADD CONSTRAINT orders_payment_status_check
+    CHECK (payment_status IN ('unpaid','processing','paid','failed','refunded'));
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
+-- معرّف نيّة الدفع فريد، فإعادة إرسال نفس الـ webhook لا تُنشئ حالة مكرّرة
+CREATE UNIQUE INDEX IF NOT EXISTS orders_payment_intent_idx
+  ON orders(payment_intent_id) WHERE payment_intent_id IS NOT NULL;
+
 CREATE INDEX IF NOT EXISTS orders_user_idx    ON orders(user_id);
 CREATE INDEX IF NOT EXISTS orders_status_idx  ON orders(status);
 CREATE INDEX IF NOT EXISTS orders_created_idx ON orders(created_at DESC);

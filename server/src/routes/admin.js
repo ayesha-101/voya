@@ -59,8 +59,12 @@ adminRouter.get(
           (SELECT COUNT(*)::int FROM products WHERE is_active)            AS products,
           (SELECT COUNT(*)::int FROM orders)                              AS orders,
           (SELECT COUNT(*)::int FROM users WHERE role = 'customer')       AS customers,
+          -- الإيراد يحتسب الدفع عند الاستلام غير الملغى، والبطاقة المدفوعة فعلًا
           (SELECT COALESCE(SUM(total), 0) FROM orders
-            WHERE status <> 'cancelled')                                  AS revenue
+            WHERE status <> 'cancelled'
+              AND (payment_method <> 'card' OR payment_status = 'paid'))  AS revenue,
+          (SELECT COUNT(*)::int FROM orders
+            WHERE payment_method = 'card' AND payment_status = 'processing') AS awaiting_payment
       `),
       query("SELECT status, COUNT(*)::int AS count FROM orders GROUP BY status"),
       query("SELECT * FROM orders ORDER BY created_at DESC LIMIT 5"),
@@ -209,17 +213,25 @@ adminRouter.get(
       status: z
         .enum(["pending", "confirmed", "shipped", "delivered", "cancelled"])
         .optional(),
+      paymentStatus: z
+        .enum(["unpaid", "processing", "paid", "failed", "refunded"])
+        .optional(),
       limit: z.coerce.number().int().min(1).max(200).default(50),
     }),
   }),
   asyncHandler(async (req, res) => {
-    const { status, limit } = req.validatedQuery;
+    const { status, paymentStatus, limit } = req.validatedQuery;
     const params = [];
-    let where = "";
+    const filters = [];
     if (status) {
       params.push(status);
-      where = "WHERE status = $1";
+      filters.push(`status = $${params.length}`);
     }
+    if (paymentStatus) {
+      params.push(paymentStatus);
+      filters.push(`payment_status = $${params.length}`);
+    }
+    const where = filters.length ? `WHERE ${filters.join(" AND ")}` : "";
     params.push(limit);
     const { rows } = await query(
       `SELECT * FROM orders ${where} ORDER BY created_at DESC LIMIT $${params.length}`,

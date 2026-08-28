@@ -60,6 +60,15 @@ export type CartSummary = {
   count: number;
 };
 
+export type PaymentStatus =
+  | "unpaid" | "processing" | "paid" | "failed" | "refunded";
+
+export type PaymentConfig = {
+  enabled: boolean;
+  publishableKey: string | null;
+  currency: string;
+};
+
 export type OrderStatus =
   | "pending" | "confirmed" | "shipped" | "delivered" | "cancelled";
 
@@ -70,6 +79,10 @@ export type Order = {
   customer: { name: string; email: string; phone: string };
   shipping: { emirate: string; area: string; address: string; notes: string };
   paymentMethod: "cod" | "card";
+  paymentStatus: PaymentStatus;
+  paymentBrand: string | null;
+  paymentWallet: string | null;
+  paidAt: string | null;
   status: OrderStatus;
   subtotal: number;
   shippingFee: number;
@@ -86,7 +99,13 @@ export type Order = {
 };
 
 export type AdminStats = {
-  totals: { products: number; orders: number; customers: number; revenue: number };
+  totals: {
+    products: number;
+    orders: number;
+    customers: number;
+    revenue: number;
+    awaiting_payment: number;
+  };
   byStatus: Partial<Record<OrderStatus, number>>;
   recentOrders: Order[];
   lowStock: Product[];

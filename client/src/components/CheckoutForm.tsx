@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api, ApiError } from "@/lib/api";
 import { formatPrice } from "@/lib/format";
 import { site } from "@/data/site";
-import type { Order } from "@/lib/types";
+import type { Order, PaymentConfig } from "@/lib/types";
+import { StripePayment, type PaymentResult } from "./StripePayment";
+import { paymentLabel } from "./PaymentBadge";
+import { WalletMarks } from "./WalletMarks";
 import { useAuth } from "./AuthProvider";
 import { useCart } from "./CartProvider";
 
@@ -20,9 +23,31 @@ export function CheckoutForm() {
   const { items, subtotal, shippingFee, total, count, ready, clear, guestLines } = useCart();
   const [payment, setPayment] = useState<Payment>("cod");
   const [order, setOrder] = useState<Order | null>(null);
+  const [pendingPayment, setPendingPayment] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [payments, setPayments] = useState<PaymentConfig | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // نسأل الخادم هل الدفع الإلكتروني مهيّأ أصلًا قبل عرض الخيار
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const config = await api<PaymentConfig>("/api/payments/config", { auth: false });
+        if (!cancelled) setPayments(config);
+      } catch {
+        if (!cancelled) {
+          setPayments({ enabled: false, publishableKey: null, currency: "AED" });
+        }
+      }
+    };
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (!ready) {
     return <div className="h-72 animate-pulse rounded-card bg-sand-100" />;
@@ -39,9 +64,11 @@ export function CheckoutForm() {
         <p className="nums mt-1 text-lg font-extrabold text-sea-700">
           {formatPrice(order.total)}
         </p>
+        <p className="mt-1 text-xs text-muted">{paymentLabel(order)}</p>
         <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-ink">
-          سيتواصل معك فريقنا خلال ساعات لتأكيد الطلب. التوصيل المتوقع خلال 24 – 48
-          ساعة داخل {site.country}.
+          {pendingPayment
+            ? "دفعتك قيد المعالجة لدى البنك. سنؤكّد الطلب فور اكتمالها ونرسل لك رسالة."
+            : `سيتواصل معك فريقنا خلال ساعات لتأكيد الطلب. التوصيل المتوقع خلال 24 – 48 ساعة داخل ${site.country}.`}
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Link
@@ -77,56 +104,93 @@ export function CheckoutForm() {
     );
   }
 
+  /** يجمع نص الطلب من النموذج — يستخدمه مسارا الدفع كلاهما. */
+  function orderPayload(method: Payment) {
+    const form = formRef.current;
+    if (!form) throw new Error("النموذج غير جاهز");
+    const data = new FormData(form);
+
+    return {
+      customer: {
+        name: String(data.get("name") ?? ""),
+        email: String(data.get("email") ?? ""),
+        phone: String(data.get("phone") ?? ""),
+      },
+      shipping: {
+        emirate: String(data.get("emirate") ?? ""),
+        area: String(data.get("area") ?? ""),
+        address: String(data.get("address") ?? ""),
+        notes: String(data.get("notes") ?? ""),
+      },
+      paymentMethod: method,
+      // المستخدم المسجّل: الخادم يقرأ سلته. الزائر: نرسل سطوره.
+      ...(user ? {} : { items: guestLines }),
+    };
+  }
+
+  function reportError(err: unknown, fallback: string) {
+    if (err instanceof ApiError) {
+      setError(err.message);
+      if (err.details) {
+        setFieldErrors(
+          Object.fromEntries(
+            err.details.map((d) => [d.field.split(".").pop() ?? d.field, d.message]),
+          ),
+        );
+      }
+    } else {
+      setError(fallback);
+    }
+  }
+
+  /** الدفع عند الاستلام: الطلب يُنشأ ويُؤكَّد مباشرة. */
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (payment === "card") return; // مسار البطاقة يبدأ من زر Stripe
+
     setSubmitting(true);
     setError(null);
     setFieldErrors({});
 
-    const data = new FormData(e.currentTarget);
-
     try {
       const { order } = await api<{ order: Order }>("/api/orders", {
         method: "POST",
-        json: {
-          customer: {
-            name: String(data.get("name") ?? ""),
-            email: String(data.get("email") ?? ""),
-            phone: String(data.get("phone") ?? ""),
-          },
-          shipping: {
-            emirate: String(data.get("emirate") ?? ""),
-            area: String(data.get("area") ?? ""),
-            address: String(data.get("address") ?? ""),
-            notes: String(data.get("notes") ?? ""),
-          },
-          paymentMethod: payment,
-          // المستخدم المسجّل: الخادم يقرأ سلته. الزائر: نرسل سطوره.
-          ...(user ? {} : { items: guestLines }),
-        },
+        json: orderPayload("cod"),
       });
-
-      setOrder(order);
-      await clear().catch(() => {
-        /* الطلب نجح؛ فشل تنظيف السلة لا يجب أن يخفي التأكيد */
-      });
+      await finish(order, false);
     } catch (err) {
-      if (err instanceof ApiError) {
-        setError(err.message);
-        if (err.details) {
-          setFieldErrors(
-            Object.fromEntries(
-              err.details.map((d) => [d.field.split(".").pop() ?? d.field, d.message]),
-            ),
-          );
-        }
-      } else {
-        setError("تعذّر إرسال الطلب. تأكّد من اتصالك وحاول مجددًا.");
-      }
+      reportError(err, "تعذّر إرسال الطلب. تأكّد من اتصالك وحاول مجددًا.");
     } finally {
       setSubmitting(false);
     }
   }
+
+  async function finish(placed: Order, processing: boolean) {
+    setPendingPayment(processing);
+    setOrder(placed);
+    await clear().catch(() => {
+      /* الطلب نجح؛ فشل تنظيف السلة لا يجب أن يخفي التأكيد */
+    });
+  }
+
+  /** يُنشئ طلب البطاقة على الخادم ويعيد سرّ نيّة الدفع لعناصر Stripe. */
+  async function createCardOrder() {
+    setError(null);
+    setFieldErrors({});
+    try {
+      const res = await api<{ order: Order; clientSecret: string }>("/api/orders", {
+        method: "POST",
+        json: orderPayload("card"),
+      });
+      if (!res.clientSecret) throw new Error("لم يُرجع الخادم بيانات الدفع");
+      return { order: res.order, clientSecret: res.clientSecret };
+    } catch (err) {
+      reportError(err, "تعذّر تجهيز عملية الدفع");
+      throw err;
+    }
+  }
+
+  const cardsEnabled = Boolean(payments?.enabled && payments.publishableKey);
 
   const field =
     "w-full rounded-xl border border-sand-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-sea-400";
@@ -136,7 +200,11 @@ export function CheckoutForm() {
     ) : null;
 
   return (
-    <form onSubmit={submit} className="grid gap-8 lg:grid-cols-[1.6fr_1fr] lg:items-start">
+    <form
+      ref={formRef}
+      onSubmit={submit}
+      className="grid gap-8 lg:grid-cols-[1.6fr_1fr] lg:items-start"
+    >
       <div className="space-y-8">
         {!user && (
           <p className="rounded-card border border-sand-200 bg-sand-50 p-4 text-sm text-ink">
@@ -232,13 +300,29 @@ export function CheckoutForm() {
           <legend className="px-2 text-sm font-extrabold text-ink">طريقة الدفع</legend>
 
           {([
-            { value: "cod" as const, title: "الدفع عند الاستلام", body: "ادفع نقدًا للمندوب عند وصول الطلب" },
-            { value: "card" as const, title: "بطاقة ائتمانية", body: "فيزا، ماستركارد، أبل باي" },
+            {
+              value: "cod" as const,
+              title: "الدفع عند الاستلام",
+              body: "ادفع نقدًا للمندوب عند وصول الطلب",
+              disabled: false,
+            },
+            {
+              value: "card" as const,
+              title: "بطاقة، Apple Pay، أو Google Pay",
+              body: cardsEnabled
+                ? "فيزا وماستركارد ومدى — والمحافظ تظهر تلقائيًا حسب جهازك"
+                : "غير مفعّل على هذا الخادم",
+              disabled: !cardsEnabled,
+            },
           ]).map((opt) => (
             <label
               key={opt.value}
-              className={`flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition ${
-                payment === opt.value ? "border-sea-600 bg-sea-50" : "border-sand-200 hover:border-sand-300"
+              className={`flex items-start gap-3 rounded-xl border p-4 transition ${
+                opt.disabled
+                  ? "cursor-not-allowed border-sand-200 opacity-55"
+                  : payment === opt.value
+                    ? "cursor-pointer border-sea-600 bg-sea-50"
+                    : "cursor-pointer border-sand-200 hover:border-sand-300"
               }`}
             >
               <input
@@ -246,20 +330,45 @@ export function CheckoutForm() {
                 name="payment"
                 value={opt.value}
                 checked={payment === opt.value}
+                disabled={opt.disabled}
                 onChange={() => setPayment(opt.value)}
                 className="mt-1 h-4 w-4 accent-[var(--color-sea-700)]"
               />
-              <span>
+              <span className="flex-1">
                 <span className="block text-sm font-bold text-ink">{opt.title}</span>
                 <span className="block text-xs text-muted">{opt.body}</span>
               </span>
+              {opt.value === "card" && <WalletMarks />}
             </label>
           ))}
 
-          {payment === "card" && (
+          {payment === "card" && payments?.publishableKey && (
+            <div className="border-t border-sand-200 pt-5">
+              <StripePayment
+                publishableKey={payments.publishableKey}
+                amount={total}
+                createOrder={createCardOrder}
+                validateForm={() => formRef.current?.reportValidity() ?? false}
+                onSuccess={(result: PaymentResult) =>
+                  void finish(result.order, result.status === "processing")
+                }
+                onCancelled={() => {
+                  // الخادم يُعيد المخزون عبر webhook؛ نُعيد العميل لسلته
+                  setError(
+                    (prev) =>
+                      prev ??
+                      "لم تكتمل عملية الدفع. لم يُخصم أي مبلغ — يمكنك المحاولة مجددًا.",
+                  );
+                }}
+              />
+            </div>
+          )}
+
+          {payment === "card" && payments && !payments.publishableKey && (
             <p className="rounded-xl bg-sand-100 p-3 text-[13px] leading-6 text-muted">
-              الدفع بالبطاقة يحتاج ربط بوابة دفع (Stripe / Tap / Checkout.com).
-              الخادم يرفض هذا الخيار حاليًا — اختر الدفع عند الاستلام.
+              الدفع الإلكتروني غير مهيّأ على هذا الخادم. أضف مفاتيح Stripe في
+              <code className="mx-1 rounded bg-white px-1.5 py-0.5" dir="ltr">server/.env</code>
+              أو اختر الدفع عند الاستلام.
             </p>
           )}
         </fieldset>
@@ -298,16 +407,24 @@ export function CheckoutForm() {
           <span className="nums text-2xl font-extrabold text-sea-700">{formatPrice(total)}</span>
         </div>
 
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full rounded-full bg-sea-700 px-6 py-4 font-bold text-white transition hover:bg-sea-800 active:scale-[0.99] disabled:opacity-60"
-        >
-          {submitting ? "جارٍ إرسال الطلب…" : "تأكيد الطلب"}
-        </button>
-        <p className="text-center text-[11px] leading-5 text-muted">
-          بالضغط على تأكيد الطلب فإنك توافق على شروط الاستخدام وسياسة الاسترجاع.
-        </p>
+        {payment === "cod" ? (
+          <>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full rounded-full bg-sea-700 px-6 py-4 font-bold text-white transition hover:bg-sea-800 active:scale-[0.99] disabled:opacity-60"
+            >
+              {submitting ? "جارٍ إرسال الطلب…" : "تأكيد الطلب"}
+            </button>
+            <p className="text-center text-[11px] leading-5 text-muted">
+              بالضغط على تأكيد الطلب فإنك توافق على شروط الاستخدام وسياسة الاسترجاع.
+            </p>
+          </>
+        ) : (
+          <p className="rounded-xl bg-white p-3 text-center text-[12px] leading-5 text-muted">
+            أكمل بيانات التوصيل ثم ادفع من قسم «طريقة الدفع».
+          </p>
+        )}
       </aside>
     </form>
   );

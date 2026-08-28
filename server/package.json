@@ -12,7 +12,7 @@
     "seed": "node --env-file-if-exists=.env src/db/seed.js",
     "reset": "node --env-file-if-exists=.env src/db/migrate.js --fresh && node --env-file-if-exists=.env src/db/seed.js",
     "lint": "eslint src",
-    "test": "node --env-file-if-exists=.env --test test/*.test.js"
+    "test": "node --env-file-if-exists=.env --test-concurrency=1 --test test/*.test.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -25,6 +25,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.1",
     "pg": "^8.16.3",
+    "stripe": "^22.6.0",
     "zod": "^4.1.11"
   },
   "devDependencies": {

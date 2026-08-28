@@ -29,15 +29,16 @@ export function AdminDashboard() {
   }
 
   const cards = [
-    { label: "إجمالي المبيعات", value: formatPrice(stats.totals.revenue), accent: true },
+    { label: "إجمالي المبيعات المحصّلة", value: formatPrice(stats.totals.revenue), accent: true },
     { label: "الطلبات", value: String(stats.totals.orders) },
+    { label: "بانتظار الدفع", value: String(stats.totals.awaiting_payment ?? 0) },
     { label: "المنتجات النشطة", value: String(stats.totals.products) },
     { label: "العملاء", value: String(stats.totals.customers) },
   ];
 
   return (
     <div className="space-y-8">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {cards.map((c) => (
           <div
             key={c.label}

@@ -5,6 +5,7 @@ import { api } from "@/lib/api";
 import { formatDateTime, formatPrice } from "@/lib/format";
 import type { Order, OrderStatus } from "@/lib/types";
 import { OrderStatusBadge, STATUS_LABELS } from "../OrderStatusBadge";
+import { PaymentBadge } from "../PaymentBadge";
 
 const FILTERS: { value: "" | OrderStatus; label: string }[] = [
   { value: "", label: "الكل" },
@@ -107,7 +108,10 @@ export function AdminOrders() {
                   <p className="nums text-xs text-muted" dir="ltr">{o.customer.phone}</p>
                 </div>
 
-                <OrderStatusBadge status={o.status} />
+                <div className="flex flex-wrap items-center gap-2">
+                  <OrderStatusBadge status={o.status} />
+                  <PaymentBadge order={o} />
+                </div>
 
                 <span className="nums text-lg font-extrabold text-sea-700">
                   {formatPrice(o.total)}
@@ -173,9 +177,9 @@ export function AdminOrders() {
                       </p>
                     )}
                     <p className="mt-3 text-xs text-muted" dir="ltr">{o.customer.email}</p>
-                    <p className="mt-1 text-xs text-muted">
-                      الدفع: {o.paymentMethod === "cod" ? "عند الاستلام" : "بطاقة"}
-                    </p>
+                    <div className="mt-3">
+                      <PaymentBadge order={o} />
+                    </div>
                   </div>
                 </div>
               )}
