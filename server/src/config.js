@@ -4,6 +4,14 @@ const schema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.coerce.number().int().positive().default(4000),
   DATABASE_URL: z.string().min(1, "DATABASE_URL مطلوب — انسخ .env.example إلى .env"),
+
+  // مخطّط قاعدة البيانات. تغييره يعزل جداول المتجر عن أي تطبيق آخر
+  // يشارك نفس القاعدة — مفيد على الخطط المجانية ذات القاعدة الواحدة.
+  DB_SCHEMA: z
+    .string()
+    .regex(/^[a-z_][a-z0-9_]*$/, "اسم المخطّط يقبل حروفًا إنجليزية صغيرة وأرقامًا وشرطة سفلية")
+    .max(63)
+    .default("public"),
   JWT_SECRET: z
     .string()
     .min(32, "JWT_SECRET يجب أن يكون 32 حرفًا على الأقل"),

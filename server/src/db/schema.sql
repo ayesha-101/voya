@@ -3,8 +3,9 @@
 --  يُنفَّذ عبر: npm run db:migrate
 -- ============================================================
 
-CREATE EXTENSION IF NOT EXISTS citext;
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
+-- الامتدادات تُثبَّت في public لتبقى أنواعها متاحة لأي مخطّط
+CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 
 -- ------------------------------------------------------------
 --  المستخدمون

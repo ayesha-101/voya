@@ -10,6 +10,11 @@ export const pool = new pg.Pool({
   max: 10,
   idleTimeoutMillis: 30_000,
   connectionTimeoutMillis: 10_000,
+  // يُرسل مع بدء الاتصال نفسه، فلا يحتاج استعلامًا إضافيًا.
+  // public يبقى في المسار لأن الامتدادات (citext, pg_trgm) تُثبَّت هناك.
+  ...(config.DB_SCHEMA !== "public"
+    ? { options: `-c search_path=${config.DB_SCHEMA},public` }
+    : {}),
 });
 
 pool.on("error", (err) => {

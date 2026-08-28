@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { pool } from "./pool.js";
+import { config } from "../config.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const fresh = process.argv.includes("--fresh");
@@ -12,6 +13,11 @@ const DROP = `
 `;
 
 try {
+  if (config.DB_SCHEMA !== "public") {
+    await pool.query(`CREATE SCHEMA IF NOT EXISTS "${config.DB_SCHEMA}"`);
+    console.log(`… المخطّط: ${config.DB_SCHEMA}`);
+  }
+
   if (fresh) {
     console.log("… حذف الجداول القديمة (--fresh)");
     await pool.query(DROP);

@@ -1,12 +1,20 @@
 -- ============================================================
 --  متجر ڤويا — تجهيز قاعدة البيانات دفعة واحدة
 --
---  الصق هذا الملف كاملًا في محرّر SQL لدى Neon واضغط Run.
+--  الصق هذا الملف كاملًا في محرّر SQL (Neon / Supabase) واضغط Run.
 --  ينشئ الجداول والفهارس ثم يملؤها بـ 6 تصنيفات
 --  و 18 منتجًا وحسابَي دخول.
 --
---  تحذير: يمسح أي بيانات سابقة في جداول المتجر. نفّذه على قاعدة
---  بيانات مخصّصة لهذا المشروع فقط.
+--  يفترض قاعدة بيانات مخصّصة لهذا المشروع. لا تنفّذه على قاعدة فيها
+--  بيانات تطبيق آخر — أسماء مثل users و products و orders شائعة.
+--
+--  ── تشارك قاعدة واحدة مع تطبيق آخر؟ ───────────────────────
+--  أزل علامة التعليق عن السطرين التاليين، ثم اضبط DB_SCHEMA=voya
+--  في متغيّرات بيئة الخادم. عندها يُنشأ كل شيء داخل مخطّط معزول
+--  ولا يُلمَس أي جدول في public.
+--
+--  CREATE SCHEMA IF NOT EXISTS voya;
+--  SET search_path TO voya, public;
 -- ============================================================
 
 -- ============================================================
@@ -14,8 +22,9 @@
 --  يُنفَّذ عبر: npm run db:migrate
 -- ============================================================
 
-CREATE EXTENSION IF NOT EXISTS citext;
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
+-- الامتدادات تُثبَّت في public لتبقى أنواعها متاحة لأي مخطّط
+CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 
 -- ------------------------------------------------------------
 --  المستخدمون
@@ -285,8 +294,8 @@ VALUES
 --   admin@byvoyastore.com / Admin@12345
 --   noura@example.com     / Customer@123
 INSERT INTO users (name, email, phone, password_hash, role) VALUES
-  ('مدير المتجر', 'admin@byvoyastore.com', '+971500000000', '$2b$12$TGpVS5nHK2CZZ0ldpGTGneYISoHU9OIubAjvd6G3zhdHmgf2ZqizW', 'admin'),
-  ('نورة العتيبي', 'noura@example.com', '+971501234567', '$2b$12$4iVunEhI/SShLzYkjL.Zy.8l.5mqGquPwlA2in2HlFBg1/In.pCRS', 'customer');
+  ('مدير المتجر', 'admin@byvoyastore.com', '+971500000000', '$2b$12$wgq3Qo9lhZwNlAzNsqk6SuGPX75d5bMzhrUYjRPAx7j5lx60izrva', 'admin'),
+  ('نورة العتيبي', 'noura@example.com', '+971501234567', '$2b$12$ADHuvso5kd7ugJkYJkTXwO3MKwka5bnOAVVwo5NNiAu5UIs.nbL96', 'customer');
 
 -- ── تحقّق ─────────────────────────────────────────────────
 SELECT
