@@ -1,0 +1,33 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env src/index.js",
+    "start": "node --env-file-if-exists=.env src/index.js",
+    "build": "node --check src/index.js && echo \"server: no build step (plain ESM)\"",
+    "migrate": "node --env-file-if-exists=.env src/db/migrate.js",
+    "seed": "node --env-file-if-exists=.env src/db/seed.js",
+    "reset": "node --env-file-if-exists=.env src/db/migrate.js --fresh && node --env-file-if-exists=.env src/db/seed.js",
+    "lint": "eslint src",
+    "test": "node --env-file-if-exists=.env --test test/*.test.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1",
+    "pg": "^8.16.3",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.0"
+  }
+}
