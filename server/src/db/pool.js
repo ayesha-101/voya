@@ -1,17 +1,17 @@
 import pg from "pg";
 import { config } from "../config.js";
 
-// نُعيد الأرقام العشرية (numeric) كأرقام JS بدل نصوص حتى تُحسب الأسعار مباشرة
 pg.types.setTypeParser(1700, (value) => (value === null ? null : Number(value)));
 pg.types.setTypeParser(20, (value) => (value === null ? null : Number(value)));
 
+// في بيئة Vercel Serverless نخفض الاتصالات لتجنب اختناق قاعدة البيانات
+const isServerless = process.env.VERCEL === "1" || process.env.NODE_ENV === "production";
+
 export const pool = new pg.Pool({
   connectionString: config.DATABASE_URL,
-  max: 10,
-  idleTimeoutMillis: 30_000,
+  max: isServerless ? 1 : 10,
+  idleTimeoutMillis: isServerless ? 10_000 : 30_000,
   connectionTimeoutMillis: 10_000,
-  // يُرسل مع بدء الاتصال نفسه، فلا يحتاج استعلامًا إضافيًا.
-  // public يبقى في المسار لأن الامتدادات (citext, pg_trgm) تُثبَّت هناك.
   ...(config.DB_SCHEMA !== "public"
     ? { options: `-c search_path=${config.DB_SCHEMA},public` }
     : {}),
@@ -23,7 +23,6 @@ pool.on("error", (err) => {
 
 export const query = (text, params) => pool.query(text, params);
 
-/** ينفّذ دالة داخل معاملة واحدة مع تراجع تلقائي عند أي خطأ. */
 export async function withTransaction(fn) {
   const client = await pool.connect();
   try {
