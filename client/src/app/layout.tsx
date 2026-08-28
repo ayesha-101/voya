@@ -10,6 +10,7 @@ import { CartProvider } from "@/components/CartProvider";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const tajawal = Tajawal({
   variable: "--font-tajawal",
@@ -49,6 +50,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             <WhatsAppButton />
           </CartProvider>
         </AuthProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
