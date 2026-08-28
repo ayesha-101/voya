@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+/* ============================================================
+   VOYA STORE — نظام التصميم
+   لوحة ألوان مستوحاة من الأعشاب البحرية العضوية:
+   أخضر بحري عميق + رملي دافئ + لمسة ذهبية
+   ============================================================ */
+
+@theme {
+  --color-sea-50: #f0f7f5;
+  --color-sea-100: #d9ebe6;
+  --color-sea-200: #b3d7ce;
+  --color-sea-300: #7fb9ac;
+  --color-sea-400: #4c9587;
+  --color-sea-500: #2f7a6c;
+  --color-sea-600: #1f6156;
+  --color-sea-700: #164a42;
+  --color-sea-800: #0f3a34;
+  --color-sea-900: #0a2b26;
+
+  --color-sand-50: #fdfbf7;
+  --color-sand-100: #f8f2e7;
+  --color-sand-200: #efe4d0;
+  --color-sand-300: #e2d0b3;
+  --color-sand-400: #cdb387;
+
+  --color-gold-400: #d9bd6b;
+  --color-gold-500: #c8a94e;
+  --color-gold-600: #a98a35;
+
+  --color-ink: #12201d;
+  --color-muted: #5d6b68;
+
+  --font-sans: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 1.25rem;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: var(--color-ink);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* الأرقام دائمًا لاتينية حتى داخل النص العربي (أوضح للأسعار) */
+.nums {
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* شريط تمرير أفقي بدون scrollbar مرئي */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes voya-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade-up {
+  animation: voya-fade-up 0.6s ease-out both;
+}
+
+@keyframes voya-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(50%);
+  }
+}
+
+.animate-marquee {
+  animation: voya-marquee 26s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-marquee {
+    animation: none;
+  }
+}
