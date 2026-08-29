@@ -46,14 +46,14 @@ describe("الصحة والمنتجات", () => {
   it("تُرجع قائمة المنتجات مع الإجمالي", async () => {
     const { status, body } = await api("/api/products");
     assert.equal(status, 200);
-    assert.equal(body.total, 18);
+    assert.equal(body.total, 14);
     assert.ok(body.products[0].slug);
   });
 
   it("الفلترة بالتصنيف تعمل", async () => {
-    const { body } = await api("/api/products?category=face");
+    const { body } = await api("/api/products?category=hair-care");
     assert.equal(body.total, 4);
-    assert.ok(body.products.every((p) => p.category === "face"));
+    assert.ok(body.products.every((p) => p.category === "hair-care"));
   });
 
   it("الفرز بالسعر تصاعديًا صحيح", async () => {
@@ -63,7 +63,7 @@ describe("الصحة والمنتجات", () => {
   });
 
   it("البحث النصّي يطابق المكوّنات", async () => {
-    const { body } = await api("/api/products?q=" + encodeURIComponent("الأرغان"));
+    const { body } = await api("/api/products?q=" + encodeURIComponent("بروتين"));
     assert.ok(body.total >= 1);
   });
 
@@ -74,9 +74,9 @@ describe("الصحة والمنتجات", () => {
   });
 
   it("صفحة المنتج تعيد مقترحات", async () => {
-    const { status, body } = await api("/api/products/radiance-serum");
+    const { status, body } = await api("/api/products/curlysilk-set");
     assert.equal(status, 200);
-    assert.equal(body.product.name, "سيروم الإشراق بالأعشاب البحرية");
+    assert.equal(body.product.name, "مجموعة كيرلي سيلك");
     assert.equal(body.related.length, 4);
   });
 
@@ -149,34 +149,34 @@ describe("السلة", () => {
 
   it("تضيف منتجًا وتحسب الشحن", async () => {
     const { status, body } = await api("/api/cart/items", {
-      method: "POST", token, json: { slug: "hand-cream", qty: 1 },
+      method: "POST", token, json: { slug: "hair-gel", qty: 1 },
     });
     assert.equal(status, 201);
-    assert.equal(body.subtotal, 79);
+    assert.equal(body.subtotal, 50);
     assert.equal(body.shippingFee, 20); // أقل من حد الشحن المجاني
-    assert.equal(body.total, 99);
+    assert.equal(body.total, 70);
   });
 
   it("الشحن يصبح مجانيًا فوق الحد", async () => {
     const { body } = await api("/api/cart/items", {
-      method: "POST", token, json: { slug: "radiance-serum", qty: 1 },
+      method: "POST", token, json: { slug: "curlysilk-set", qty: 1 },
     });
-    assert.equal(body.subtotal, 368);
+    assert.equal(body.subtotal, 235);
     assert.equal(body.shippingFee, 0);
   });
 
   it("ترفض كمية تتجاوز المخزون", async () => {
     const { status } = await api("/api/cart/items", {
-      method: "POST", token, json: { slug: "ritual-gift-set", qty: 99 },
+      method: "POST", token, json: { slug: "sidr-mix", qty: 99 },
     });
     assert.equal(status, 400);
   });
 
   it("تحديث الكمية إلى صفر يحذف السطر", async () => {
-    const { body } = await api("/api/cart/items/hand-cream", {
+    const { body } = await api("/api/cart/items/hair-gel", {
       method: "PATCH", token, json: { qty: 0 },
     });
-    assert.ok(!body.items.some((i) => i.slug === "hand-cream"));
+    assert.ok(!body.items.some((i) => i.slug === "hair-gel"));
   });
 });
 
@@ -194,39 +194,39 @@ describe("الطلبات", () => {
   it("ترفض إمارة غير صالحة", async () => {
     const { status } = await api("/api/orders", {
       method: "POST",
-      json: { customer, shipping: { ...shipping, emirate: "الرياض" }, items: [{ slug: "hand-cream", qty: 1 }] },
+      json: { customer, shipping: { ...shipping, emirate: "الرياض" }, items: [{ slug: "hair-gel", qty: 1 }] },
     });
     assert.equal(status, 400);
   });
 
   it("تنشئ طلب زائر وتخصم المخزون", async () => {
-    const before = (await api("/api/products/hand-cream")).body.product.stock;
+    const before = (await api("/api/products/hair-gel")).body.product.stock;
     const { status, body } = await api("/api/orders", {
       method: "POST",
-      json: { customer, shipping, items: [{ slug: "hand-cream", qty: 2 }] },
+      json: { customer, shipping, items: [{ slug: "hair-gel", qty: 2 }] },
     });
     assert.equal(status, 201);
-    assert.equal(body.order.items[0].unitPrice, 79);
-    assert.equal(body.order.subtotal, 158);
-    assert.equal(body.order.total, 178); // 158 + 20 شحن
+    assert.equal(body.order.items[0].unitPrice, 50);
+    assert.equal(body.order.subtotal, 100);
+    assert.equal(body.order.total, 120); // 100 + 20 شحن
     assert.match(body.order.reference, /^VY-[0-9A-F]{8}$/);
 
-    const after = (await api("/api/products/hand-cream")).body.product.stock;
+    const after = (await api("/api/products/hair-gel")).body.product.stock;
     assert.equal(after, before - 2);
   });
 
   it("تتجاهل أي سعر يرسله العميل وتستخدم سعر قاعدة البيانات", async () => {
     const { body } = await api("/api/orders", {
       method: "POST",
-      json: { customer, shipping, items: [{ slug: "hand-cream", qty: 1, price: 1 }] },
+      json: { customer, shipping, items: [{ slug: "hair-gel", qty: 1, price: 1 }] },
     });
-    assert.equal(body.order.items[0].unitPrice, 79);
+    assert.equal(body.order.items[0].unitPrice, 50);
   });
 
   it("ترفض الدفع بالبطاقة حين لا تكون البوابة مهيّأة", async () => {
     const { status, body } = await api("/api/orders", {
       method: "POST",
-      json: { customer, shipping, paymentMethod: "card", items: [{ slug: "hand-cream", qty: 1 }] },
+      json: { customer, shipping, paymentMethod: "card", items: [{ slug: "hair-gel", qty: 1 }] },
     });
     assert.equal(status, 400);
     assert.match(body.error, /الدفع عند الاستلام/);
@@ -235,13 +235,13 @@ describe("الطلبات", () => {
   it("طلب المستخدم المسجّل يفرّغ سلته ويظهر في سجلّه", async () => {
     const token = await login("noura@example.com", "Customer@123");
     await api("/api/cart", { method: "DELETE", token });
-    await api("/api/cart/items", { method: "POST", token, json: { slug: "konjac-sponge", qty: 3 } });
+    await api("/api/cart/items", { method: "POST", token, json: { slug: "baby-spray", qty: 3 } });
 
     const { status, body } = await api("/api/orders", {
       method: "POST", token, json: { customer, shipping },
     });
     assert.equal(status, 201);
-    assert.equal(body.order.subtotal, 135);
+    assert.equal(body.order.subtotal, 105);
 
     assert.equal((await api("/api/cart", { token })).body.items.length, 0);
     const mine = await api("/api/orders", { token });
@@ -250,7 +250,7 @@ describe("الطلبات", () => {
 
   it("لا يستطيع الزائر عرض طلب غيره بدون البريد الصحيح", async () => {
     const created = await api("/api/orders", {
-      method: "POST", json: { customer, shipping, items: [{ slug: "hand-cream", qty: 1 }] },
+      method: "POST", json: { customer, shipping, items: [{ slug: "hair-gel", qty: 1 }] },
     });
     const ref = created.body.order.reference;
     assert.equal((await api(`/api/orders/${ref}`)).status, 403);
@@ -284,7 +284,7 @@ describe("لوحة المدير", () => {
   it("تنشئ منتجًا وتعدّله وتؤرشفه", async () => {
     const slug = `test-product-${Date.now()}`;
     const payload = {
-      slug, name: "منتج اختباري", category: "face", price: 100, stock: 5,
+      slug, name: "منتج اختباري", category: "skin-care", price: 100, stock: 5,
       short: "وصف مختصر", description: "وصف كامل",
     };
 
@@ -311,7 +311,7 @@ describe("لوحة المدير", () => {
   });
 
   it("ترفض الحذف النهائي لمنتج مرتبط بطلبات", async () => {
-    const { status } = await api("/api/admin/products/hand-cream?hard=true", {
+    const { status } = await api("/api/admin/products/hair-gel?hard=true", {
       method: "DELETE", token: adminToken,
     });
     assert.equal(status, 409);

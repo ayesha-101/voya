@@ -7,6 +7,7 @@ export type Product = {
   nameEn: string;
   category: string;
   categoryName: string;
+  categoryNameEn: string;
   price: number;
   compareAt?: number;
   size: string;
@@ -15,6 +16,7 @@ export type Product = {
   badge?: string;
   short: string;
   description: string;
+  howToUse: string;
   benefits: string[];
   ingredients: string[];
   shape: Shape;
@@ -26,6 +28,7 @@ export type Product = {
 export type Category = {
   slug: string;
   name: string;
+  nameEn: string;
   blurb: string;
   tone: string;
   productCount: number;

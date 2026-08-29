@@ -107,7 +107,7 @@ describe("إعدادات الدفع", () => {
 
 describe("إنشاء طلب بالبطاقة", () => {
   it("يُنشئ نيّة دفع ويعيد client secret", async () => {
-    const { status, body } = await placeCardOrder([{ slug: "hand-cream", qty: 2 }]);
+    const { status, body } = await placeCardOrder([{ slug: "hair-gel", qty: 2 }]);
     assert.equal(status, 201);
     assert.ok(body.clientSecret.includes("_secret_"));
     assert.equal(body.order.paymentMethod, "card");
@@ -116,11 +116,11 @@ describe("إنشاء طلب بالبطاقة", () => {
 
   it("يرسل المبلغ إلى Stripe بالفلوس وبعملة الدرهم", async () => {
     const before = created.length;
-    const { body } = await placeCardOrder([{ slug: "hand-cream", qty: 1 }]);
+    const { body } = await placeCardOrder([{ slug: "hair-gel", qty: 1 }]);
     const sent = created[before].params;
-    // 79 د.إ + 20 شحن = 99 د.إ = 9900 فلس
-    assert.equal(body.order.total, 99);
-    assert.equal(sent.amount, 9900);
+    // 50 د.إ + 20 شحن = 70 د.إ = 7000 فلس
+    assert.equal(body.order.total, 70);
+    assert.equal(sent.amount, 7000);
     assert.equal(sent.currency, "aed");
     assert.equal(sent.automatic_payment_methods.enabled, true);
     assert.equal(sent.metadata.reference, body.order.reference);
@@ -128,21 +128,21 @@ describe("إنشاء طلب بالبطاقة", () => {
 
   it("يستخدم مفتاح تكرار مشتقًا من مرجع الطلب", async () => {
     const before = created.length;
-    const { body } = await placeCardOrder([{ slug: "hand-cream", qty: 1 }]);
+    const { body } = await placeCardOrder([{ slug: "hair-gel", qty: 1 }]);
     assert.equal(created[before].options.idempotencyKey, `order-${body.order.reference}`);
   });
 
   it("يحجز المخزون فور إنشاء الطلب", async () => {
-    const before = await stockOf("konjac-sponge");
-    await placeCardOrder([{ slug: "konjac-sponge", qty: 3 }]);
-    assert.equal(await stockOf("konjac-sponge"), before - 3);
+    const before = await stockOf("baby-spray");
+    await placeCardOrder([{ slug: "baby-spray", qty: 3 }]);
+    assert.equal(await stockOf("baby-spray"), before - 3);
   });
 
   it("لا ينشئ نيّة دفع لطلب الدفع عند الاستلام", async () => {
     const before = created.length;
     const { body } = await api("/api/orders", {
       method: "POST",
-      json: { customer, shipping, items: [{ slug: "hand-cream", qty: 1 }] },
+      json: { customer, shipping, items: [{ slug: "hair-gel", qty: 1 }] },
     });
     assert.equal(created.length, before);
     assert.equal(body.clientSecret, null);
@@ -170,7 +170,7 @@ describe("مستقبِل أحداث Stripe", () => {
   });
 
   it("ينجح الدفع فيؤكّد الطلب ويسجّل Apple Pay", async () => {
-    const { body } = await placeCardOrder([{ slug: "dry-brush", qty: 1 }]);
+    const { body } = await placeCardOrder([{ slug: "brow-gel", qty: 1 }]);
     const { rows } = await query(
       "SELECT payment_intent_id FROM orders WHERE reference = $1",
       [body.order.reference],
@@ -197,7 +197,7 @@ describe("مستقبِل أحداث Stripe", () => {
   });
 
   it("يسجّل Google Pay أيضًا", async () => {
-    const { body } = await placeCardOrder([{ slug: "dry-brush", qty: 1 }]);
+    const { body } = await placeCardOrder([{ slug: "brow-gel", qty: 1 }]);
     const { rows } = await query(
       "SELECT payment_intent_id FROM orders WHERE reference = $1",
       [body.order.reference],
@@ -217,9 +217,9 @@ describe("مستقبِل أحداث Stripe", () => {
   });
 
   it("يفشل الدفع فيُلغي الطلب ويعيد المخزون", async () => {
-    const before = await stockOf("body-butter");
-    const { body } = await placeCardOrder([{ slug: "body-butter", qty: 2 }]);
-    assert.equal(await stockOf("body-butter"), before - 2);
+    const before = await stockOf("milk-shampoo");
+    const { body } = await placeCardOrder([{ slug: "milk-shampoo", qty: 2 }]);
+    assert.equal(await stockOf("milk-shampoo"), before - 2);
 
     const { rows } = await query(
       "SELECT payment_intent_id FROM orders WHERE reference = $1",
@@ -230,7 +230,7 @@ describe("مستقبِل أحداث Stripe", () => {
     });
     assert.equal(res.status, 200);
 
-    assert.equal(await stockOf("body-butter"), before, "يجب أن يعود المخزون كما كان");
+    assert.equal(await stockOf("milk-shampoo"), before, "يجب أن يعود المخزون كما كان");
     const order = (
       await api(`/api/orders/${body.order.reference}?email=${customer.email}`)
     ).body.order;
@@ -239,8 +239,8 @@ describe("مستقبِل أحداث Stripe", () => {
   });
 
   it("إعادة إرسال حدث الفشل لا تعيد المخزون مرتين", async () => {
-    const before = await stockOf("bath-soak");
-    const { body } = await placeCardOrder([{ slug: "bath-soak", qty: 4 }]);
+    const before = await stockOf("hair-toner");
+    const { body } = await placeCardOrder([{ slug: "hair-toner", qty: 4 }]);
     const { rows } = await query(
       "SELECT payment_intent_id FROM orders WHERE reference = $1",
       [body.order.reference],
@@ -251,11 +251,11 @@ describe("مستقبِل أحداث Stripe", () => {
     await sendWebhook("payment_intent.payment_failed", intent);
     await sendWebhook("payment_intent.canceled", intent);
 
-    assert.equal(await stockOf("bath-soak"), before, "المخزون يُعاد مرة واحدة فقط");
+    assert.equal(await stockOf("hair-toner"), before, "المخزون يُعاد مرة واحدة فقط");
   });
 
   it("حدث نجاح مكرّر لا يغيّر وقت الدفع", async () => {
-    const { body } = await placeCardOrder([{ slug: "hand-cream", qty: 1 }]);
+    const { body } = await placeCardOrder([{ slug: "hair-gel", qty: 1 }]);
     const { rows } = await query(
       "SELECT payment_intent_id FROM orders WHERE reference = $1",
       [body.order.reference],
@@ -276,7 +276,7 @@ describe("مستقبِل أحداث Stripe", () => {
   });
 
   it("الفشل بعد الدفع لا يُلغي طلبًا مدفوعًا", async () => {
-    const { body } = await placeCardOrder([{ slug: "hand-cream", qty: 1 }]);
+    const { body } = await placeCardOrder([{ slug: "hair-gel", qty: 1 }]);
     const { rows } = await query(
       "SELECT payment_intent_id FROM orders WHERE reference = $1",
       [body.order.reference],
@@ -294,8 +294,8 @@ describe("مستقبِل أحداث Stripe", () => {
   });
 
   it("الاسترجاع يُلغي الطلب ويعيد المخزون", async () => {
-    const before = await stockOf("shower-gel");
-    const { body } = await placeCardOrder([{ slug: "shower-gel", qty: 2 }]);
+    const before = await stockOf("baby-oil");
+    const { body } = await placeCardOrder([{ slug: "baby-oil", qty: 2 }]);
     const { rows } = await query(
       "SELECT payment_intent_id FROM orders WHERE reference = $1",
       [body.order.reference],
@@ -307,7 +307,7 @@ describe("مستقبِل أحداث Stripe", () => {
       await api(`/api/orders/${body.order.reference}?email=${customer.email}`)
     ).body.order;
     assert.equal(order.paymentStatus, "refunded");
-    assert.equal(await stockOf("shower-gel"), before);
+    assert.equal(await stockOf("baby-oil"), before);
   });
 
   it("يتجاهل الأحداث غير المعنيّة بهدوء", async () => {
@@ -326,7 +326,7 @@ describe("الإيراد في لوحة المدير", () => {
     const token = login.body.token;
 
     const before = (await api("/api/admin/stats", { token })).body.totals.revenue;
-    await placeCardOrder([{ slug: "ritual-gift-set", qty: 1 }]);
+    await placeCardOrder([{ slug: "voya-perfume", qty: 1 }]);
     const after = (await api("/api/admin/stats", { token })).body.totals.revenue;
 
     assert.equal(after, before, "الطلب قيد الدفع لا يُضاف للإيراد");
@@ -340,7 +340,7 @@ describe("الإيراد في لوحة المدير", () => {
     const token = login.body.token;
 
     const before = (await api("/api/admin/stats", { token })).body.totals.revenue;
-    const { body } = await placeCardOrder([{ slug: "glow-duo", qty: 1 }]);
+    const { body } = await placeCardOrder([{ slug: "curlysilk-set", qty: 1 }]);
     const { rows } = await query(
       "SELECT payment_intent_id FROM orders WHERE reference = $1",
       [body.order.reference],
@@ -369,7 +369,7 @@ describe("أعطال بوابة الدفع", () => {
     const url = `http://127.0.0.1:${srv.address().port}`;
 
     const stockBefore = (
-      await (await fetch(`${url}/api/products/scalp-oil`)).json()
+      await (await fetch(`${url}/api/products/deep-moisturizer`)).json()
     ).product.stock;
 
     const res = await fetch(`${url}/api/orders`, {
@@ -379,7 +379,7 @@ describe("أعطال بوابة الدفع", () => {
         customer,
         shipping,
         paymentMethod: "card",
-        items: [{ slug: "scalp-oil", qty: 2 }],
+        items: [{ slug: "deep-moisturizer", qty: 2 }],
       }),
     });
     const body = await res.json();
@@ -390,7 +390,7 @@ describe("أعطال بوابة الدفع", () => {
 
     // المعاملة تراجعت: لا طلب مُنشأ ولا مخزون محجوز
     const stockAfter = (
-      await (await fetch(`${url}/api/products/scalp-oil`)).json()
+      await (await fetch(`${url}/api/products/deep-moisturizer`)).json()
     ).product.stock;
     assert.equal(stockAfter, stockBefore);
 
@@ -423,7 +423,7 @@ describe("أعطال بوابة الدفع", () => {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         customer, shipping, paymentMethod: "card",
-        items: [{ slug: "scalp-oil", qty: 1 }],
+        items: [{ slug: "deep-moisturizer", qty: 1 }],
       }),
     });
     const body = await res.json();

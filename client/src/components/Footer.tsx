@@ -3,10 +3,12 @@
 import Link from "next/link";
 import type { Category } from "@/lib/types";
 import { site } from "@/data/site";
-import { useT } from "./LangProvider";
+import { useLang, useT } from "./LangProvider";
+import { categoryName } from "@/lib/localize";
 
 export function Footer({ categories }: { categories: Category[] }) {
   const t = useT();
+  const { lang } = useLang();
 
   return (
     <footer className="mt-20 bg-plum-900 text-[#f4dde5]">
@@ -35,7 +37,7 @@ export function Footer({ categories }: { categories: Category[] }) {
             {categories.map((c) => (
               <li key={c.slug}>
                 <Link href={`/products?category=${c.slug}`} className="hover:text-gold-400">
-                  {c.name}
+                  {categoryName(c, lang)}
                 </Link>
               </li>
             ))}

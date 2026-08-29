@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import type { Category } from "@/lib/types";
+import { categoryName } from "@/lib/localize";
+import { useLang } from "./LangProvider";
 
 const ART = [
   "linear-gradient(150deg, #f7dbe4, #b8788c)",
@@ -13,6 +17,8 @@ const ART = [
 ];
 
 export function CategoryStrip({ categories }: { categories: Category[] }) {
+  const { lang } = useLang();
+
   return (
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
       {categories.map((c, i) => (
@@ -26,11 +32,11 @@ export function CategoryStrip({ categories }: { categories: Category[] }) {
             style={{ background: ART[i % ART.length] }}
             aria-hidden
           >
-            {c.name.trim().charAt(0)}
+            {categoryName(c, lang).trim().charAt(0)}
           </span>
           <span className="flex min-w-0 flex-col gap-1">
             <span className="text-sm font-bold text-balance text-plum-900 sm:text-base">
-              {c.name}
+              {categoryName(c, lang)}
             </span>
             <span className="text-xs text-muted">{c.blurb}</span>
           </span>

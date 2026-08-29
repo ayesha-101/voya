@@ -5,18 +5,20 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { Category } from "@/lib/types";
 import { useCart } from "./CartProvider";
-import { useT } from "./LangProvider";
+import { useLang, useT } from "./LangProvider";
+import { categoryName } from "@/lib/localize";
 import { LangToggle } from "./LangToggle";
 
 export function Header({ categories }: { categories: Category[] }) {
   const t = useT();
+  const { lang } = useLang();
   const { count, ready } = useCart();
   const [query, setQuery] = useState("");
   const router = useRouter();
 
   const links = [
     { href: "/products", label: t.navExtra.all },
-    ...categories.map((c) => ({ href: `/products?category=${c.slug}`, label: c.name })),
+    ...categories.map((c) => ({ href: `/products?category=${c.slug}`, label: categoryName(c, lang) })),
     { href: "/about", label: t.navExtra.about },
     { href: "/contact", label: t.navExtra.contact },
   ];

@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS categories (
   id          BIGSERIAL PRIMARY KEY,
   slug        TEXT        NOT NULL UNIQUE,
   name        TEXT        NOT NULL,
+  name_en     TEXT        NOT NULL DEFAULT '',
   blurb       TEXT        NOT NULL DEFAULT '',
   tone        TEXT        NOT NULL DEFAULT '#c25b8a',
   position    INTEGER     NOT NULL DEFAULT 0,
@@ -52,6 +53,7 @@ CREATE TABLE IF NOT EXISTS products (
   badge        TEXT,
   short        TEXT        NOT NULL DEFAULT '',
   description  TEXT        NOT NULL DEFAULT '',
+  how_to_use   TEXT        NOT NULL DEFAULT '',
   benefits     TEXT[]      NOT NULL DEFAULT '{}',
   ingredients  TEXT[]      NOT NULL DEFAULT '{}',
   shape        TEXT        NOT NULL DEFAULT 'bottle'
@@ -109,6 +111,9 @@ CREATE TABLE IF NOT EXISTS orders (
 -- ------------------------------------------------------------
 --  أعمدة الدفع الإلكتروني (تُضاف بأمان على قواعد بيانات قائمة)
 -- ------------------------------------------------------------
+ALTER TABLE categories ADD COLUMN IF NOT EXISTS name_en    TEXT NOT NULL DEFAULT '';
+ALTER TABLE products   ADD COLUMN IF NOT EXISTS how_to_use TEXT NOT NULL DEFAULT '';
+
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_status TEXT NOT NULL DEFAULT 'unpaid';
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_intent_id TEXT;
 ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_brand TEXT;

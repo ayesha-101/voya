@@ -8,7 +8,7 @@ categoriesRouter.get(
   "/",
   asyncHandler(async (_req, res) => {
     const { rows } = await query(
-      `SELECT c.slug, c.name, c.blurb, c.tone,
+      `SELECT c.slug, c.name, c.name_en AS "nameEn", c.blurb, c.tone,
               COUNT(p.id) FILTER (WHERE p.is_active) ::int AS product_count
          FROM categories c
          LEFT JOIN products p ON p.category_id = c.id

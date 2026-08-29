@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductGrid } from "@/components/ProductGrid";
 import { ProductFilters } from "@/components/ProductFilters";
+import { ProductsHeading } from "@/components/ProductsHeading";
 import { fetchCategories, fetchProducts } from "@/lib/server-api";
 
 export const metadata: Metadata = {
   title: "كل المنتجات",
-  description: "تصفّح مجموعة ڤويا الكاملة للعناية بالبشرة والجسم والشعر.",
+  description: "تصفّحي مجموعة ڤويا الكاملة — عناية بالشعر والبشرة ومكياج وعطور.",
 };
 
 const SORTS = ["featured", "price-asc", "price-desc", "rating", "discount", "newest"];
@@ -29,38 +30,17 @@ export default async function ProductsPage({
     }),
   ]);
 
-  const cat = category ? categories.find((c) => c.slug === category) : undefined;
+  const current = category ? categories.find((c) => c.slug === category) : undefined;
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-10">
-      <header className="mb-8">
-        <h1 className="text-3xl font-extrabold text-ink sm:text-4xl">
-          {q ? `نتائج البحث عن «${q}»` : (cat?.name ?? "كل المنتجات")}
-        </h1>
-        <p className="mt-2 text-sm text-muted">
-          {cat?.blurb ?? "مجموعة ڤويا الكاملة — منتجات أصلية مختارة بعناية"}
-        </p>
-        <span className="mt-3 block h-1 w-14 rounded-full bg-gold-500" />
-      </header>
+    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+      <ProductsHeading category={current} query={q} />
 
-      <Suspense fallback={<div className="mb-8 h-24" />}>
+      <Suspense fallback={<div className="mb-8 h-28" />}>
         <ProductFilters categories={categories} total={result.total} />
       </Suspense>
 
-      {result.products.length === 0 ? (
-        <div className="rounded-card border border-dashed border-blush-300 bg-blush-50 py-20 text-center">
-          <p className="text-lg font-bold text-ink">لا توجد نتائج مطابقة</p>
-          <p className="mt-2 text-sm text-muted">
-            جرّب كلمة بحث أخرى أو تصفّح كل المنتجات.
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {result.products.map((p) => (
-            <ProductCard key={p.slug} product={p} />
-          ))}
-        </div>
-      )}
+      <ProductGrid products={result.products} />
     </div>
   );
 }

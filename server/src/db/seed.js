@@ -27,9 +27,9 @@ try {
     const categoryId = new Map();
     for (const [i, c] of categories.entries()) {
       const { rows } = await client.query(
-        `INSERT INTO categories (slug, name, blurb, tone, position)
-         VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-        [c.slug, c.name, c.blurb, c.tone, i],
+        `INSERT INTO categories (slug, name, name_en, blurb, tone, position)
+         VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
+        [c.slug, c.name, c.nameEn ?? "", c.blurb, c.tone, i],
       );
       categoryId.set(c.slug, rows[0].id);
     }
@@ -39,13 +39,14 @@ try {
       await client.query(
         `INSERT INTO products
            (slug, name, name_en, category_id, price, compare_at, size, rating, reviews,
-            badge, short, description, benefits, ingredients, shape, tone_from, tone_to, stock)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)`,
+            badge, short, description, how_to_use, benefits, ingredients,
+            shape, tone_from, tone_to, stock)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)`,
         [
           p.slug, p.name, p.nameEn, categoryId.get(p.category), p.price,
           p.compareAt ?? null, p.size, p.rating, p.reviews, p.badge ?? null,
-          p.short, p.description, p.benefits, p.ingredients, p.shape,
-          p.tone[0], p.tone[1], p.stock,
+          p.short, p.description, p.howToUse ?? "", p.benefits, p.ingredients,
+          p.shape, p.tone[0], p.tone[1], p.stock,
         ],
       );
     }

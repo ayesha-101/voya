@@ -7,6 +7,7 @@ import { AddToCartButton } from "./AddToCartButton";
 import { ProductArt } from "./ProductArt";
 import { useT } from "./LangProvider";
 import { useLang } from "./LangProvider";
+import { productName } from "@/lib/localize";
 
 export function ProductCard({ product }: { product: Product }) {
   const t = useT();
@@ -18,12 +19,12 @@ export function ProductCard({ product }: { product: Product }) {
       <Link
         href={`/products/${product.slug}`}
         className="relative block aspect-[6/7] bg-[linear-gradient(160deg,#fdf1f4,#f7dbe4)]"
-        aria-label={product.name}
+        aria-label={productName(product, lang)}
       >
         <ProductArt
           shape={product.shape}
           tone={product.tone}
-          label={product.name}
+          label={productName(product, lang)}
           className="h-full w-full transition-transform duration-500 group-hover:scale-[1.04]"
         />
         {product.badge && (
@@ -42,7 +43,7 @@ export function ProductCard({ product }: { product: Product }) {
         <span className="display text-[13px] tracking-[0.1em] text-gold-500">{product.nameEn}</span>
         <h3 className="text-[15px] leading-relaxed font-bold text-ink">
           <Link href={`/products/${product.slug}`} className="hover:text-plum-600">
-            {product.name}
+            {productName(product, lang)}
           </Link>
         </h3>
         <p className="line-clamp-2 text-[13px] leading-6 text-muted">{product.short}</p>

@@ -8,7 +8,7 @@ import { validate } from "../middleware/validate.js";
 export const productsRouter = Router();
 
 const SELECT = `
-  SELECT p.*, c.slug AS category_slug, c.name AS category_name
+  SELECT p.*, c.slug AS category_slug, c.name AS category_name, c.name_en AS category_name_en
     FROM products p
     JOIN categories c ON c.id = p.category_id
 `;
