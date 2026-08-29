@@ -1,46 +1,16 @@
 import { Suspense } from "react";
-import type { Metadata } from "next";
-import { ProductGrid } from "@/components/ProductGrid";
-import { ProductFilters } from "@/components/ProductFilters";
-import { ProductsHeading } from "@/components/ProductsHeading";
-import { fetchCategories, fetchProducts } from "@/lib/server-api";
+import ShopView from "@/components/shop/ShopView";
+import { fetchProducts } from "@/lib/server-api";
 
-export const metadata: Metadata = {
-  title: "كل المنتجات",
-  description: "تصفّحي مجموعة ڤويا الكاملة — عناية بالشعر والبشرة ومكياج وعطور.",
-};
+export const metadata = { title: "المتجر" };
 
-const SORTS = ["featured", "price-asc", "price-desc", "rating", "discount", "newest"];
-
-export default async function ProductsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ category?: string; sort?: string; q?: string }>;
-}) {
-  const { category, sort, q } = await searchParams;
-
-  const [categories, result] = await Promise.all([
-    fetchCategories(),
-    fetchProducts({
-      category,
-      q,
-      // نُمرّر الفرز فقط إن كان معروفًا، فلا يصل إدخال المستخدم للخادم كما هو
-      sort: sort && SORTS.includes(sort) ? sort : "featured",
-      limit: 100,
-    }),
-  ]);
-
-  const current = category ? categories.find((c) => c.slug === category) : undefined;
+export default async function ProductsPage() {
+  // الفلترة والترتيب يتمّان في المتصفح كما في القالب، فنجلب الكتالوج كاملًا
+  const { products } = await fetchProducts({ limit: 100 }).catch(() => ({ products: [] }));
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-      <ProductsHeading category={current} query={q} />
-
-      <Suspense fallback={<div className="mb-8 h-28" />}>
-        <ProductFilters categories={categories} total={result.total} />
-      </Suspense>
-
-      <ProductGrid products={result.products} />
-    </div>
+    <Suspense fallback={<div className="container-voya py-24" />}>
+      <ShopView catalog={products} />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProductDetail } from "@/components/ProductDetail";
+import ProductPageView from "@/components/product/ProductPageView";
 import { fetchProduct, fetchProducts } from "@/lib/server-api";
 
 export async function generateStaticParams() {
@@ -33,8 +33,13 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const data = await fetchProduct(slug).catch(() => null);
+  const [data, all] = await Promise.all([
+    fetchProduct(slug).catch(() => null),
+    fetchProducts({ limit: 100 })
+      .then((r) => r.products)
+      .catch(() => []),
+  ]);
   if (!data) notFound();
 
-  return <ProductDetail product={data.product} related={data.related} />;
+  return <ProductPageView product={data.product} catalog={all} />;
 }

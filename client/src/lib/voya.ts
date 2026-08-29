@@ -109,3 +109,12 @@ export function productCountLabel(n: number): string {
   if (n <= 10) return `${n} منتجات`;
   return `${n} منتجًا`;
 }
+
+/** لونا العبوة في القاعدة يصيران خياري لون في صفحة المنتج. */
+export function productColors(p: Product): { name: string; hex: string }[] {
+  const [a, b] = p.tone;
+  return a === b ? [{ name: "اللون الأساسي", hex: a }] : [
+    { name: "فاتح", hex: a },
+    { name: "غامق", hex: b },
+  ];
+}
