@@ -35,6 +35,7 @@ const productBody = z.object({
   badge: z.string().trim().max(40).nullable().optional(),
   short: z.string().trim().max(300).default(""),
   description: z.string().trim().max(4000).default(""),
+  howToUse: z.string().trim().max(2000).default(""),
   benefits: z.array(z.string().trim().max(120)).max(12).default([]),
   ingredients: z.array(z.string().trim().max(120)).max(20).default([]),
   shape: z.enum(["bottle", "jar", "tube", "box", "pouch"]).default("bottle"),
@@ -119,14 +120,14 @@ adminRouter.post(
     const { rows } = await query(
       `INSERT INTO products
          (slug, name, name_en, category_id, price, compare_at, size, rating, reviews,
-          badge, short, description, benefits, ingredients, shape, tone_from, tone_to,
-          stock, is_active)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
+          badge, short, description, how_to_use, benefits, ingredients,
+          shape, tone_from, tone_to, stock, is_active)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)
        RETURNING id`,
       [
         b.slug, b.name, b.nameEn, categoryId, b.price, b.compareAt ?? null, b.size,
-        b.rating, b.reviews, b.badge ?? null, b.short, b.description, b.benefits,
-        b.ingredients, b.shape, b.tone[0], b.tone[1], b.stock, b.isActive,
+        b.rating, b.reviews, b.badge ?? null, b.short, b.description, b.howToUse,
+        b.benefits, b.ingredients, b.shape, b.tone[0], b.tone[1], b.stock, b.isActive,
       ],
     );
     const { rows: full } = await query(`${SELECT} WHERE p.id = $1`, [rows[0].id]);
@@ -150,14 +151,15 @@ adminRouter.put(
     const { rows } = await query(
       `UPDATE products SET
          slug=$2, name=$3, name_en=$4, category_id=$5, price=$6, compare_at=$7, size=$8,
-         rating=$9, reviews=$10, badge=$11, short=$12, description=$13, benefits=$14,
-         ingredients=$15, shape=$16, tone_from=$17, tone_to=$18, stock=$19, is_active=$20
+         rating=$9, reviews=$10, badge=$11, short=$12, description=$13, how_to_use=$14,
+         benefits=$15, ingredients=$16, shape=$17, tone_from=$18, tone_to=$19,
+         stock=$20, is_active=$21
        WHERE slug = $1
        RETURNING id`,
       [
         req.params.slug, b.slug, b.name, b.nameEn, categoryId, b.price, b.compareAt ?? null,
-        b.size, b.rating, b.reviews, b.badge ?? null, b.short, b.description, b.benefits,
-        b.ingredients, b.shape, b.tone[0], b.tone[1], b.stock, b.isActive,
+        b.size, b.rating, b.reviews, b.badge ?? null, b.short, b.description, b.howToUse,
+        b.benefits, b.ingredients, b.shape, b.tone[0], b.tone[1], b.stock, b.isActive,
       ],
     );
     if (!rows[0]) throw ApiError.notFound("المنتج غير موجود");

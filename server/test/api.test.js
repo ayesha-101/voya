@@ -365,3 +365,106 @@ describe("الأمان", () => {
     assert.match(body.error, /المسار غير موجود/);
   });
 });
+
+describe("إدارة المنتجات من اللوحة", () => {
+  let token;
+
+  before(async () => {
+    token = await login("admin@byvoyastore.com", "Admin@12345");
+  });
+
+  it("تُنشئ منتجًا كاملًا بسعر ومخزون وطريقة استخدام", async () => {
+    const slug = `panel-${Date.now()}`;
+    const { status, body } = await api("/api/admin/products", {
+      method: "POST",
+      token,
+      json: {
+        slug,
+        name: "ماسك الشعر بالكيراتين",
+        nameEn: "Keratin Hair Mask",
+        category: "hair-care",
+        price: 120,
+        compareAt: 150,
+        size: "250 مل",
+        stock: 33,
+        rating: 4.7,
+        reviews: 58,
+        badge: "جديد",
+        short: "ماسك أسبوعي يعيد بناء الشعر التالف.",
+        description: "تركيبة كيراتين مركّزة للشعر المصبوغ والتالف.",
+        howToUse: "يوزّع على شعر مغسول ويُترك 15 دقيقة ثم يُشطف.",
+        benefits: ["الحجم: 250 مل", "النوع: للشعر التالف"],
+        ingredients: ["كيراتين", "زيت الأرغان"],
+        shape: "jar",
+        tone: ["#b8788c", "#6b3149"],
+      },
+    });
+
+    assert.equal(status, 201);
+    assert.equal(body.product.price, 120);
+    assert.equal(body.product.compareAt, 150);
+    assert.equal(body.product.stock, 33);
+    assert.equal(body.product.howToUse, "يوزّع على شعر مغسول ويُترك 15 دقيقة ثم يُشطف.");
+    assert.equal(body.product.categoryName, "العناية بالشعر");
+    assert.equal(body.product.categoryNameEn, "Hair Care");
+
+    // يظهر فورًا في المتجر العام بكل حقوله
+    const shop = await api(`/api/products/${slug}`);
+    assert.equal(shop.status, 200);
+    assert.equal(shop.body.product.price, 120);
+    assert.equal(shop.body.product.stock, 33);
+    assert.equal(shop.body.product.howToUse.length > 0, true);
+
+    // ويظهر ضمن تصنيفه
+    const inCat = await api("/api/products?category=hair-care&limit=100");
+    assert.ok(inCat.body.products.some((p) => p.slug === slug));
+  });
+
+  it("تُعدّل السعر والمخزون فيتغيّران في المتجر", async () => {
+    const slug = `panel-edit-${Date.now()}`;
+    const base = {
+      slug,
+      name: "منتج للتعديل",
+      category: "skin-care",
+      price: 60,
+      stock: 10,
+      short: "وصف",
+      description: "وصف كامل",
+    };
+    await api("/api/admin/products", { method: "POST", token, json: base });
+
+    const updated = await api(`/api/admin/products/${slug}`, {
+      method: "PUT",
+      token,
+      json: { ...base, price: 95, stock: 4, howToUse: "مرتين أسبوعيًا." },
+    });
+    assert.equal(updated.body.product.price, 95);
+    assert.equal(updated.body.product.stock, 4);
+
+    const shop = await api(`/api/products/${slug}`);
+    assert.equal(shop.body.product.price, 95);
+    assert.equal(shop.body.product.stock, 4);
+    assert.equal(shop.body.product.howToUse, "مرتين أسبوعيًا.");
+  });
+
+  it("ترفض سعرًا سالبًا ومخزونًا سالبًا", async () => {
+    const bad = await api("/api/admin/products", {
+      method: "POST",
+      token,
+      json: { slug: `bad-${Date.now()}`, name: "خطأ", category: "makeup", price: -5, stock: -1 },
+    });
+    assert.equal(bad.status, 400);
+    assert.ok(bad.body.details.some((d) => d.field === "price"));
+    assert.ok(bad.body.details.some((d) => d.field === "stock"));
+  });
+
+  it("ترفض تصنيفًا غير موجود", async () => {
+    const { status, body } = await api("/api/admin/products", {
+      method: "POST",
+      token,
+      json: { slug: `nc-${Date.now()}`, name: "بلا تصنيف", category: "not-a-category", price: 10, stock: 1 },
+    });
+    assert.equal(status, 400);
+    assert.match(body.error, /التصنيف غير موجود/);
+  });
+});

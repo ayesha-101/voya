@@ -18,6 +18,7 @@ export type ProductDraft = {
   badge: string | null;
   short: string;
   description: string;
+  howToUse: string;
   benefits: string[];
   ingredients: string[];
   shape: Shape;
@@ -82,6 +83,7 @@ export function ProductForm({
       badge: badgeRaw || null,
       short: String(d.get("short") ?? "").trim(),
       description: String(d.get("description") ?? "").trim(),
+      howToUse: String(d.get("howToUse") ?? "").trim(),
       benefits: lines(String(d.get("benefits") ?? "")),
       ingredients: lines(String(d.get("ingredients") ?? "")),
       shape,
@@ -143,7 +145,7 @@ export function ProductForm({
               name="slug"
               required
               dir="ltr"
-              pattern="[a-z0-9-]+"
+              pattern="[a-z0-9\-]+"
               defaultValue={product?.slug}
               placeholder="radiance-serum"
               className={`${field} text-start`}
@@ -210,9 +212,20 @@ export function ProductForm({
           <textarea name="description" rows={4} defaultValue={product?.description} className={field} />
         </label>
 
+        <label className="block space-y-1.5">
+          <span className="text-[13px] font-bold text-ink">طريقة الاستخدام</span>
+          <textarea
+            name="howToUse"
+            rows={3}
+            defaultValue={product?.howToUse}
+            placeholder="اغسلي بالشامبو، ثم البلسم لمدة دقيقتين…"
+            className={field}
+          />
+        </label>
+
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="space-y-1.5">
-            <span className="text-[13px] font-bold text-ink">الفوائد (سطر لكل فائدة)</span>
+            <span className="text-[13px] font-bold text-ink">المواصفات (سطر لكل بند — مثال: الحجم: 300 مل)</span>
             <textarea name="benefits" rows={4} defaultValue={product?.benefits.join("\n")} className={field} />
           </label>
           <label className="space-y-1.5">
