@@ -11,7 +11,7 @@ export const STATUS_LABELS: Record<OrderStatus, string> = {
 const STYLES: Record<OrderStatus, string> = {
   pending: "bg-blush-200 text-ink",
   confirmed: "bg-plum-100 text-plum-800",
-  shipped: "bg-rose-400/30 text-rose-600",
+  shipped: "bg-gold-400/30 text-gold-600",
   delivered: "bg-plum-700 text-white",
   cancelled: "bg-red-100 text-red-700",
 };

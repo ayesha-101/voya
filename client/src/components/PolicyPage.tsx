@@ -12,7 +12,7 @@ export function PolicyPage({
   return (
     <div className="mx-auto max-w-3xl px-6 py-12">
       <h1 className="text-3xl font-extrabold text-ink sm:text-4xl">{title}</h1>
-      <span className="mt-3 block h-1 w-14 rounded-full bg-rose-500" />
+      <span className="mt-3 block h-1 w-14 rounded-full bg-gold-500" />
       <p className="mt-6 text-base leading-8 text-ink">{intro}</p>
 
       <div className="mt-10 space-y-8">

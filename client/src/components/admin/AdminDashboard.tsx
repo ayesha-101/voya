@@ -49,7 +49,7 @@ export function AdminDashboard() {
             <p className={`text-xs ${c.accent ? "text-blush-200" : "text-muted"}`}>{c.label}</p>
             <p
               className={`nums mt-2 text-2xl font-extrabold ${
-                c.accent ? "text-rose-400" : "text-plum-700"
+                c.accent ? "text-gold-400" : "text-plum-700"
               }`}
             >
               {c.value}
@@ -84,7 +84,7 @@ export function AdminDashboard() {
                   <span className="text-ink">{p.name}</span>
                   <span
                     className={`nums rounded-full px-2.5 py-1 text-xs font-bold ${
-                      p.stock === 0 ? "bg-red-100 text-red-700" : "bg-rose-400/25 text-rose-600"
+                      p.stock === 0 ? "bg-red-100 text-red-700" : "bg-gold-400/25 text-gold-600"
                     }`}
                   >
                     {p.stock}

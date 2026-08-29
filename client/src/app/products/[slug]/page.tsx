@@ -63,7 +63,7 @@ export default async function ProductPage({
       <div className="grid gap-10 lg:grid-cols-2">
         <div className="relative overflow-hidden rounded-card border border-blush-200 bg-blush-50 p-8">
           {off > 0 && (
-            <span className="absolute end-5 top-5 rounded-full bg-rose-500 px-3 py-1.5 text-sm font-extrabold text-plum-900">
+            <span className="absolute end-5 top-5 rounded-full bg-gold-500 px-3 py-1.5 text-sm font-extrabold text-plum-900">
               خصم <span className="nums">{off}%</span>
             </span>
           )}

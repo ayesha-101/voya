@@ -1,20 +1,36 @@
 import type { Metadata } from "next";
-import { Tajawal } from "next/font/google";
+import { Cormorant_Garamond, Jost, Tajawal } from "next/font/google";
 import "./globals.css";
 import { site } from "@/data/site";
 import { fetchCategories } from "@/lib/server-api";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
-import { DemoBanner } from "@/components/DemoBanner";
 import { AuthProvider } from "@/components/AuthProvider";
 import { CartProvider } from "@/components/CartProvider";
+import { DemoBanner } from "@/components/DemoBanner";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { LangProvider } from "@/components/LangProvider";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 
 const tajawal = Tajawal({
+  subsets: ["arabic"],
+  weight: ["300", "400", "500", "700", "800"],
   variable: "--font-tajawal",
-  subsets: ["arabic", "latin"],
-  weight: ["400", "500", "700", "800"],
+  display: "swap",
+});
+
+const jost = Jost({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-jost",
+  display: "swap",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
   display: "swap",
 });
 
@@ -37,18 +53,25 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const categories = await fetchCategories().catch(() => []);
 
   return (
-    <html lang="ar" dir="rtl" className={`${tajawal.variable} h-full`}>
-      <body className="flex min-h-full flex-col font-sans">
-        <AuthProvider>
-          <CartProvider>
-            <AnnouncementBar />
-            <DemoBanner />
-            <Header categories={categories} />
-            <main className="flex-1">{children}</main>
-            <Footer categories={categories} />
-            <WhatsAppButton />
-          </CartProvider>
-        </AuthProvider>
+    // اللغة والاتجاه يبدآن عربيًا ويُحدّثهما LangProvider عند التبديل
+    <html
+      lang="ar"
+      dir="rtl"
+      className={`${tajawal.variable} ${jost.variable} ${cormorant.variable} h-full`}
+    >
+      <body className="flex min-h-full flex-col">
+        <LangProvider>
+          <AuthProvider>
+            <CartProvider>
+              <AnnouncementBar />
+              <DemoBanner />
+              <Header categories={categories} />
+              <main className="flex-1">{children}</main>
+              <Footer categories={categories} />
+              <WhatsAppButton />
+            </CartProvider>
+          </AuthProvider>
+        </LangProvider>
       </body>
     </html>
   );

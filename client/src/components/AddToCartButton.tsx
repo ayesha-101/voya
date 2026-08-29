@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { Product } from "@/lib/types";
 import { useCart } from "./CartProvider";
+import { useT } from "./LangProvider";
 import { CartIcon } from "./Icons";
 
 export function AddToCartButton({
@@ -10,13 +11,17 @@ export function AddToCartButton({
   qty = 1,
   compact = false,
   className = "",
+  label,
 }: {
   product: Product;
   qty?: number;
   compact?: boolean;
   className?: string;
+  /** نص الزر في حالة السكون؛ يُشتق من لغة الواجهة إن لم يُمرَّر. */
+  label?: string;
 }) {
   const { add } = useCart();
+  const t = useT();
   const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -32,19 +37,19 @@ export function AddToCartButton({
       await add(product, qty);
       setState("done");
     } catch (err) {
-      setMessage(err instanceof Error ? err.message : "تعذّرت الإضافة");
+      setMessage(err instanceof Error ? err.message : t.product.addFailed);
       setState("error");
     }
   }
 
-  const label =
-    state === "busy" ? "جارٍ الإضافة…"
-    : state === "done" ? "تمت الإضافة ✓"
+  const text =
+    state === "busy" ? t.product.adding
+    : state === "done" ? t.product.added
     : state === "error" ? message
-    : "أضف إلى السلة";
+    : (label ?? t.product.addToCart);
 
   const tone =
-    state === "done" ? "bg-rose-500 text-plum-900"
+    state === "done" ? "bg-gold-500 text-plum-900"
     : state === "error" ? "bg-red-600 text-white"
     : "bg-plum-700 text-white hover:bg-plum-800 active:scale-[0.98]";
 
@@ -59,7 +64,7 @@ export function AddToCartButton({
       } ${tone} ${className}`}
     >
       {state === "idle" && <CartIcon className="h-4 w-4" />}
-      <span className="truncate">{label}</span>
+      <span className="truncate">{text}</span>
     </button>
   );
 }

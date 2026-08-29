@@ -33,7 +33,7 @@ export default function ContactPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
       <h1 className="text-3xl font-extrabold text-ink sm:text-4xl">تواصل معنا</h1>
-      <span className="mt-3 mb-8 block h-1 w-14 rounded-full bg-rose-500" />
+      <span className="mt-3 mb-8 block h-1 w-14 rounded-full bg-gold-500" />
 
       <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
         <div className="space-y-4">

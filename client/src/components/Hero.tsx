@@ -1,102 +1,106 @@
+"use client";
+
 import Link from "next/link";
-import { ProductArt } from "./ProductArt";
+import { useT } from "./LangProvider";
 
 export function Hero() {
-  return (
-    <section className="relative overflow-hidden bg-plum-900 text-white">
-      {/* موجات زخرفية في الخلفية */}
-      <svg
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 w-full text-plum-800"
-        viewBox="0 0 1440 200"
-        preserveAspectRatio="none"
-        aria-hidden
-      >
-        <path
-          d="M0 120c180-60 360 40 540 20s360-100 540-70 240 70 360 60v70H0z"
-          fill="currentColor"
-          opacity="0.55"
-        />
-        <path
-          d="M0 160c200-50 400 30 600 10s400-80 600-50 180 50 240 45v35H0z"
-          fill="currentColor"
-        />
-      </svg>
-      <div
-        className="pointer-events-none absolute -end-24 -top-24 h-96 w-96 rounded-full bg-rose-500/10 blur-3xl"
-        aria-hidden
-      />
+  const t = useT();
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:py-24">
-        <div className="animate-fade-up space-y-6">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[13px] font-medium">
-            <span className="h-2 w-2 rounded-full bg-rose-400" />
-            عضوي معتمد • محصود يدويًا
+  return (
+    <section className="bg-[radial-gradient(110%_90%_at_82%_12%,#fbe7ec_0%,#fdf1e8_48%,#fdf8f3_100%)]">
+      <div className="mx-auto grid max-w-[1360px] items-center gap-14 px-10 py-20 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="animate-fade-up flex flex-col gap-6">
+          <span className="inline-flex items-center gap-2.5 self-start rounded-full border border-gold-300 bg-gold-100 px-4 py-2 text-[13px] text-gold-700">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold-500" />
+            {t.hero.kicker}
           </span>
 
-          <h1 className="text-4xl leading-[1.25] font-extrabold sm:text-5xl lg:text-[3.4rem]">
-            جمالٌ من قلب البحر
-            <span className="mt-2 block text-rose-400">منتجات مختارة بعناية</span>
+          <h1 className="text-5xl leading-[1.18] font-extrabold tracking-tight text-plum-900 lg:text-[64px]">
+            {t.hero.title}
+            <span className="display gold-text mt-2 block text-[56px] font-normal italic">{t.hero.titleAccent}</span>
           </h1>
 
-          <p className="max-w-xl text-base leading-8 text-blush-100/85 sm:text-lg">
-            مجموعة ڤويا الأصلية للعناية بالبشرة والجسم والشعر، مستخلصة من الأعشاب
-            البحرية العضوية. جودة عالية، مكوّنات نظيفة، ونتائج تشعر بها من أول استخدام.
+          <p className="max-w-[48ch] text-[17px] leading-[1.9] text-[#7b6069]" style={{ textWrap: "pretty" }}>
+            {t.hero.body}
           </p>
 
-          <div className="flex flex-wrap gap-3 pt-2">
+          <div className="flex flex-wrap gap-3 pt-1">
             <Link
               href="/products"
-              className="rounded-full bg-rose-500 px-8 py-4 text-[15px] font-bold text-plum-900 transition hover:bg-rose-400 active:scale-[0.98]"
+              className="rounded-full bg-plum-600 px-8 py-4 text-[15px] font-bold text-white shadow-[0_12px_26px_rgba(138,74,99,.24)] transition hover:bg-plum-700"
             >
-              تسوّق الآن
+              {t.hero.primary}
             </Link>
             <Link
-              href="/products?category=gifts"
-              className="rounded-full border border-white/25 px-8 py-4 text-[15px] font-bold transition hover:bg-white/10"
+              href="/products?sort=newest"
+              className="rounded-full border border-gold-400 px-8 py-4 text-[15px] font-bold text-gold-700 transition hover:bg-gold-100"
             >
-              أطقم الهدايا
+              {t.hero.secondary}
             </Link>
           </div>
 
-          <dl className="grid max-w-md grid-cols-3 gap-4 border-t border-white/15 pt-6">
-            {[
-              ["+12,000", "عميل سعيد"],
-              ["4.8/5", "تقييم المتجر"],
-              ["24–48", "ساعة للتوصيل"],
-            ].map(([value, label]) => (
-              <div key={label}>
-                <dt className="nums text-2xl font-extrabold text-rose-400">{value}</dt>
-                <dd className="text-xs text-blush-100/70">{label}</dd>
+          <dl className="mt-2 grid max-w-md grid-cols-3 gap-8 border-t border-blush-300 pt-6">
+            {t.hero.stats.map((s) => (
+              <div key={s.label}>
+                <dt className="nums text-2xl font-extrabold text-plum-600">{s.value}</dt>
+                <dd className="mt-1 text-[13px] text-muted">{s.label}</dd>
               </div>
             ))}
           </dl>
         </div>
 
-        {/* عرض المنتجات البطل */}
-        <div className="relative hidden justify-center lg:flex">
-          <div className="absolute h-80 w-80 rounded-full bg-plum-700/60 blur-2xl" aria-hidden />
-          <div className="relative flex items-end gap-2">
-            <ProductArt
-              shape="jar"
-              tone={["#edb9a4", "#c27860"]}
-              label="زبدة الجسم"
-              className="h-56 w-44 drop-shadow-2xl"
-            />
-            <ProductArt
-              shape="bottle"
-              tone={["#c25b8a", "#6b2a48"]}
-              label="سيروم الإشراق"
-              className="h-80 w-56 drop-shadow-2xl"
-            />
-            <ProductArt
-              shape="tube"
-              tone={["#e8abc6", "#c25b8a"]}
-              label="جل العين"
-              className="h-52 w-40 drop-shadow-2xl"
-            />
+        <div className="relative hidden lg:block">
+          <div className="relative h-[540px] overflow-hidden rounded-t-[250px] rounded-b-[30px] bg-[linear-gradient(165deg,#f9dde6_0%,#f6e0cf_55%,#f3d3c6_100%)] shadow-[0_30px_60px_rgba(108,42,72,.2)]">
+            <div className="absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_22%,rgba(255,255,255,.6),transparent_70%)]" />
+            <div className="absolute inset-0 flex items-end justify-center gap-4 pb-20">
+              <Bottle width={96} capHeight={20} bodyHeight={150} radius="26px 26px 20px 20px" from="#fff" to="#dba7bc" delay="0s" />
+              <Bottle width={132} capHeight={30} bodyHeight={236} radius="34px 34px 22px 22px" from="#fdf5f7" to="#a75f7c" delay=".4s" tall />
+              <Bottle width={88} capHeight={16} bodyHeight={176} radius="44px 44px 16px 16px" from="#fff8f0" to="#d3a577" delay=".8s" />
+            </div>
+          </div>
+
+          <div className="absolute bottom-7 -start-6 flex items-center gap-3.5 rounded-[22px] border border-blush-200 bg-white px-5 py-4 shadow-[0_18px_36px_rgba(108,42,72,.16)]">
+            <span className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-gold-400 to-gold-500 text-[15px] font-extrabold text-white">
+              4.9
+            </span>
+            <div>
+              <div className="text-sm font-bold">{t.hero.ratingTitle}</div>
+              <div className="text-xs text-muted">{t.hero.ratingSub}</div>
+            </div>
+          </div>
+
+          <div className="absolute top-6 -end-4 rounded-[18px] bg-white px-4 py-3 text-[13px] font-bold text-plum-600 shadow-[0_14px_30px_rgba(108,42,72,.14)]">
+            {t.hero.cod}
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function Bottle({
+  width, capHeight, bodyHeight, radius, from, to, delay, tall,
+}: {
+  width: number; capHeight: number; bodyHeight: number; radius: string; from: string; to: string; delay: string; tall?: boolean;
+}) {
+  return (
+    <div className="animate-float" style={{ width, animationDelay: delay }}>
+      <div
+        className="mx-auto w-[34%]"
+        style={{ height: capHeight, borderRadius: "8px 8px 0 0", background: "linear-gradient(180deg, #f0d69c, #b8901f)" }}
+      />
+      <div
+        className="flex flex-col items-center justify-center gap-2"
+        style={{
+          height: bodyHeight,
+          borderRadius: radius,
+          background: `linear-gradient(150deg, ${from}, ${to})`,
+          boxShadow: "inset -14px 0 26px rgba(76,35,51,.18), 0 22px 38px rgba(108,42,72,.22)",
+        }}
+      >
+        <span className={`display tracking-[0.22em] text-white ${tall ? "text-[22px]" : "text-[15px]"}`}>VOYA</span>
+        {tall && <span className="h-px w-16 bg-white/60" />}
+      </div>
+    </div>
   );
 }

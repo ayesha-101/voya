@@ -30,7 +30,7 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
       <h1 className="text-3xl font-extrabold text-ink sm:text-4xl">من نحن</h1>
-      <span className="mt-3 mb-8 block h-1 w-14 rounded-full bg-rose-500" />
+      <span className="mt-3 mb-8 block h-1 w-14 rounded-full bg-gold-500" />
 
       <div className="space-y-5 text-base leading-8 text-ink">
         <p>
@@ -61,7 +61,7 @@ export default function AboutPage() {
         <p className="mt-2 text-blush-100/85">ابدأ بروتينك الجديد اليوم</p>
         <Link
           href="/products"
-          className="mt-6 inline-block rounded-full bg-rose-500 px-8 py-3.5 font-bold text-plum-900 transition hover:bg-rose-400"
+          className="mt-6 inline-block rounded-full bg-gold-500 px-8 py-3.5 font-bold text-plum-900 transition hover:bg-gold-400"
         >
           تصفّح المنتجات
         </Link>

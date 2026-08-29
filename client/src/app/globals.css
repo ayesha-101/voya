@@ -1,52 +1,54 @@
 @import "tailwindcss";
 
 /* ============================================================
-   VOYA STORE — نظام التصميم
-   لوحة أنثوية دافئة:
-   بنفسجي وردي عميق + وردي فاتح + لمسة ذهبية وردية
+   VOYA — نظام التصميم: بلوم وردي + ذهبي
    ============================================================ */
 
 @theme {
-  /* البنفسجي الوردي — اللون الأساسي: الأزرار والهيدر والفوتر */
+  /* البنفسجي الوردي — الأساسي */
   --color-plum-50: #fdf5f9;
-  --color-plum-100: #fae9f1;
-  --color-plum-200: #f3d0e0;
-  --color-plum-300: #e8abc6;
-  --color-plum-400: #d67ea6;
-  --color-plum-500: #c25b8a;
-  --color-plum-600: #a54470;
-  --color-plum-700: #87355b;
-  --color-plum-800: #6b2a48;
-  --color-plum-900: #4c1c33;
+  --color-plum-100: #fbeef0;
+  --color-plum-200: #f3e2e0;
+  --color-plum-300: #e2c9d3;
+  --color-plum-400: #b8788c;
+  --color-plum-500: #a75f7c;
+  --color-plum-600: #8a4a63;
+  --color-plum-700: #6b3149;
+  --color-plum-800: #5c2a3d;
+  --color-plum-900: #4c2333;
 
-  /* الوردي الفاتح — الخلفيات والحدود المحايدة */
-  --color-blush-50: #fefaf9;
-  --color-blush-100: #fcf1ef;
-  --color-blush-200: #f6e0dd;
-  --color-blush-300: #ebc7c3;
-  --color-blush-400: #d8a29d;
+  /* الوردي الفاتح */
+  --color-blush-50: #fdf8f3;
+  --color-blush-100: #fdf1f4;
+  --color-blush-200: #f7dbe4;
+  --color-blush-300: #efdcd7;
+  --color-blush-400: #d8b9c6;
 
-  /* الذهبي الوردي — لمسة التمييز والعروض */
-  --color-rose-400: #edb9a4;
-  --color-rose-500: #e0997f;
-  --color-rose-600: #c27860;
+  /* الذهبي */
+  --color-gold-100: #fdf6e9;
+  --color-gold-200: #f2e2c8;
+  --color-gold-300: #ecd6ae;
+  --color-gold-400: #e7c37a;
+  --color-gold-500: #c9a227;
+  --color-gold-600: #b08430;
+  --color-gold-700: #8a6a1d;
 
-  --color-ink: #2c1720;
-  --color-muted: #7b6069;
+  --color-ink: #34202a;
+  --color-muted: #a58a92;
 
-  --font-sans: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+  --font-ar: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+  --font-en: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-cormorant), Georgia, serif;
 
-  --radius-card: 1.25rem;
+  --radius-card: 1.625rem;
 }
 
 :root {
-  --background: #ffffff;
+  --background: #fdf8f3;
   --foreground: var(--color-ink);
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--background);
@@ -54,53 +56,38 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* الأرقام دائمًا لاتينية حتى داخل النص العربي (أوضح للأسعار) */
+html[lang="ar"] body { font-family: var(--font-ar); }
+html[lang="en"] body { font-family: var(--font-en); }
+
+.display { font-family: var(--font-display); }
+
+.gold-text {
+  background: linear-gradient(90deg, #c9a227, #e7c37a 55%, #b98750);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* الأرقام تبقى لاتينية ومعزولة عن اتجاه النص العربي، وإلا انقلب
+   ترتيب الأسعار والتواريخ داخل صفحة RTL. */
 .nums {
   font-variant-numeric: tabular-nums;
   direction: ltr;
   unicode-bidi: isolate;
 }
 
-/* شريط تمرير أفقي بدون scrollbar مرئي */
-.no-scrollbar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
-@keyframes voya-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
+@keyframes voya-fade-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+.animate-fade-up { animation: voya-fade-up .7s ease-out both; }
 
-.animate-fade-up {
-  animation: voya-fade-up 0.6s ease-out both;
-}
+@keyframes voya-marquee { from { transform: translateX(0); } to { transform: translateX(50%); } }
+.animate-marquee { animation: voya-marquee 34s linear infinite; }
 
-@keyframes voya-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(50%);
-  }
-}
-
-.animate-marquee {
-  animation: voya-marquee 26s linear infinite;
-}
+@keyframes voya-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.animate-float { animation: voya-float 7s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-up,
-  .animate-marquee {
-    animation: none;
-  }
+  .animate-fade-up, .animate-marquee, .animate-float { animation: none; }
 }

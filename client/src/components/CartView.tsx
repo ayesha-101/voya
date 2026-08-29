@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "./CartProvider";
+import { useLang } from "./LangProvider";
 import { ProductArt } from "./ProductArt";
 import { QuantityStepper } from "./QuantityStepper";
 import { site } from "@/data/site";
@@ -10,6 +11,7 @@ import { formatPrice } from "@/lib/format";
 export function CartView() {
   const { items, setQty, remove, subtotal, shippingFee, total, ready, pending, error, clear } =
     useCart();
+  const { lang } = useLang();
 
   if (!ready) {
     return <div className="h-64 animate-pulse rounded-card bg-blush-100" />;
@@ -81,7 +83,7 @@ export function CartView() {
                     max={item.stock}
                   />
                   <span className="nums text-lg font-extrabold text-plum-700">
-                    {formatPrice(item.lineTotal)}
+                    {formatPrice(item.lineTotal, lang)}
                   </span>
                 </div>
               </div>
@@ -104,19 +106,19 @@ export function CartView() {
 
         {remaining > 0 && (
           <p className="nums rounded-xl bg-white p-3 text-center text-[13px] text-plum-700">
-            أضف بقيمة {formatPrice(remaining)} للحصول على شحن مجاني
+            أضف بقيمة {formatPrice(remaining, lang)} للحصول على شحن مجاني
           </p>
         )}
 
         <dl className="space-y-3 border-y border-blush-200 py-4 text-sm">
           <div className="flex justify-between">
             <dt className="text-muted">المجموع الفرعي</dt>
-            <dd className="nums font-bold">{formatPrice(subtotal)}</dd>
+            <dd className="nums font-bold">{formatPrice(subtotal, lang)}</dd>
           </div>
           <div className="flex justify-between">
             <dt className="text-muted">الشحن</dt>
             <dd className="nums font-bold">
-              {shippingFee === 0 ? "مجاني" : formatPrice(shippingFee)}
+              {shippingFee === 0 ? "مجاني" : formatPrice(shippingFee, lang)}
             </dd>
           </div>
         </dl>
@@ -124,7 +126,7 @@ export function CartView() {
         <div className="flex items-baseline justify-between">
           <span className="font-bold text-ink">الإجمالي</span>
           <span className="nums text-2xl font-extrabold text-plum-700">
-            {formatPrice(total)}
+            {formatPrice(total, lang)}
           </span>
         </div>
 

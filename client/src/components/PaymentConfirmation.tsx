@@ -8,6 +8,7 @@ import { formatPrice } from "@/lib/format";
 import { site } from "@/data/site";
 import type { Order } from "@/lib/types";
 import { paymentLabel } from "./PaymentBadge";
+import { useLang } from "./LangProvider";
 
 /**
  * صفحة العودة بعد التحقّق البنكي (3-D Secure).
@@ -17,6 +18,7 @@ import { paymentLabel } from "./PaymentBadge";
 const POLL_DELAYS = [0, 1500, 3000, 5000, 8000];
 
 export function PaymentConfirmation() {
+  const { lang } = useLang();
   const params = useSearchParams();
   const reference = params.get("order");
   const email = params.get("email");
@@ -95,7 +97,7 @@ export function PaymentConfirmation() {
       <Panel tone="ok" icon="✓" title="تم الدفع بنجاح">
         <p className="nums text-sm text-muted">رقم الطلب: {order.reference}</p>
         <p className="nums mt-1 text-xl font-extrabold text-plum-700">
-          {formatPrice(order.total)}
+          {formatPrice(order.total, lang)}
         </p>
         <p className="mt-1 text-xs text-muted">{paymentLabel(order)}</p>
         <p className="mx-auto mt-4 max-w-md text-sm leading-7">

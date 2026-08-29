@@ -6,16 +6,16 @@ export function OfferBanner() {
   return (
     <section className="relative overflow-hidden rounded-card bg-plum-800 text-white">
       <div
-        className="pointer-events-none absolute -start-20 -bottom-20 h-72 w-72 rounded-full bg-rose-500/15 blur-3xl"
+        className="pointer-events-none absolute -start-20 -bottom-20 h-72 w-72 rounded-full bg-gold-500/15 blur-3xl"
         aria-hidden
       />
       <div className="relative grid items-center gap-8 p-8 sm:p-12 lg:grid-cols-[1.4fr_1fr]">
         <div className="space-y-5">
-          <span className="inline-block rounded-full bg-rose-500 px-4 py-1.5 text-[13px] font-extrabold text-plum-900">
+          <span className="inline-block rounded-full bg-gold-500 px-4 py-1.5 text-[13px] font-extrabold text-plum-900">
             عرض نهاية الأسبوع
           </span>
           <h2 className="text-3xl leading-tight font-extrabold sm:text-4xl">
-            خصم يصل إلى <span className="nums text-rose-400">25%</span> على
+            خصم يصل إلى <span className="nums text-gold-400">25%</span> على
             <br />
             أطقم الهدايا الفاخرة
           </h2>

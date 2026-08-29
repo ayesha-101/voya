@@ -11,6 +11,7 @@ import { paymentLabel } from "./PaymentBadge";
 import { WalletMarks } from "./WalletMarks";
 import { useAuth } from "./AuthProvider";
 import { useCart } from "./CartProvider";
+import { useLang } from "./LangProvider";
 
 const emirates = [
   "دبي", "أبوظبي", "الشارقة", "عجمان", "رأس الخيمة", "الفجيرة", "أم القيوين",
@@ -20,6 +21,7 @@ type Payment = "cod" | "card";
 
 export function CheckoutForm() {
   const { user } = useAuth();
+  const { lang } = useLang();
   const { items, subtotal, shippingFee, total, count, ready, clear, guestLines } = useCart();
   const [payment, setPayment] = useState<Payment>("cod");
   const [order, setOrder] = useState<Order | null>(null);
@@ -66,7 +68,7 @@ export function CheckoutForm() {
         <h2 className="mt-5 text-2xl font-extrabold text-ink">تم استلام طلبك بنجاح</h2>
         <p className="nums mt-2 text-sm text-muted">رقم الطلب: {order.reference}</p>
         <p className="nums mt-1 text-lg font-extrabold text-plum-700">
-          {formatPrice(order.total)}
+          {formatPrice(order.total, lang)}
         </p>
         <p className="mt-1 text-xs text-muted">{paymentLabel(order)}</p>
         <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-ink">
@@ -388,7 +390,7 @@ export function CheckoutForm() {
             <li key={item.slug} className="flex items-start justify-between gap-3">
               <span className="text-ink">{item.name}</span>
               <span className="nums shrink-0 text-muted">×{item.qty}</span>
-              <span className="nums shrink-0 font-bold">{formatPrice(item.lineTotal)}</span>
+              <span className="nums shrink-0 font-bold">{formatPrice(item.lineTotal, lang)}</span>
             </li>
           ))}
         </ul>
@@ -396,19 +398,19 @@ export function CheckoutForm() {
         <dl className="space-y-3 border-b border-blush-200 pb-4 text-sm">
           <div className="flex justify-between">
             <dt className="text-muted">المجموع الفرعي</dt>
-            <dd className="nums font-bold">{formatPrice(subtotal)}</dd>
+            <dd className="nums font-bold">{formatPrice(subtotal, lang)}</dd>
           </div>
           <div className="flex justify-between">
             <dt className="text-muted">الشحن</dt>
             <dd className="nums font-bold">
-              {shippingFee === 0 ? "مجاني" : formatPrice(shippingFee)}
+              {shippingFee === 0 ? "مجاني" : formatPrice(shippingFee, lang)}
             </dd>
           </div>
         </dl>
 
         <div className="flex items-baseline justify-between">
           <span className="font-bold text-ink">الإجمالي</span>
-          <span className="nums text-2xl font-extrabold text-plum-700">{formatPrice(total)}</span>
+          <span className="nums text-2xl font-extrabold text-plum-700">{formatPrice(total, lang)}</span>
         </div>
 
         {payment === "cod" ? (

@@ -10,7 +10,7 @@ const LABELS: Record<PaymentStatus, string> = {
 
 const STYLES: Record<PaymentStatus, string> = {
   unpaid: "bg-blush-200 text-ink",
-  processing: "bg-rose-400/30 text-rose-600",
+  processing: "bg-gold-400/30 text-gold-600",
   paid: "bg-plum-700 text-white",
   failed: "bg-red-100 text-red-700",
   refunded: "bg-blush-300 text-ink",

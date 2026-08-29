@@ -1,64 +1,61 @@
+"use client";
+
 import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { discountPercent, formatPrice } from "@/lib/format";
-import { ProductArt } from "./ProductArt";
-import { Rating } from "./Rating";
 import { AddToCartButton } from "./AddToCartButton";
+import { ProductArt } from "./ProductArt";
+import { useT } from "./LangProvider";
+import { useLang } from "./LangProvider";
 
 export function ProductCard({ product }: { product: Product }) {
+  const t = useT();
+  const { lang } = useLang();
   const off = discountPercent(product.price, product.compareAt);
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-card border border-blush-200 bg-white transition hover:-translate-y-1 hover:border-plum-200 hover:shadow-xl hover:shadow-plum-900/5">
+    <article className="group flex flex-col overflow-hidden rounded-card border border-blush-200 bg-white transition hover:-translate-y-1.5 hover:shadow-[0_22px_44px_rgba(108,42,72,.13)]">
       <Link
         href={`/products/${product.slug}`}
-        className="relative block bg-blush-50 p-4"
+        className="relative block aspect-[6/7] bg-[linear-gradient(160deg,#fdf1f4,#f7dbe4)]"
         aria-label={product.name}
       >
-        <div className="absolute end-3 top-3 z-10 flex flex-col items-end gap-1.5">
-          {product.badge && (
-            <span className="rounded-full bg-plum-800 px-2.5 py-1 text-[11px] font-bold text-white">
-              {product.badge}
-            </span>
-          )}
-          {off > 0 && (
-            <span className="nums rounded-full bg-rose-500 px-2.5 py-1 text-[11px] font-bold text-plum-900">
-              -{off}%
-            </span>
-          )}
-        </div>
         <ProductArt
           shape={product.shape}
           tone={product.tone}
           label={product.name}
-          className="mx-auto h-44 w-full transition-transform duration-500 group-hover:scale-105"
+          className="h-full w-full transition-transform duration-500 group-hover:scale-[1.04]"
         />
+        {product.badge && (
+          <span className="absolute start-3.5 top-3.5 rounded-full bg-white px-3 py-1.5 text-[11px] font-bold text-plum-600 shadow-[0_6px_14px_rgba(108,42,72,.12)]">
+            {product.badge}
+          </span>
+        )}
+        {off > 0 && (
+          <span className="nums absolute end-3.5 top-3.5 rounded-full bg-plum-400 px-2.5 py-1.5 text-[11px] font-bold text-white">
+            -{off}%
+          </span>
+        )}
       </Link>
 
-      <div className="flex flex-1 flex-col gap-2 p-4 pt-3">
-        <Rating value={product.rating} reviews={product.reviews} />
-        <h3 className="text-[15px] font-bold leading-6 text-ink">
+      <div className="flex flex-1 flex-col gap-2 p-4.5 pb-5">
+        <span className="display text-[13px] tracking-[0.1em] text-gold-500">{product.nameEn}</span>
+        <h3 className="text-[15px] leading-relaxed font-bold text-ink">
           <Link href={`/products/${product.slug}`} className="hover:text-plum-600">
             {product.name}
           </Link>
         </h3>
-        <p className="line-clamp-2 text-[13px] leading-5 text-muted">{product.short}</p>
+        <p className="line-clamp-2 text-[13px] leading-6 text-muted">{product.short}</p>
 
-        <div className="mt-auto flex items-end justify-between gap-2 pt-2">
-          <div className="flex flex-col">
-            <span className="nums text-lg font-extrabold text-plum-700">
-              {formatPrice(product.price)}
-            </span>
-            {product.compareAt && (
-              <span className="nums text-xs text-muted line-through">
-                {formatPrice(product.compareAt)}
-              </span>
-            )}
-          </div>
-          <span className="text-[11px] text-muted">{product.size}</span>
+        <div className="mt-auto flex items-baseline gap-2.5 pt-2.5">
+          <span className="nums text-[19px] font-extrabold text-plum-600">{formatPrice(product.price, lang)}</span>
+          {product.compareAt && (
+            <span className="nums text-[13px] text-blush-400 line-through">{formatPrice(product.compareAt, lang)}</span>
+          )}
+          <span className="ms-auto text-xs text-muted">{product.size}</span>
         </div>
 
-        <AddToCartButton product={product} compact />
+        <AddToCartButton product={product} compact label={t.product.addToCart} />
       </div>
     </article>
   );

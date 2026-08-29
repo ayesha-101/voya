@@ -1,29 +1,20 @@
-import { CashIcon, LeafIcon, ShieldIcon, TruckIcon } from "./Icons";
-import { site } from "@/data/site";
+"use client";
 
-const features = [
-  {
-    Icon: TruckIcon,
-    title: "شحن مجاني",
-    body: `للطلبات فوق ${site.freeShippingThreshold} د.إ`,
-  },
-  { Icon: CashIcon, title: "الدفع عند الاستلام", body: "متاح في جميع الإمارات" },
-  { Icon: ShieldIcon, title: "منتجات أصلية 100%", body: "ضمان الاستبدال 14 يوم" },
-  { Icon: LeafIcon, title: "مكوّنات عضوية", body: "خالية من البارابين والسلفات" },
-];
+import { useT } from "./LangProvider";
 
 export function FeatureStrip() {
+  const t = useT();
   return (
-    <section className="border-y border-blush-200 bg-blush-50">
-      <div className="mx-auto grid max-w-7xl gap-4 px-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
-        {features.map(({ Icon, title, body }) => (
-          <div key={title} className="flex items-center gap-3.5">
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white text-plum-700 shadow-sm">
-              <Icon className="h-6 w-6" />
+    <section className="border-y border-blush-200 bg-white">
+      <div className="mx-auto grid max-w-[1360px] gap-7 px-10 py-7 sm:grid-cols-2 lg:grid-cols-4">
+        {t.services.map((f) => (
+          <div key={f.title} className="flex items-center gap-3.5">
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-gold-200 bg-gold-100 text-base text-gold-600">
+              ◇
             </span>
             <div>
-              <p className="text-sm font-bold text-ink">{title}</p>
-              <p className="text-xs text-muted">{body}</p>
+              <p className="text-sm font-bold">{f.title}</p>
+              <p className="mt-0.5 text-xs text-muted">{f.body}</p>
             </div>
           </div>
         ))}

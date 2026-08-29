@@ -1,31 +1,41 @@
 import Link from "next/link";
 import type { Category } from "@/lib/types";
-import { categoryIcons, LeafIcon } from "./Icons";
+
+const ART = [
+  "linear-gradient(150deg, #f7dbe4, #b8788c)",
+  "linear-gradient(150deg, #f6e0cf, #c98f6c)",
+  "linear-gradient(150deg, #efd9e6, #8a4a63)",
+  "linear-gradient(150deg, #f7c9d3, #a7315a)",
+  "linear-gradient(150deg, #f0dcb0, #b08430)",
+  "linear-gradient(150deg, #e7c37a, #8a6a1d)",
+  "linear-gradient(150deg, #f3e2e0, #b8788c)",
+  "linear-gradient(150deg, #d8b9c6, #4c2333)",
+];
 
 export function CategoryStrip({ categories }: { categories: Category[] }) {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-      {categories.map((c) => {
-        const Icon = categoryIcons[c.slug as keyof typeof categoryIcons] ?? LeafIcon;
-        return (
-          <Link
-            key={c.slug}
-            href={`/products?category=${c.slug}`}
-            className="group flex flex-col items-center gap-3 rounded-card border border-blush-200 bg-white p-5 text-center transition hover:-translate-y-1 hover:shadow-lg hover:shadow-plum-900/5"
+    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {categories.map((c, i) => (
+        <Link
+          key={c.slug}
+          href={`/products?category=${c.slug}`}
+          className="flex min-w-0 items-center gap-3 rounded-card border border-blush-200 bg-white p-3 transition hover:-translate-y-1 hover:border-gold-400 hover:shadow-[0_16px_32px_rgba(108,42,72,.12)] sm:gap-3.5 sm:p-3.5"
+        >
+          <span
+            className="display grid h-14 w-14 shrink-0 place-items-center rounded-[18px] text-[22px] text-white sm:h-[76px] sm:w-[76px] sm:rounded-[20px] sm:text-[26px]"
+            style={{ background: ART[i % ART.length] }}
+            aria-hidden
           >
-            <span
-              className="grid h-16 w-16 place-items-center rounded-full text-white transition group-hover:scale-110"
-              style={{ background: c.tone }}
-              aria-hidden
-            >
-              <Icon className="h-7 w-7" />
+            {c.name.trim().charAt(0)}
+          </span>
+          <span className="flex min-w-0 flex-col gap-1">
+            <span className="text-sm font-bold text-balance text-plum-900 sm:text-base">
+              {c.name}
             </span>
-            <span className="text-sm font-bold text-ink">{c.name}</span>
-            <span className="text-[11px] leading-4 text-muted">{c.blurb}</span>
-            <span className="nums text-[11px] text-plum-600">{c.productCount} منتج</span>
-          </Link>
-        );
-      })}
+            <span className="text-xs text-muted">{c.blurb}</span>
+          </span>
+        </Link>
+      ))}
     </div>
   );
 }

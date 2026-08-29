@@ -7,12 +7,14 @@ import { api } from "@/lib/api";
 import { formatDateTime, formatPrice } from "@/lib/format";
 import type { Order } from "@/lib/types";
 import { useAuth } from "./AuthProvider";
+import { useLang } from "./LangProvider";
 import { LogoutIcon, PackageIcon } from "./Icons";
 import { OrderStatusBadge } from "./OrderStatusBadge";
 import { PaymentBadge } from "./PaymentBadge";
 
 export function AccountView() {
   const { user, ready, logout } = useAuth();
+  const { lang } = useLang();
   const router = useRouter();
   const [orders, setOrders] = useState<Order[] | null>(null);
   // نمنع إعادة التوجيه لصفحة الدخول أثناء تسجيل الخروج المتعمّد
@@ -116,7 +118,7 @@ export function AccountView() {
                 <div className="flex items-center gap-3">
                   <OrderStatusBadge status={o.status} />
                   <span className="nums text-lg font-extrabold text-plum-700">
-                    {formatPrice(o.total)}
+                    {formatPrice(o.total, lang)}
                   </span>
                 </div>
               </div>
@@ -126,7 +128,7 @@ export function AccountView() {
                   <li key={i.slug} className="flex justify-between gap-3">
                     <span className="text-ink">{i.name}</span>
                     <span className="nums text-muted">×{i.qty}</span>
-                    <span className="nums font-bold">{formatPrice(i.lineTotal)}</span>
+                    <span className="nums font-bold">{formatPrice(i.lineTotal, lang)}</span>
                   </li>
                 ))}
               </ul>

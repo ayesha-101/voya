@@ -8,7 +8,7 @@ export function AnnouncementBar() {
         {strip.map((text, i) => (
           <span key={i} className="flex items-center gap-10">
             {text}
-            <span className="text-rose-400" aria-hidden>
+            <span className="text-gold-400" aria-hidden>
               ✦
             </span>
           </span>

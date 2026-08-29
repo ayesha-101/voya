@@ -21,7 +21,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
       <div className="flex flex-wrap items-center gap-4">
         <QuantityStepper value={qty} onChange={setQty} max={product.stock} />
         {product.stock <= 15 && (
-          <span className="nums text-sm font-bold text-rose-600">
+          <span className="nums text-sm font-bold text-gold-600">
             متبقٍ {product.stock} قطع فقط
           </span>
         )}

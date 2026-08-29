@@ -16,7 +16,7 @@ export function SectionHeading({
       <div>
         <h2 className="text-2xl font-extrabold text-ink sm:text-3xl">{title}</h2>
         {subtitle && <p className="mt-1.5 text-sm text-muted">{subtitle}</p>}
-        <span className="mt-3 block h-1 w-14 rounded-full bg-rose-500" />
+        <span className="mt-3 block h-1 w-14 rounded-full bg-gold-500" />
       </div>
       {href && (
         <Link

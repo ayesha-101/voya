@@ -129,7 +129,7 @@ export function AdminProducts() {
                         p.stock === 0
                           ? "bg-red-100 text-red-700"
                           : p.stock <= 10
-                            ? "bg-rose-400/25 text-rose-600"
+                            ? "bg-gold-400/25 text-gold-600"
                             : "bg-plum-100 text-plum-800"
                       }`}
                     >

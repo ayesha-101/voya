@@ -40,7 +40,7 @@ export default async function ProductsPage({
         <p className="mt-2 text-sm text-muted">
           {cat?.blurb ?? "مجموعة ڤويا الكاملة — منتجات أصلية مختارة بعناية"}
         </p>
-        <span className="mt-3 block h-1 w-14 rounded-full bg-rose-500" />
+        <span className="mt-3 block h-1 w-14 rounded-full bg-gold-500" />
       </header>
 
       <Suspense fallback={<div className="mb-8 h-24" />}>
