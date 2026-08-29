@@ -19,18 +19,15 @@ import { createStripeClient } from "./lib/payments.js";
 export function createApp({ stripe = createStripeClient() } = {}) {
   const app = express();
 
-  // عميل Stripe واحد للتطبيق كله. تمريره كوسيطة يسمح بحقن بديل في
-  // الاختبارات دون نداء شبكة، وتمرير null صراحةً يُعطّل الدفع الإلكتروني.
   app.locals.stripe = stripe;
 
-  // نثق بالوكيل الأول فقط حتى يعمل تحديد المعدّل على IP الحقيقي
-  // دون أن يتمكّن العميل من تزوير X-Forwarded-For.
-  app.set("trust proxy", 1);
+  if (config.isProd) {
+    app.set("trust proxy", 1);
+  }
   app.disable("x-powered-by");
 
   app.use(
     helmet({
-      // واجهة برمجية JSON فقط — لا تُقدّم HTML، فلا حاجة لسياسة محتوى الصفحة
       contentSecurityPolicy: false,
       crossOriginResourcePolicy: { policy: "cross-origin" },
     }),
@@ -39,7 +36,6 @@ export function createApp({ stripe = createStripeClient() } = {}) {
   app.use(
     cors({
       origin(origin, cb) {
-        // نسمح بالطلبات بلا Origin (curl، تطبيقات الجوال، الفحوصات الصحية)
         if (!origin || config.corsOrigins.includes(origin)) return cb(null, true);
         cb(new Error(`أصل غير مسموح به: ${origin}`));
       },
@@ -48,8 +44,6 @@ export function createApp({ stripe = createStripeClient() } = {}) {
     }),
   );
 
-  // مستقبِل Stripe يحتاج النص الخام للتحقّق من التوقيع، فيُركّب
-  // قبل محلّل JSON العام.
   app.post(
     "/api/payments/webhook",
     express.raw({ type: "application/json", limit: "1mb" }),
@@ -63,7 +57,6 @@ export function createApp({ stripe = createStripeClient() } = {}) {
     app.use(morgan(config.isProd ? "combined" : "dev"));
   }
 
-  // سقف عام لكل الواجهة يحدّ من إساءة الاستخدام
   app.use(
     rateLimit({
       windowMs: 60_000,

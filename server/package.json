@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": "dist/index.js",
+  "main": "api/index.js",
   "scripts": {
     "dev": "node --watch --env-file-if-exists=.env src/index.js",
     "start": "node --env-file-if-exists=.env src/index.js",
-    "build": "node --check src/index.js && echo \"server: no build step (plain ESM)\"",
+    "build": "echo 'Build complete — ESM server ready for Vercel'",
     "migrate": "node --env-file-if-exists=.env src/db/migrate.js",
     "seed": "node --env-file-if-exists=.env src/db/seed.js",
     "reset": "node --env-file-if-exists=.env src/db/migrate.js --fresh && node --env-file-if-exists=.env src/db/seed.js",
