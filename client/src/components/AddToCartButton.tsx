@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { Product } from "@/lib/types";
 import { useCart } from "./CartProvider";
 import { useT } from "./LangProvider";
+import { useUI } from "./UIProvider";
 import { CartIcon } from "./Icons";
 
 export function AddToCartButton({
@@ -22,6 +23,7 @@ export function AddToCartButton({
 }) {
   const { add } = useCart();
   const t = useT();
+  const { openCart } = useUI();
   const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -36,6 +38,7 @@ export function AddToCartButton({
     try {
       await add(product, qty);
       setState("done");
+      openCart();
     } catch (err) {
       setMessage(err instanceof Error ? err.message : t.product.addFailed);
       setState("error");

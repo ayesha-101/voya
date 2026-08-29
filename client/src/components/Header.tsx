@@ -1,20 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import type { Category } from "@/lib/types";
 import { useCart } from "./CartProvider";
 import { useLang, useT } from "./LangProvider";
 import { categoryName } from "@/lib/localize";
 import { LangToggle } from "./LangToggle";
+import { useUI } from "./UIProvider";
+import { useWishlist } from "./useWishlist";
 
 export function Header({ categories }: { categories: Category[] }) {
   const t = useT();
   const { lang } = useLang();
+  const { openCart, openSearch } = useUI();
+  const wishlist = useWishlist();
   const { count, ready } = useCart();
-  const [query, setQuery] = useState("");
-  const router = useRouter();
 
   const links = [
     { href: "/products", label: t.navExtra.all },
@@ -23,11 +23,6 @@ export function Header({ categories }: { categories: Category[] }) {
     { href: "/contact", label: t.navExtra.contact },
   ];
 
-  function search(e: React.FormEvent) {
-    e.preventDefault();
-    const q = query.trim();
-    router.push(q ? `/products?q=${encodeURIComponent(q)}` : "/products");
-  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-blush-300 bg-blush-50/95 backdrop-blur">
@@ -54,18 +49,46 @@ export function Header({ categories }: { categories: Category[] }) {
           </span>
         </Link>
 
-        <form onSubmit={search} className="hidden max-w-md flex-1 lg:block">
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            type="search"
-            placeholder={t.searchPlaceholder}
-            aria-label={t.searchPlaceholder}
-            className="w-full rounded-full border border-blush-300 bg-white px-5 py-2.5 text-sm outline-none transition focus:border-gold-500"
-          />
-        </form>
+        <button
+          type="button"
+          onClick={openSearch}
+          className="hidden max-w-md flex-1 items-center gap-3 rounded-full border border-blush-300 bg-white px-5 py-2.5 text-start text-sm text-muted transition hover:border-gold-400 lg:flex"
+        >
+          <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.7">
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.5-3.5" />
+          </svg>
+          {t.searchPlaceholder}
+        </button>
 
         <div className="ms-auto flex shrink-0 items-center gap-1.5 sm:gap-2.5">
+          <button
+            type="button"
+            onClick={openSearch}
+            aria-label={t.search.title}
+            className="grid h-10 w-10 place-items-center rounded-full border border-blush-300 text-plum-700 transition hover:border-gold-400 lg:hidden"
+          >
+            <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="1.7">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+          </button>
+
+          <Link
+            href="/wishlist"
+            aria-label={t.wish.title}
+            className="relative grid h-10 w-10 place-items-center rounded-full border border-blush-300 text-plum-700 transition hover:border-gold-400"
+          >
+            <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="1.7">
+              <path d="M12 20.3 4.6 13a4.6 4.6 0 0 1 6.5-6.5l.9.9.9-.9A4.6 4.6 0 0 1 19.4 13z" />
+            </svg>
+            {wishlist.count > 0 && (
+              <span className="nums absolute -end-1 -top-1 grid h-4.5 min-w-4.5 place-items-center rounded-full bg-plum-600 px-1 text-[10px] font-bold text-white">
+                {wishlist.count}
+              </span>
+            )}
+          </Link>
+
           <LangToggle />
           <Link
             href="/account"
@@ -73,8 +96,9 @@ export function Header({ categories }: { categories: Category[] }) {
           >
             {t.account}
           </Link>
-          <Link
-            href="/cart"
+          <button
+            type="button"
+            onClick={openCart}
             aria-label={t.cart}
             className="flex items-center gap-2 rounded-full bg-plum-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-plum-700 sm:gap-2.5 sm:px-5 sm:py-3"
           >
@@ -82,7 +106,7 @@ export function Header({ categories }: { categories: Category[] }) {
             <span className="nums rounded-full bg-gold-400 px-2 text-xs font-bold text-plum-900">
               {ready ? count : 0}
             </span>
-          </Link>
+          </button>
         </div>
       </div>
 

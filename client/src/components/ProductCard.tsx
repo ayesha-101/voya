@@ -5,6 +5,7 @@ import type { Product } from "@/lib/types";
 import { discountPercent, formatPrice } from "@/lib/format";
 import { AddToCartButton } from "./AddToCartButton";
 import { ProductArt } from "./ProductArt";
+import { WishlistButton } from "./WishlistButton";
 import { useT } from "./LangProvider";
 import { useLang } from "./LangProvider";
 import { productName } from "@/lib/localize";
@@ -33,14 +34,20 @@ export function ProductCard({ product }: { product: Product }) {
           </span>
         )}
         {off > 0 && (
-          <span className="nums absolute end-3.5 top-3.5 rounded-full bg-plum-400 px-2.5 py-1.5 text-[11px] font-bold text-white">
+          <span className="nums absolute start-3.5 top-12 rounded-full bg-plum-400 px-2.5 py-1.5 text-[11px] font-bold text-white">
             -{off}%
           </span>
         )}
+        {/* القلب داخل الرابط لكنه يوقف الانتقال عند الضغط */}
+        <WishlistButton slug={product.slug} className="absolute end-3.5 top-3.5" />
       </Link>
 
       <div className="flex flex-1 flex-col gap-2 p-4.5 pb-5">
-        <span className="display text-[13px] tracking-[0.1em] text-gold-500">{product.nameEn}</span>
+        {lang === "ar" && product.nameEn && (
+          <span className="display text-[13px] tracking-[0.1em] text-gold-500">
+            {product.nameEn}
+          </span>
+        )}
         <h3 className="text-[15px] leading-relaxed font-bold text-ink">
           <Link href={`/products/${product.slug}`} className="hover:text-plum-600">
             {productName(product, lang)}

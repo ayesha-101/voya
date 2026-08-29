@@ -5,11 +5,14 @@ import { site } from "@/data/site";
 import { fetchCategories } from "@/lib/server-api";
 import { AnnouncementBar } from "@/components/AnnouncementBar";
 import { AuthProvider } from "@/components/AuthProvider";
+import { CartDrawer } from "@/components/CartDrawer";
 import { CartProvider } from "@/components/CartProvider";
 import { DemoBanner } from "@/components/DemoBanner";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { LangProvider } from "@/components/LangProvider";
+import { SearchOverlay } from "@/components/SearchOverlay";
+import { UIProvider } from "@/components/UIProvider";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 
 const tajawal = Tajawal({
@@ -63,12 +66,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <LangProvider>
           <AuthProvider>
             <CartProvider>
+              <UIProvider>
               <AnnouncementBar />
               <DemoBanner />
               <Header categories={categories} />
               <main className="flex-1">{children}</main>
               <Footer categories={categories} />
               <WhatsAppButton />
+                <CartDrawer />
+                <SearchOverlay />
+              </UIProvider>
             </CartProvider>
           </AuthProvider>
         </LangProvider>

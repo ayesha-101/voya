@@ -11,7 +11,7 @@ export const cartRouter = Router();
 cartRouter.use(requireAuth);
 
 const CART_SQL = `
-  SELECT ci.qty, p.id, p.slug, p.name, p.price, p.size, p.stock,
+  SELECT ci.qty, p.id, p.slug, p.name, p.name_en, p.price, p.size, p.stock,
          p.shape, p.tone_from, p.tone_to
     FROM cart_items ci
     JOIN products p ON p.id = ci.product_id
@@ -25,6 +25,7 @@ async function readCart(userId) {
     productId: r.id,
     slug: r.slug,
     name: r.name,
+    nameEn: r.name_en,
     unitPrice: r.price,
     size: r.size,
     stock: r.stock,
