@@ -1,9 +1,5 @@
-"use client";
-
 import Link from "next/link";
 import type { Category } from "@/lib/types";
-import { categoryName } from "@/lib/localize";
-import { useLang } from "./LangProvider";
 
 const ART = [
   "linear-gradient(150deg, #f7dbe4, #b8788c)",
@@ -17,27 +13,23 @@ const ART = [
 ];
 
 export function CategoryStrip({ categories }: { categories: Category[] }) {
-  const { lang } = useLang();
-
   return (
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
       {categories.map((c, i) => (
         <Link
           key={c.slug}
           href={`/products?category=${c.slug}`}
-          className="flex min-w-0 items-center gap-3 rounded-card border border-blush-200 bg-white p-3 transition hover:-translate-y-1 hover:border-gold-400 hover:shadow-[0_16px_32px_rgba(108,42,72,.12)] sm:gap-3.5 sm:p-3.5"
+          className="flex items-center gap-3.5 rounded-card border border-blush-200 bg-white p-3.5 transition hover:-translate-y-1 hover:border-gold-400 hover:shadow-[0_16px_32px_rgba(108,42,72,.12)]"
         >
           <span
-            className="display grid h-14 w-14 shrink-0 place-items-center rounded-[18px] text-[22px] text-white sm:h-[76px] sm:w-[76px] sm:rounded-[20px] sm:text-[26px]"
+            className="display grid h-[76px] w-[76px] shrink-0 place-items-center rounded-[20px] text-[26px] text-white"
             style={{ background: ART[i % ART.length] }}
             aria-hidden
           >
-            {categoryName(c, lang).trim().charAt(0)}
+            {c.name.trim().charAt(0)}
           </span>
-          <span className="flex min-w-0 flex-col gap-1">
-            <span className="text-sm font-bold text-balance text-plum-900 sm:text-base">
-              {categoryName(c, lang)}
-            </span>
+          <span className="flex flex-col gap-1">
+            <span className="text-base font-bold text-plum-900">{c.name}</span>
             <span className="text-xs text-muted">{c.blurb}</span>
           </span>
         </Link>

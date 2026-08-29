@@ -4,10 +4,9 @@ import { useLang } from "./LangProvider";
 
 export function LangToggle() {
   const { lang, setLang } = useLang();
-  const base =
-    "rounded-full px-2.5 py-1.5 text-[12px] font-bold whitespace-nowrap transition sm:px-3.5 sm:py-2 sm:text-[13px]";
+  const base = "rounded-full px-3.5 py-2 text-[13px] font-bold transition";
   return (
-    <div className="flex shrink-0 items-center gap-1 rounded-full border border-blush-300 bg-white p-1">
+    <div className="flex items-center gap-1 rounded-full border border-blush-300 bg-white p-1">
       <button
         type="button"
         onClick={() => setLang("ar")}

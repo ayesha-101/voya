@@ -24,29 +24,19 @@ export function ProductArt({
   const [from, to] = tone;
 
   return (
-    // الحاوية تُحدّد الارتفاع، والغلاف الداخلي يرثه كاملًا حتى تُحلّ
-    // النسب المئوية لارتفاع العبوة بدل أن تنهار إلى الحد الأدنى.
-    <div
-      className={`relative flex items-end justify-center overflow-hidden ${className}`}
-      aria-label={label}
-    >
-      <div
-        className="pointer-events-none absolute start-[19%] top-[10%] aspect-square w-[62%] rounded-full bg-white/45"
-        aria-hidden
-      />
-      <div
-        className="relative flex h-full flex-col justify-end pb-[12%]"
-        style={{ width: g.width }}
-      >
+    <div className={`relative flex items-end justify-center overflow-hidden ${className}`} aria-label={label}>
+      <div className="pointer-events-none absolute start-[19%] top-[16%] aspect-square w-[62%] rounded-full bg-white/45" aria-hidden />
+      {/* h-full يورّث الارتفاع حتى تُحلّ النسب المئوية أدناه */}
+      <div className="relative flex h-full flex-col justify-end pb-[12%]" style={{ width: g.width }}>
         <div
           className="mx-auto w-[38%]"
           style={{ height: g.capHeight, borderRadius: "8px 8px 0 0", background: "linear-gradient(180deg, #efd49b, #c9a227)" }}
         />
         <div
-          className="flex w-full flex-col items-center justify-center gap-1.5"
+          className="flex flex-col items-center justify-center gap-1.5"
           style={{
             height: g.bodyHeight,
-            minHeight: 88,
+            minHeight: 96,
             borderRadius: g.radius,
             background: `linear-gradient(150deg, ${from}, ${to})`,
             boxShadow: "inset -12px 0 22px rgba(76,35,51,.16), 0 14px 26px rgba(108,42,72,.18)",

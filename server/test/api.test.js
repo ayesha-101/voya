@@ -368,13 +368,23 @@ describe("الأمان", () => {
 
 describe("إدارة المنتجات من اللوحة", () => {
   let token;
+  // الاختبارات تنشئ منتجات حقيقية؛ تُحذف بعدها وإلا اختلّ عدّ المنتجات
+  // في تشغيل لاحق على نفس قاعدة البيانات.
+  const created = [];
 
   before(async () => {
     token = await login("admin@byvoyastore.com", "Admin@12345");
   });
 
+  after(async () => {
+    for (const slug of created) {
+      await pool.query("DELETE FROM products WHERE slug = $1", [slug]);
+    }
+  });
+
   it("تُنشئ منتجًا كاملًا بسعر ومخزون وطريقة استخدام", async () => {
     const slug = `panel-${Date.now()}`;
+    created.push(slug);
     const { status, body } = await api("/api/admin/products", {
       method: "POST",
       token,
@@ -422,6 +432,7 @@ describe("إدارة المنتجات من اللوحة", () => {
 
   it("تُعدّل السعر والمخزون فيتغيّران في المتجر", async () => {
     const slug = `panel-edit-${Date.now()}`;
+    created.push(slug);
     const base = {
       slug,
       name: "منتج للتعديل",
