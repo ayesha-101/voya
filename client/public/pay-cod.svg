@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 44" width="96" height="44">
+  <rect x="1" y="1" width="94" height="42" rx="10" fill="#FFFFFF" stroke="#F5DCE3" stroke-width="1.5"/>
+  <g transform="translate(20,13)">
+    <path d="M9,0 L18,4.5 L18,13.5 L9,18 L0,13.5 L0,4.5 Z" fill="none" stroke="#B85C76" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M0,4.5 L9,9 L18,4.5 M9,9 L9,18" fill="none" stroke="#B85C76" stroke-width="1.4"/>
+  </g>
+  <text x="58" y="20" font-family="'Tajawal', sans-serif" font-weight="700" font-size="9.5" fill="#432233" text-anchor="middle">عند</text>
+  <text x="58" y="32" font-family="'Tajawal', sans-serif" font-weight="700" font-size="9.5" fill="#432233" text-anchor="middle">الاستلام</text>
+</svg>

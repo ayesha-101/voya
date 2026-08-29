@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 56" width="180" height="56">
-  <text x="78" y="38" font-family="'Aref Ruqaa','El Messiri',serif" font-weight="700" font-size="36" fill="#432233" text-anchor="middle">فويا</text>
-  <path d="M28,46 C55,52 105,52 132,44" fill="none" stroke="#C6A15B" stroke-width="1.5" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 24" width="240" height="24">
+  <path d="M8,12 C40,4 70,20 102,12" fill="none" stroke="#C6A15B" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M138,12 C170,20 200,4 232,12" fill="none" stroke="#C6A15B" stroke-width="1.5" stroke-linecap="round"/>
   
-  <g transform="translate(146,18) scale(1.05)">
+  <g transform="translate(120,12) scale(0.85)">
     <path d="M0,-10 C6,-10 10,-5 10,0 C10,6 5,10 0,10 C-6,10 -10,5 -10,0 C-10,-6 -5,-10 0,-10 Z" fill="#D67B93"/>
     <path d="M0,-6 C4,-6 7,-3 7,0 C7,4 3,7 0,7 C-4,7 -7,3 -7,0 C-7,-4 -3,-6 0,-6 Z" fill="#E8A9BC"/>
     <path d="M0,-3 C2,-3 4,-1 4,1 C4,3 2,4 0,4 C-2,4 -4,2 -4,0 C-4,-2 -2,-3 0,-3 Z" fill="#B85C76"/>
