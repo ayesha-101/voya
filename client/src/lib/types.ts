@@ -47,6 +47,8 @@ export type CartItem = {
   slug: string;
   name: string;
   nameEn: string;
+  category: string;
+  categoryName: string;
   unitPrice: number;
   size: string;
   stock: number;

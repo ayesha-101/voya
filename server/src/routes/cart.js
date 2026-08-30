@@ -12,9 +12,10 @@ cartRouter.use(requireAuth);
 
 const CART_SQL = `
   SELECT ci.qty, p.id, p.slug, p.name, p.name_en, p.price, p.size, p.stock,
-         p.shape, p.tone_from, p.tone_to
+         p.shape, p.tone_from, p.tone_to, c.slug AS category, c.name AS category_name
     FROM cart_items ci
     JOIN products p ON p.id = ci.product_id
+    JOIN categories c ON c.id = p.category_id
    WHERE ci.user_id = $1 AND p.is_active = TRUE
    ORDER BY ci.updated_at
 `;
@@ -26,6 +27,8 @@ async function readCart(userId) {
     slug: r.slug,
     name: r.name,
     nameEn: r.name_en,
+    category: r.category,
+    categoryName: r.category_name,
     unitPrice: r.price,
     size: r.size,
     stock: r.stock,
